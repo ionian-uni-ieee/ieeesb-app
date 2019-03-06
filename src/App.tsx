@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import './App.css';
-import { Landpage } from './scenes/Landpage';
+import { SceneSelector } from './scenes/SceneSelector';
 
 class App extends Component {
   render() {
     return (
       <div className="App">
-        <Landpage />
+        <SceneSelector />
       </div>
     );
   }
