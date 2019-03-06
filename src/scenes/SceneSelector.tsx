@@ -7,7 +7,7 @@ export class SceneSelector extends Component {
   render() {
     return (
       <div className='scene'>
-          <Router>
+          <Router basename='/ieee'>
               <div className='routes'>
                 <Route path="/" exact={true} component={Landpage} />
               </div>
