@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import './App.css';
+import './App.scss';
 import { SceneSelector } from './scenes/SceneSelector';
 
 class App extends Component {
