@@ -1,0 +1,29 @@
+$primaryFont: 'Montserrat', sans-serif;
+$secondaryFont: 'Roboto', sans-serif;
+
+.landpage {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  // background-image: url('../../images/gallery_1.jpg');
+  background-image: linear-gradient(45deg, #20222a, #10121a);
+  background-repeat: no-repeat;
+  background-size: 100%;
+  .container {
+    width: 100%;
+    height: 100%;
+    header {
+      height: 100%;
+      width: 100%;
+      margin: 0;
+      font-family: $primaryFont;
+      font-size: 2em;
+      color: #f0f8ff;
+      text-align: center;
+      h1 {
+        margin: 0;
+        padding-top: 256px;
+      }
+    }
+  }
+}
