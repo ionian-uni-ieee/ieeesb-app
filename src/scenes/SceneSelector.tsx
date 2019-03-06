@@ -9,7 +9,7 @@ export class SceneSelector extends Component {
       <div className='scene'>
           <Router>
               <div className='routes'>
-                <Route path="/" exact={true} component={Landpage} />
+                <Route path="/ieee" exact={true} component={Landpage} />
               </div>
           </Router>
       </div>
