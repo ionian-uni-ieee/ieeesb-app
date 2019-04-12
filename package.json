@@ -1,6 +1,6 @@
 {
   "name": "ieee-webapp",
-  "version": "0.0.4",
+  "version": "0.2.0",
   "private": true,
   "homepage": "https://ionio.gr/ieee",
   "dependencies": {
