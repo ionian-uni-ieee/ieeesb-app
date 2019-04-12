@@ -21,6 +21,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
+    "production": "yarn build && server ./build -l 3000",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
