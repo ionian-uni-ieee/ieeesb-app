@@ -1,11 +1,12 @@
 package main
 
 import (
-	"gitlab.com/ionio-uni-ieee/ieee-webapp/internal/app"
+	"github.com/ionian-uni-ieee/ieee-webapp/internal/app"
+	"github.com/ionian-uni-ieee/ieee-webapp/internal/app/drivers/database/mongo"
 )
 
 func main() {
-	app := 	&app.Application{
+	app := &app.Application{
 		DatabasePort: "27017",
 		DatabaseHost: "mongodb://localhost",
 		DatabaseName: "test",

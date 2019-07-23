@@ -5,13 +5,19 @@ import (
 	"net/http"
 	"os"
 
+	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
 	"github.com/ionian-uni-ieee/ieee-webapp/internal/app/drivers/database"
+	httpHandler "github.com/ionian-uni-ieee/ieee-webapp/internal/app/handlers/http"
+	"github.com/ionian-uni-ieee/ieee-webapp/internal/app/repositories"
+	"github.com/joho/godotenv"
+	"github.com/rs/cors"
 )
 
 type Application struct {
 	Host          string
 	Port          string
+	WebPort       string
 	DatabaseHost  string
 	DatabasePort  string
 	DatabaseName  string
@@ -60,21 +66,21 @@ func (a *Application) Initialize(databaseDriver database.Driver) {
 	r.HandleFunc("/v1/profile", h.GetProfile).Methods("GET")
 	// USERS
 	r.HandleFunc("/v1/users/{userID}", h.DeleteUser).Methods("DELETE")
-	r.HandleFunc("/v1/users/{userID}", h.PutUser).Methods("PUT")
+	// r.HandleFunc("/v1/users/{userID}", h.PutUser).Methods("PUT")
 	// EVENTS
-	r.HandleFunc("/v1/events", h.PostEvent).Methods("POST")
-	r.HandleFunc("/v1/events/{eventID}", h.PutEvent).Methods("PUT")
-	r.HandleFunc("/v1/events/{eventID}", h.DeleteEvent).Methods("DELETE")
+	// r.HandleFunc("/v1/events", h.PostEvent).Methods("POST")
+	// r.HandleFunc("/v1/events/{eventID}", h.PutEvent).Methods("PUT")
+	// r.HandleFunc("/v1/events/{eventID}", h.DeleteEvent).Methods("DELETE")
 	// SPONSORS
-	r.HandleFunc("/v1/sponsors", h.PostSponsor).Methods("POST")
-	r.HandleFunc("/v1/sponsors/{sponsorID}", h.PutSponsor).Methods("PUT")
-	r.HandleFunc("/v1/sponsors/{sponsorID}", h.DeleteSponsor).Methods("DELETE")
+	// r.HandleFunc("/v1/sponsors", h.PostSponsor).Methods("POST")
+	// r.HandleFunc("/v1/sponsors/{sponsorID}", h.PutSponsor).Methods("PUT")
+	// r.HandleFunc("/v1/sponsors/{sponsorID}", h.DeleteSponsor).Methods("DELETE")
 	// TICKETS
-	r.HandleFunc("/v1/tickets", h.PostTicket).Methods("POST")
-	r.HandleFunc("/v1/tickets/{ticketID}/respond", h.PostTicketResponse).Methods("POST")
+	// r.HandleFunc("/v1/tickets", h.PostTicket).Methods("POST")
+	// r.HandleFunc("/v1/tickets/{ticketID}/respond", h.PostTicketResponse).Methods("POST")
 	// MEDIA
-	r.HandleFunc("/v1/images", h.PostImage).Methods("POST")
-	r.HandleFunc("/v1/video", h.PostVideo).Methods("POST")
+	// r.HandleFunc("/v1/images", h.PostImage).Methods("POST")
+	// r.HandleFunc("/v1/video", h.PostVideo).Methods("POST")
 
 	// Use CORS
 	c := cors.New(cors.Options{

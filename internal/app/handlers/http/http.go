@@ -5,9 +5,12 @@ import (
 	"net/http"
 
 	"github.com/gorilla/securecookie"
-	"gitlab.com/gphub/app/internal/app/controllers/collections"
-	"gitlab.com/gphub/app/internal/app/controllers/users"
-	"gitlab.com/gphub/app/internal/app/repositories"
+	"github.com/ionian-uni-ieee/ieee-webapp/internal/app/controllers/events"
+	"github.com/ionian-uni-ieee/ieee-webapp/internal/app/controllers/media"
+	"github.com/ionian-uni-ieee/ieee-webapp/internal/app/controllers/sponsors"
+	"github.com/ionian-uni-ieee/ieee-webapp/internal/app/controllers/tickets"
+	"github.com/ionian-uni-ieee/ieee-webapp/internal/app/controllers/users"
+	"github.com/ionian-uni-ieee/ieee-webapp/internal/app/repositories"
 )
 
 type httpError struct {
@@ -29,17 +32,20 @@ type errorResponse struct {
 }
 
 type Handler struct {
-	events *events.Controller
-	tickets *tickets.Controller
-	media *media.Controller
-	sponsors *sponsors.Controller
-	users *users.Controller
+	usersController    *users.Controller
+	eventsController   *events.Controller
+	ticketsController  *tickets.Controller
+	sponsorsController *sponsors.Controller
+	mediaController    *media.Controller
 }
 
 func MakeNewHandler(repositories *repositories.Repositories) *Handler {
 	return &Handler{
-		users.MakeNewUsersController(repositories),
-		collections.MakeNewCollectionsController(repositories),
+		users.MakeNewController(repositories),
+		events.MakeNewController(repositories),
+		tickets.MakeNewController(repositories),
+		sponsors.MakeNewController(repositories),
+		media.MakeNewController(repositories),
 	}
 }
 

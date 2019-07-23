@@ -1,6 +1,6 @@
 package models
 
-type Permission struct {
+type Permissions struct {
 	Users    bool `bson:"users" json:"users"`
 	Events   bool `bson:"events" json:"events"`
 	Tickets  bool `bson:"tickets" json:"tickets"`

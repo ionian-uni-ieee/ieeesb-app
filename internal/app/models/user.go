@@ -8,5 +8,5 @@ type User struct {
 	Password    string             `bson:"password" json:"password"`
 	Email       string             `bson:"email" json:"email"`
 	Fullname    string             `bson:"fullname" json:"fullname"`
-	Permissions []Permission       `bson:"permissions" json:"permissions"`
+	Permissions Permissions        `bson:"permissions" json:"permissions"`
 }

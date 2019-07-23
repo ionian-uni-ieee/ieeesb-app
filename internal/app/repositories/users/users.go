@@ -1,11 +1,9 @@
 package users
 
-import "gitlab.com/gphub/app/internal/app/models"
+import "github.com/ionian-uni-ieee/ieee-webapp/internal/app/models"
 
 type Repository interface {
 	FindByID(userID string) (*models.User, error)
-	FindUserCollectionsByUserID(userID string) ([]models.Collection, error)
-	FindUserCollectionByIDs(userID string, collectionID string) (*models.Collection, error)
 	UpdateByID(userID string, update interface{}) error
 	DeleteByID(userID string) error
 	Find(filter interface{}) ([]models.User, error)

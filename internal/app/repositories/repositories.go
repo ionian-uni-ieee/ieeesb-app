@@ -1,12 +1,12 @@
 package repositories
 
 import (
-	"gitlab.com/gphub/app/internal/app/drivers/database"
-	"gitlab.com/gphub/app/internal/app/repositories/events"
-	"gitlab.com/gphub/app/internal/app/repositories/sessions"
-	"gitlab.com/gphub/app/internal/app/repositories/sponsors"
-	"gitlab.com/gphub/app/internal/app/repositories/tickets"
-	"gitlab.com/gphub/app/internal/app/repositories/users"
+	"github.com/ionian-uni-ieee/ieee-webapp/internal/app/drivers/database"
+	"github.com/ionian-uni-ieee/ieee-webapp/internal/app/repositories/events"
+	"github.com/ionian-uni-ieee/ieee-webapp/internal/app/repositories/sessions"
+	"github.com/ionian-uni-ieee/ieee-webapp/internal/app/repositories/sponsors"
+	"github.com/ionian-uni-ieee/ieee-webapp/internal/app/repositories/tickets"
+	"github.com/ionian-uni-ieee/ieee-webapp/internal/app/repositories/users"
 )
 
 type Repositories struct {

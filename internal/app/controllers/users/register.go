@@ -3,7 +3,7 @@ package users
 import (
 	"errors"
 
-	"gitlab.com/gphub/app/internal/app/models"
+	"github.com/ionian-uni-ieee/ieee-webapp/internal/app/models"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"golang.org/x/crypto/bcrypt"
@@ -54,7 +54,7 @@ func (c *Controller) Register(username string, password string, email string, fu
 		Password: string(passwordEncrypted),
 		Email:    email,
 		Fullname: fullname,
-		Permissions: []models.Permission{
+		Permissions: models.Permissions{
 			false,
 			false,
 			false,

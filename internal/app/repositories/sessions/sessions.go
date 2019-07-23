@@ -1,6 +1,6 @@
 package sessions
 
-import "gitlab.com/gphub/app/internal/app/models"
+import "github.com/ionian-uni-ieee/ieee-webapp/internal/app/models"
 
 type Repository interface {
 	FindByID(sessionID string) (*models.Session, error)

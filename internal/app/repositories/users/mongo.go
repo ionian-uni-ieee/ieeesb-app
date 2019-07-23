@@ -4,8 +4,8 @@ import (
 	"context"
 	"errors"
 
-	"gitlab.com/gphub/app/internal/app/drivers/database"
-	"gitlab.com/gphub/app/internal/app/models"
+	"github.com/ionian-uni-ieee/ieee-webapp/internal/app/drivers/database"
+	"github.com/ionian-uni-ieee/ieee-webapp/internal/app/models"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
@@ -40,114 +40,6 @@ func (r *mongoRepository) FindByID(userID string) (*models.User, error) {
 	err = result.Decode(user)
 
 	return user, err
-}
-
-func (r *mongoRepository) FindUserCollectionsByUserID(userID string) ([]models.Collection, error) {
-	if userID == "" {
-		return nil, errors.New("UserID is empty string")
-	}
-
-	userObjectID, err := primitive.ObjectIDFromHex(userID)
-
-	if err != nil {
-		return nil, errors.New("UserID is invalid ObjectID")
-	}
-
-	user := r.collection.FindOne(context.Background(), &bson.M{"_id": userObjectID})
-
-	if user == nil {
-		return nil, errors.New("No user with this ID exists")
-	}
-
-	collection := r.database.GetDatabase().(*mongo.Database).Collection("collections")
-
-	userCollectionsFilter := &bson.M{
-		"$or": bson.A{
-			bson.M{
-				"ownerID": userObjectID,
-			},
-			bson.M{
-				"permissions._id": userObjectID,
-			},
-		},
-	}
-
-	cursor, err := collection.Find(context.Background(), userCollectionsFilter)
-	defer cursor.Close(context.Background())
-
-	if err != nil {
-		return nil, err
-	}
-
-	var collections []models.Collection
-
-	for cursor.Next(context.Background()) {
-		collection := models.Collection{}
-
-		err := cursor.Decode(&collection)
-
-		if err != nil {
-			return nil, err
-		}
-
-		collections = append(collections, collection)
-	}
-
-	return collections, nil
-}
-
-func (r *mongoRepository) FindUserCollectionByIDs(userID string, collectionID string) (*models.Collection, error) {
-	if userID == "" {
-		return nil, errors.New("UserID is empty string")
-	}
-
-	userObjectID, err := primitive.ObjectIDFromHex(userID)
-
-	if err != nil {
-		return nil, errors.New("UserID is invalid ObjectID")
-	}
-
-	user := r.collection.FindOne(context.Background(), &bson.M{"_id": userObjectID})
-
-	if user == nil {
-		return nil, errors.New("No user with this ID exists")
-	}
-
-	if collectionID == "" {
-		return nil, errors.New("CollectionID is empty string")
-	}
-
-	collectionObjectID, err := primitive.ObjectIDFromHex(collectionID)
-
-	if err != nil {
-		return nil, errors.New("CollectionID is invalid ObjectID")
-	}
-
-	dbcollection := r.database.GetDatabase().(*mongo.Database).Collection("collections")
-
-	userHasCollectionPermissionsFilter := &bson.M{
-		"_id": collectionObjectID,
-		"$or": bson.A{
-			bson.M{
-				"owner": userObjectID,
-			},
-			bson.M{
-				"permissions.userID": userObjectID,
-			},
-		},
-	}
-
-	result := dbcollection.FindOne(context.Background(), userHasCollectionPermissionsFilter)
-
-	var collectionFound *models.Collection
-
-	err = result.Decode(collectionFound)
-
-	if err != nil {
-		return nil, err
-	}
-
-	return collectionFound, nil
 }
 
 func (r *mongoRepository) UpdateByID(userID string, update interface{}) error {

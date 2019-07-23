@@ -4,8 +4,8 @@ import (
 	"context"
 	"errors"
 
-	"gitlab.com/gphub/app/internal/app/drivers/database"
-	"gitlab.com/gphub/app/internal/app/models"
+	"github.com/ionian-uni-ieee/ieee-webapp/internal/app/drivers/database"
+	"github.com/ionian-uni-ieee/ieee-webapp/internal/app/models"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
