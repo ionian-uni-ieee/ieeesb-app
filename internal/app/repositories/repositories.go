@@ -2,7 +2,10 @@ package repositories
 
 import (
 	"gitlab.com/gphub/app/internal/app/drivers/database"
+	"gitlab.com/gphub/app/internal/app/repositories/events"
 	"gitlab.com/gphub/app/internal/app/repositories/sessions"
+	"gitlab.com/gphub/app/internal/app/repositories/sponsors"
+	"gitlab.com/gphub/app/internal/app/repositories/tickets"
 	"gitlab.com/gphub/app/internal/app/repositories/users"
 )
 
