@@ -78,11 +78,11 @@ func setCookie(w http.ResponseWriter, values map[string]string) {
 	}
 }
 
-func getCookieValue(r *http.Request, valueName string) (value string) {
+func getCookieValue(r *http.Request, key string) (value string) {
 	if cookie, err := r.Cookie("cookie"); err == nil {
 		cookieValue := make(map[string]string)
 		if err = cookieHandler.Decode("cookie", cookie.Value, &cookieValue); err == nil {
-			value = cookieValue[valueName]
+			value = cookieValue[key]
 		}
 	}
 
