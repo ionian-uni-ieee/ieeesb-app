@@ -29,8 +29,11 @@ type errorResponse struct {
 }
 
 type Handler struct {
-	usersController       *users.UsersController
-	collectionsController *collections.CollectionsController
+	events *events.Controller
+	tickets *tickets.Controller
+	media *media.Controller
+	sponsors *sponsors.Controller
+	users *users.Controller
 }
 
 func MakeNewHandler(repositories *repositories.Repositories) *Handler {
