@@ -9,7 +9,7 @@ import (
 	"golang.org/x/crypto/bcrypt"
 )
 
-func (c *UsersController) Register(username string, password string, email string, fullname string) (string, error) {
+func (c *Controller) Register(username string, password string, email string, fullname string) (string, error) {
 	if username == "" {
 		return "", errors.New("Username is empty string")
 	}

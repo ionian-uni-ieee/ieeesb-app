@@ -7,7 +7,7 @@ import (
 )
 
 // Delete removes a user from the database
-func (c *UsersController) Delete(userID string) error {
+func (c *Controller) Delete(userID string) error {
 	if userID == "" {
 		return errors.New("UserID is empty string")
 	}

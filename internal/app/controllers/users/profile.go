@@ -9,7 +9,7 @@ import (
 )
 
 // Profile returns the user's stored model
-func (c *UsersController) Profile(sessionID string) (*models.User, error) {
+func (c *Controller) Profile(sessionID string) (*models.User, error) {
 	if sessionID == "" {
 		return nil, errors.New("SessionID is empty string")
 	}

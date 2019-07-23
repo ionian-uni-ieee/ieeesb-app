@@ -7,7 +7,7 @@ import (
 )
 
 // Logout deletes the given user's session
-func (c *UsersController) Logout(sessionID string) error {
+func (c *Controller) Logout(sessionID string) error {
 	if sessionID == "" {
 		return errors.New("SessionID is empty string")
 	}

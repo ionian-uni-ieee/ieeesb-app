@@ -8,7 +8,7 @@ import (
 )
 
 // ChangePassword updates the user's password only if the old password is correct
-func (c *UsersController) ChangePassword(userID string, oldPassword string, newPassword string) error {
+func (c *Controller) ChangePassword(userID string, oldPassword string, newPassword string) error {
 	if userID == "" {
 		return errors.New("UserID is empty string")
 	}

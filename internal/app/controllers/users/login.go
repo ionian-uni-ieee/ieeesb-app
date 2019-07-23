@@ -12,7 +12,7 @@ import (
 )
 
 // Login creates a new stored session
-func (c *UsersController) Login(username string, password string) (string, error) {
+func (c *Controller) Login(username string, password string) (string, error) {
 	if username == "" {
 		return "", errors.New("Username is empty string")
 	}
