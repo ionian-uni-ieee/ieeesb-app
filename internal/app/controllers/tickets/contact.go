@@ -24,6 +24,7 @@ func (c *Controller) Contact(email string, fullname string, message string) (str
 		Email:    email,
 		Fullname: fullname,
 		Message:  message,
+		State:    "open",
 	}
 
 	ticketID, err := c.repositories.TicketsRepository.InsertOne(ticket)
