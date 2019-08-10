@@ -1,13 +1,11 @@
-import React from 'react';
+import React from 'react'
 
 const App: React.FC = () => {
   return (
-    <div className="App">
-      <header className="App-header">
-        Ionio IEEE App
-      </header>
+    <div className='App'>
+      <header className='App-header'>Ionio IEEE App</header>
     </div>
-  );
+  )
 }
 
-export default App;
+export default App
