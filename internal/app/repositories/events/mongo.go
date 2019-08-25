@@ -141,3 +141,13 @@ func (r *mongoRepository) InsertMany(documents []models.Event) ([]string, error)
 
 	return insertedIDs, err
 }
+
+func (r *mongoRepository) IsDuplicate(name string) bool {
+	sameKeyFilter := &bson.M{
+		"name": name,
+	}
+
+	eventFound, err := r.FindOne(sameKeyFilter)
+
+	return (err != nil) || (eventFound != nil)
+}
