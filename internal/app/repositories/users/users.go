@@ -12,4 +12,5 @@ type Repository interface {
 	DeleteMany(filter interface{}) (int64, error)
 	InsertOne(document models.User) (string, error)
 	InsertMany(documents []models.User) ([]string, error)
+	IsDuplicate(email string, username string, fullname string) bool
 }

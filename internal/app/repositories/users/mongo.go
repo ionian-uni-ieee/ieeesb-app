@@ -157,3 +157,16 @@ func (r *mongoRepository) InsertMany(documents []models.User) ([]string, error) 
 
 	return insertedIDs, err
 }
+
+func (r *mongoRepository) IsDuplicate(email string, username string, fullname string) bool {
+	sameKeysFilter := &bson.M{
+		"$or": bson.A{
+			bson.M{"email": email},
+			bson.M{"username": username},
+			bson.M{"fullname": fullname},
+		}}
+
+	userFound, err := r.FindOne(sameKeysFilter)
+
+	return (err != nil) || userFound != nil
+}
