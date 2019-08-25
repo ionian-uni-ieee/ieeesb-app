@@ -44,10 +44,10 @@ func (c *Controller) Register(username string, password string, email string, fu
 		Email:    email,
 		Fullname: fullname,
 		Permissions: models.Permissions{
-			false,
-			false,
-			false,
-			false,
+			Users:    false,
+			Events:   false,
+			Tickets:  false,
+			Sponsors: false,
 		},
 	}
 
