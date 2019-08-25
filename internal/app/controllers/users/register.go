@@ -4,7 +4,6 @@ import (
 	"errors"
 
 	"github.com/ionian-uni-ieee/ieee-webapp/internal/app/models"
-	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"golang.org/x/crypto/bcrypt"
 )
@@ -26,20 +25,10 @@ func (c *Controller) Register(username string, password string, email string, fu
 		return "", errors.New("Fullname is empty string")
 	}
 
-	sameKeysFilter := &bson.M{
-		"$or": bson.A{
-			bson.M{"email": email},
-			bson.M{"username": username},
-			bson.M{"fullname": fullname},
-		}}
-	userFound, err := c.repositories.UsersRepository.FindOne(sameKeysFilter)
+	isDuplicate := c.repositories.UsersRepository.IsDuplicate(email, username, fullname)
 
-	if err != nil {
-		return "", err
-	}
-
-	if userFound != nil {
-		return "", errors.New("A user with that username or email already exists")
+	if isDuplicate {
+		return "", errors.New("A user with that username, fullname or email already exists")
 	}
 
 	passwordEncrypted, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.MinCost)
