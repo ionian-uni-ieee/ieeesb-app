@@ -2,7 +2,6 @@ package reflections
 
 import (
 	"errors"
-	"fmt"
 	"reflect"
 )
 
@@ -17,9 +16,7 @@ func SetField(d interface{}, key string, value interface{}) error {
 			if field.CanSet() {
 				valueReflection := reflect.ValueOf(value)
 				if field.Kind() == valueReflection.Kind() {
-					fmt.Println(r, field, valueReflection)
 					field.Set(valueReflection)
-					fmt.Println(r, field, valueReflection)
 					return nil
 				}
 				return errors.New("Value type is not the same type with struct's type")
