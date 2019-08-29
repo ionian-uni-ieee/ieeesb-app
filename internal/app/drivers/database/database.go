@@ -7,4 +7,5 @@ type Driver interface {
 	GetDatabaseType() string
 	GetClient() interface{}
 	GetDatabase() interface{}
+	GetCollection(collectionName string) interface{}
 }

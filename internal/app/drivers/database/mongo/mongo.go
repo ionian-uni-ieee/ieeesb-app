@@ -44,6 +44,13 @@ func (d *DatabaseSession) GetDatabase() interface{} {
 	return d.database
 }
 
+// GetCollection returns a database's collection
+func (d *DatabaseSession) GetCollection(collectionName string) interface{} {
+	db := d.GetDatabase().(*mongo.Database)
+	collection := db.Collection(collectionName)
+	return collection
+}
+
 // Connect connects to the mongodb database
 func (d *DatabaseSession) Connect(host string, port string, uname string, pass string, dbname string) error {
 	// Assign params to object
