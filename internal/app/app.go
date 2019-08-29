@@ -11,24 +11,22 @@ import (
 	httpHandler "github.com/ionian-uni-ieee/ieee-webapp/internal/app/handlers/http"
 	"github.com/ionian-uni-ieee/ieee-webapp/internal/app/repositories"
 	"github.com/joho/godotenv"
-	"github.com/rs/cors"
 )
 
+// Application holds and initiates the software structure
 type Application struct {
-	Host          string
-	Port          string
-	WebPort       string
-	DatabaseHost  string
-	DatabasePort  string
-	DatabaseName  string
-	DatabaseUname string
-	DatabasePass  string
+	Host             string
+	Port             string
+	DatabaseHost     string
+	DatabasePort     string
+	DatabaseName     string
+	DatabaseUsername string
+	DatabasePass     string
 }
 
-// D E F A U L T    V A L U E S
+// Default values
 const defaultHost string = "localhost"
-const defaultPort string = "8080"
-const defaultWebPort string = "8083"
+const defaultPort string = "8081"
 const defaultDatabaseHost string = "mongodb://localhost"
 const defaultDatabasePort string = "27017"
 const defaultDatabaseName string = "test"
@@ -43,7 +41,7 @@ func (a *Application) Initialize(databaseDriver database.Driver) {
 	a.initializeVariables()
 
 	// Get database starting
-	err := databaseDriver.Connect(a.DatabaseHost, a.DatabasePort, a.DatabaseUname, a.DatabasePass, a.DatabaseName)
+	err := databaseDriver.Connect(a.DatabaseHost, a.DatabasePort, a.DatabaseUsername, a.DatabasePass, a.DatabaseName)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -82,15 +80,8 @@ func (a *Application) Initialize(databaseDriver database.Driver) {
 	// r.HandleFunc("/v1/images", h.PostImage).Methods("POST")
 	// r.HandleFunc("/v1/video", h.PostVideo).Methods("POST")
 
-	// Use CORS
-	c := cors.New(cors.Options{
-		AllowedOrigins:   []string{"http://localhost:" + a.WebPort},
-		AllowedMethods:   []string{"GET", "POST", "PUT", "DELETE", "OPTIONS", "HEAD"},
-		AllowedHeaders:   []string{"Access-Control-Allow-Origin", "Access-Control-Allow-Methods", "Content-Type"},
-		AllowCredentials: true,
-	})
 	// Logging middleware
-	handler := handlers.LoggingHandler(os.Stdout, c.Handler(r))
+	handler := handlers.LoggingHandler(os.Stdout, r)
 
 	log.Println("✔ API server running at " + a.Host + ":" + a.Port)
 	log.Fatal(http.ListenAndServe(a.Host+":"+a.Port, handler))
@@ -104,28 +95,25 @@ func (a *Application) initializeVariables() {
 	godotenv.Load(".env")
 	// If variable is empty assign the according environment variable to it
 	if len(a.Host) == 0 {
-		a.Host = os.Getenv("REACT_APP_API_HOST")
+		a.Host = os.Getenv("API_HOST")
 	}
 	if len(a.Port) == 0 {
-		a.Port = os.Getenv("REACT_APP_API_PORT")
+		a.Port = os.Getenv("API_PORT")
 	}
 	if len(a.DatabaseHost) == 0 {
-		a.DatabaseHost = os.Getenv("DATABASE_HOST")
+		a.DatabaseHost = os.Getenv("API_DATABASE_HOST")
 	}
 	if len(a.DatabasePort) == 0 {
-		a.DatabasePort = os.Getenv("DATABASE_PORT")
+		a.DatabasePort = os.Getenv("API_DATABASE_PORT")
 	}
 	if len(a.DatabaseName) == 0 {
-		a.DatabaseName = os.Getenv("DATABASE_NAME")
+		a.DatabaseName = os.Getenv("API_DATABASE_NAME")
 	}
-	if len(a.DatabaseUname) == 0 {
-		a.DatabaseUname = os.Getenv("DATABASE_UNAME")
+	if len(a.DatabaseUsername) == 0 {
+		a.DatabaseUsername = os.Getenv("API_DATABASE_USERNAME")
 	}
 	if len(a.DatabasePass) == 0 {
-		a.DatabasePass = os.Getenv("DATABASE_PASS")
-	}
-	if len(a.WebPort) == 0 {
-		a.WebPort = os.Getenv("PORT")
+		a.DatabasePass = os.Getenv("API_DATABASE_PASS")
 	}
 	// Set to default values if empty
 	if len(a.Host) == 0 {
@@ -142,8 +130,5 @@ func (a *Application) initializeVariables() {
 	}
 	if len(a.DatabaseName) == 0 {
 		a.DatabaseName = defaultDatabaseName
-	}
-	if len(a.WebPort) == 0 {
-		a.DatabaseName = defaultWebPort
 	}
 }
