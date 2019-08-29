@@ -139,7 +139,9 @@ func TestGetFieldNames(t *testing.T) {
 		t.Error(err)
 	}
 
-	if fieldNames[0] != "Name" || fieldNames[1] != "Address" || fieldNames[2] != "Number" {
+	if fieldNames[0] != "Name" ||
+		fieldNames[1] != "Address" ||
+		fieldNames[2] != "Number" {
 		t.Error("Expected first field names to be 'Name', 'Address' & 'Number' but they are ",
 			fieldNames[0], fieldNames[1], fieldNames[2])
 	}
