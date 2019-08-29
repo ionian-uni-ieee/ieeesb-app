@@ -43,3 +43,22 @@ func GetField(d interface{}, key string) (interface{}, error) {
 	return nil, errors.New("Interface is not a struct")
 
 }
+
+// GetFieldNames returns all the field keys of a struct
+func GetFieldNames(d interface{}) ([]string, error) {
+	r := reflect.ValueOf(d)
+	s := r.Elem()
+
+	fieldNames := []string{}
+
+	if s.Kind() == reflect.Struct {
+		for fieldIndex := 0; fieldIndex < s.NumField(); fieldIndex++ {
+			fieldName := s.Type().Field(fieldIndex).Name
+			fieldNames = append(fieldNames, fieldName)
+		}
+	} else {
+		return nil, errors.New("Interface is not a struct")
+	}
+
+	return fieldNames, nil
+}
