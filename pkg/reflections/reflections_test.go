@@ -46,6 +46,15 @@ func TestSetField(t *testing.T) {
 	if err.Error() != "Field is not valid" {
 		t.Error("Expected invalid field error but got", err)
 	}
+
+	// No struct pointer provided
+	s = testStruct{}
+
+	err = reflections.SetField(s, "Name", "")
+
+	if err.Error() != "Struct is not a pointer" {
+		t.Error("Expected 'Struct is not a pointer' error, instead got", err.Error())
+	}
 }
 
 func TestGetField(t *testing.T) {
@@ -104,6 +113,15 @@ func TestGetField(t *testing.T) {
 	if err.Error() != "Field is not valid" {
 		t.Error("Expected invalid field error but got", err)
 	}
+
+	// No struct pointer provided
+	s = testStruct{}
+
+	name, err = reflections.GetField(s, "Name")
+
+	if err.Error() != "Struct is not a pointer" {
+		t.Error("Expected 'Struct is not a pointer' error, instead got", err.Error())
+	}
 }
 
 func TestGetFieldNames(t *testing.T) {
@@ -153,5 +171,14 @@ func TestGetFieldNames(t *testing.T) {
 
 	if err.Error() != "Interface is not a struct" {
 		t.Error("Expected 'interface is not struct' error, instead got", err.Error())
+	}
+
+	// No struct pointer provided
+	s = testingStruct{}
+
+	fieldNames, err = reflections.GetFieldNames(s)
+
+	if err.Error() != "Struct is not a pointer" {
+		t.Error("Expected 'Struct is not a pointer' error, instead got", err.Error())
 	}
 }

@@ -8,6 +8,11 @@ import (
 // SetField sets a map's field value to a new value
 func SetField(d interface{}, key string, value interface{}) error {
 	r := reflect.ValueOf(d)
+
+	if r.Kind() == reflect.Struct {
+		return errors.New("Struct is not a pointer")
+	}
+
 	s := r.Elem()
 
 	if s.Kind() == reflect.Struct {
@@ -31,6 +36,11 @@ func SetField(d interface{}, key string, value interface{}) error {
 // GetField returns a value of a field of a map
 func GetField(d interface{}, key string) (interface{}, error) {
 	r := reflect.ValueOf(d)
+
+	if r.Kind() == reflect.Struct {
+		return nil, errors.New("Struct is not a pointer")
+	}
+
 	s := r.Elem()
 
 	if s.Kind() == reflect.Struct {
@@ -47,6 +57,11 @@ func GetField(d interface{}, key string) (interface{}, error) {
 // GetFieldNames returns all the field keys of a struct
 func GetFieldNames(d interface{}) ([]string, error) {
 	r := reflect.ValueOf(d)
+
+	if r.Kind() == reflect.Struct {
+		return nil, errors.New("Struct is not a pointer")
+	}
+
 	s := r.Elem()
 
 	fieldNames := []string{}
