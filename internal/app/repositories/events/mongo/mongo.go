@@ -11,18 +11,18 @@ import (
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
-type mongoRepository struct {
+type Repository struct {
 	database   database.Driver
 	collection *mongo.Collection
 }
 
-func MakeMongoRepository(database database.Driver) *mongoRepository {
+func MakeRepository(database database.Driver) *Repository {
 	db := database.GetDatabase().(*mongo.Database)
 	collection := db.Collection("events")
-	return &mongoRepository{database, collection}
+	return &Repository{database, collection}
 }
 
-func (r *mongoRepository) FindByID(eventID string) (*models.Event, error) {
+func (r *Repository) FindByID(eventID string) (*models.Event, error) {
 	if eventID == "" {
 		return nil, errors.New("EventID is empty string")
 	}
@@ -42,7 +42,7 @@ func (r *mongoRepository) FindByID(eventID string) (*models.Event, error) {
 	return event, err
 }
 
-func (r *mongoRepository) UpdateByID(eventID string, update interface{}) error {
+func (r *Repository) UpdateByID(eventID string, update interface{}) error {
 	if eventID == "" {
 		return errors.New("EventID is empty string")
 	}
@@ -58,7 +58,7 @@ func (r *mongoRepository) UpdateByID(eventID string, update interface{}) error {
 	return err
 }
 
-func (r *mongoRepository) DeleteByID(eventID string) error {
+func (r *Repository) DeleteByID(eventID string) error {
 	if eventID == "" {
 		return errors.New("EventID is empty string")
 	}
@@ -74,7 +74,7 @@ func (r *mongoRepository) DeleteByID(eventID string) error {
 	return err
 }
 
-func (r *mongoRepository) Find(filter interface{}) ([]models.Event, error) {
+func (r *Repository) Find(filter interface{}) ([]models.Event, error) {
 	result, err := r.collection.Find(context.Background(), filter)
 	defer result.Close(context.Background())
 
@@ -95,7 +95,7 @@ func (r *mongoRepository) Find(filter interface{}) ([]models.Event, error) {
 	return events, nil
 }
 
-func (r *mongoRepository) FindOne(filter interface{}) (*models.Event, error) {
+func (r *Repository) FindOne(filter interface{}) (*models.Event, error) {
 	result := r.collection.FindOne(context.Background(), filter)
 
 	event := &models.Event{}
@@ -105,25 +105,25 @@ func (r *mongoRepository) FindOne(filter interface{}) (*models.Event, error) {
 	return event, err
 }
 
-func (r *mongoRepository) UpdateMany(filter interface{}, update interface{}) ([]string, error) {
+func (r *Repository) UpdateMany(filter interface{}, update interface{}) ([]string, error) {
 	result, err := r.collection.UpdateMany(context.Background(), filter, update)
 
 	return result.UpsertedID.([]string), err
 }
 
-func (r *mongoRepository) DeleteMany(filter interface{}) (int64, error) {
+func (r *Repository) DeleteMany(filter interface{}) (int64, error) {
 	result, err := r.collection.DeleteMany(context.Background(), filter)
 
 	return result.DeletedCount, err
 }
 
-func (r *mongoRepository) InsertOne(document models.Event) (string, error) {
+func (r *Repository) InsertOne(document models.Event) (string, error) {
 	result, err := r.collection.InsertOne(context.Background(), document)
 
 	return result.InsertedID.(primitive.ObjectID).Hex(), err
 }
 
-func (r *mongoRepository) InsertMany(documents []models.Event) ([]string, error) {
+func (r *Repository) InsertMany(documents []models.Event) ([]string, error) {
 	var i []interface{}
 
 	for _, event := range documents {
@@ -142,7 +142,7 @@ func (r *mongoRepository) InsertMany(documents []models.Event) ([]string, error)
 	return insertedIDs, err
 }
 
-func (r *mongoRepository) IsDuplicate(name string) bool {
+func (r *Repository) IsDuplicate(name string) bool {
 	sameKeyFilter := &bson.M{
 		"name": name,
 	}
