@@ -11,18 +11,18 @@ import (
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
-type mongoRepository struct {
+type Repository struct {
 	database   database.Driver
 	collection *mongo.Collection
 }
 
-func MakeMongoRepository(database database.Driver) *mongoRepository {
+func MakeRepository(database database.Driver) *Repository {
 	db := database.GetDatabase().(*mongo.Database)
 	collection := db.Collection("tickets")
-	return &mongoRepository{database, collection}
+	return &Repository{database, collection}
 }
 
-func (r *mongoRepository) FindByID(ticketID string) (*models.Ticket, error) {
+func (r *Repository) FindByID(ticketID string) (*models.Ticket, error) {
 	if ticketID == "" {
 		return nil, errors.New("TicketID is empty string")
 	}
@@ -42,7 +42,7 @@ func (r *mongoRepository) FindByID(ticketID string) (*models.Ticket, error) {
 	return ticket, err
 }
 
-func (r *mongoRepository) UpdateByID(ticketID string, update interface{}) error {
+func (r *Repository) UpdateByID(ticketID string, update interface{}) error {
 	if ticketID == "" {
 		return errors.New("TicketID is empty string")
 	}
@@ -58,7 +58,7 @@ func (r *mongoRepository) UpdateByID(ticketID string, update interface{}) error 
 	return err
 }
 
-func (r *mongoRepository) DeleteByID(ticketID string) error {
+func (r *Repository) DeleteByID(ticketID string) error {
 	if ticketID == "" {
 		return errors.New("TicketID is empty string")
 	}
@@ -74,7 +74,7 @@ func (r *mongoRepository) DeleteByID(ticketID string) error {
 	return err
 }
 
-func (r *mongoRepository) Find(filter interface{}) ([]models.Ticket, error) {
+func (r *Repository) Find(filter interface{}) ([]models.Ticket, error) {
 	result, err := r.collection.Find(context.Background(), filter)
 	defer result.Close(context.Background())
 
@@ -95,7 +95,7 @@ func (r *mongoRepository) Find(filter interface{}) ([]models.Ticket, error) {
 	return tickets, nil
 }
 
-func (r *mongoRepository) FindOne(filter interface{}) (*models.Ticket, error) {
+func (r *Repository) FindOne(filter interface{}) (*models.Ticket, error) {
 	result := r.collection.FindOne(context.Background(), filter)
 
 	ticket := &models.Ticket{}
@@ -105,25 +105,25 @@ func (r *mongoRepository) FindOne(filter interface{}) (*models.Ticket, error) {
 	return ticket, err
 }
 
-func (r *mongoRepository) UpdateMany(filter interface{}, update interface{}) ([]string, error) {
+func (r *Repository) UpdateMany(filter interface{}, update interface{}) ([]string, error) {
 	result, err := r.collection.UpdateMany(context.Background(), filter, update)
 
 	return result.UpsertedID.([]string), err
 }
 
-func (r *mongoRepository) DeleteMany(filter interface{}) (int64, error) {
+func (r *Repository) DeleteMany(filter interface{}) (int64, error) {
 	result, err := r.collection.DeleteMany(context.Background(), filter)
 
 	return result.DeletedCount, err
 }
 
-func (r *mongoRepository) InsertOne(document models.Ticket) (string, error) {
+func (r *Repository) InsertOne(document models.Ticket) (string, error) {
 	result, err := r.collection.InsertOne(context.Background(), document)
 
 	return result.InsertedID.(primitive.ObjectID).Hex(), err
 }
 
-func (r *mongoRepository) InsertMany(documents []models.Ticket) ([]string, error) {
+func (r *Repository) InsertMany(documents []models.Ticket) ([]string, error) {
 	var i []interface{}
 
 	for _, ticket := range documents {

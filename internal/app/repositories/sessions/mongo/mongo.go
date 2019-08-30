@@ -11,18 +11,17 @@ import (
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
-type mongoRepository struct {
+type Repository struct {
 	database   database.Driver
 	collection *mongo.Collection
 }
 
-func MakeMongoRepository(database database.Driver) *mongoRepository {
-	db := database.GetDatabase().(*mongo.Database)
-	collection := db.Collection("sessions")
-	return &mongoRepository{database, collection}
+func MakeRepository(database database.Driver) *Repository {
+	collection := database.GetCollection("sessions").(*mongo.Collection)
+	return &Repository{database, collection}
 }
 
-func (r *mongoRepository) FindByID(sessionID string) (*models.Session, error) {
+func (r *Repository) FindByID(sessionID string) (*models.Session, error) {
 	if sessionID == "" {
 		return nil, errors.New("SessionID is empty string")
 	}
@@ -42,7 +41,7 @@ func (r *mongoRepository) FindByID(sessionID string) (*models.Session, error) {
 	return session, err
 }
 
-func (r *mongoRepository) UpdateByID(sessionID string, update interface{}) error {
+func (r *Repository) UpdateByID(sessionID string, update interface{}) error {
 	if sessionID == "" {
 		return errors.New("SessionID is empty string")
 	}
@@ -58,7 +57,7 @@ func (r *mongoRepository) UpdateByID(sessionID string, update interface{}) error
 	return err
 }
 
-func (r *mongoRepository) DeleteByID(sessionID string) error {
+func (r *Repository) DeleteByID(sessionID string) error {
 	if sessionID == "" {
 		return errors.New("SessionID is empty string")
 	}
@@ -74,7 +73,7 @@ func (r *mongoRepository) DeleteByID(sessionID string) error {
 	return err
 }
 
-func (r *mongoRepository) Find(filter interface{}) ([]models.Session, error) {
+func (r *Repository) Find(filter interface{}) ([]models.Session, error) {
 	result, err := r.collection.Find(context.Background(), filter)
 	defer result.Close(context.Background())
 
@@ -95,7 +94,7 @@ func (r *mongoRepository) Find(filter interface{}) ([]models.Session, error) {
 	return sessions, nil
 }
 
-func (r *mongoRepository) FindOne(filter interface{}) (*models.Session, error) {
+func (r *Repository) FindOne(filter interface{}) (*models.Session, error) {
 	result := r.collection.FindOne(context.Background(), filter)
 
 	session := &models.Session{}
@@ -105,25 +104,25 @@ func (r *mongoRepository) FindOne(filter interface{}) (*models.Session, error) {
 	return session, err
 }
 
-func (r *mongoRepository) UpdateMany(filter interface{}, update interface{}) ([]string, error) {
+func (r *Repository) UpdateMany(filter interface{}, update interface{}) ([]string, error) {
 	result, err := r.collection.UpdateMany(context.Background(), filter, update)
 
 	return result.UpsertedID.([]string), err
 }
 
-func (r *mongoRepository) DeleteMany(filter interface{}) (int64, error) {
+func (r *Repository) DeleteMany(filter interface{}) (int64, error) {
 	result, err := r.collection.DeleteMany(context.Background(), filter)
 
 	return result.DeletedCount, err
 }
 
-func (r *mongoRepository) InsertOne(document models.Session) (string, error) {
+func (r *Repository) InsertOne(document models.Session) (string, error) {
 	result, err := r.collection.InsertOne(context.Background(), document)
 
 	return result.InsertedID.(primitive.ObjectID).Hex(), err
 }
 
-func (r *mongoRepository) InsertMany(documents []models.Session) ([]string, error) {
+func (r *Repository) InsertMany(documents []models.Session) ([]string, error) {
 	var i []interface{}
 
 	for _, session := range documents {

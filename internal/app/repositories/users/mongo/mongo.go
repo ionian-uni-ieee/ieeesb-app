@@ -11,18 +11,18 @@ import (
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
-type mongoRepository struct {
+type Repository struct {
 	database   database.Driver
 	collection *mongo.Collection
 }
 
-func MakeMongoRepository(database database.Driver) *mongoRepository {
+func MakeRepository(database database.Driver) *Repository {
 	db := database.GetDatabase().(*mongo.Database)
 	collection := db.Collection("users")
-	return &mongoRepository{database, collection}
+	return &Repository{database, collection}
 }
 
-func (r *mongoRepository) FindByID(userID string) (*models.User, error) {
+func (r *Repository) FindByID(userID string) (*models.User, error) {
 	if userID == "" {
 		return nil, errors.New("UserID is empty string")
 	}
@@ -42,7 +42,7 @@ func (r *mongoRepository) FindByID(userID string) (*models.User, error) {
 	return user, err
 }
 
-func (r *mongoRepository) UpdateByID(userID string, update interface{}) error {
+func (r *Repository) UpdateByID(userID string, update interface{}) error {
 	if userID == "" {
 		return errors.New("UserID is empty string")
 	}
@@ -68,7 +68,7 @@ func (r *mongoRepository) UpdateByID(userID string, update interface{}) error {
 	return err
 }
 
-func (r *mongoRepository) DeleteByID(userID string) error {
+func (r *Repository) DeleteByID(userID string) error {
 	if userID == "" {
 		return errors.New("UserID is empty string")
 	}
@@ -90,7 +90,7 @@ func (r *mongoRepository) DeleteByID(userID string) error {
 	return err
 }
 
-func (r *mongoRepository) Find(filter interface{}) ([]models.User, error) {
+func (r *Repository) Find(filter interface{}) ([]models.User, error) {
 	result, err := r.collection.Find(context.Background(), filter)
 	defer result.Close(context.Background())
 
@@ -111,7 +111,7 @@ func (r *mongoRepository) Find(filter interface{}) ([]models.User, error) {
 	return users, nil
 }
 
-func (r *mongoRepository) FindOne(filter interface{}) (*models.User, error) {
+func (r *Repository) FindOne(filter interface{}) (*models.User, error) {
 	result := r.collection.FindOne(context.Background(), filter)
 
 	user := &models.User{}
@@ -121,25 +121,25 @@ func (r *mongoRepository) FindOne(filter interface{}) (*models.User, error) {
 	return user, err
 }
 
-func (r *mongoRepository) UpdateMany(filter interface{}, update interface{}) ([]string, error) {
+func (r *Repository) UpdateMany(filter interface{}, update interface{}) ([]string, error) {
 	result, err := r.collection.UpdateMany(context.Background(), filter, update)
 
 	return result.UpsertedID.([]string), err
 }
 
-func (r *mongoRepository) DeleteMany(filter interface{}) (int64, error) {
+func (r *Repository) DeleteMany(filter interface{}) (int64, error) {
 	result, err := r.collection.DeleteMany(context.Background(), filter)
 
 	return result.DeletedCount, err
 }
 
-func (r *mongoRepository) InsertOne(document models.User) (string, error) {
+func (r *Repository) InsertOne(document models.User) (string, error) {
 	result, err := r.collection.InsertOne(context.Background(), document)
 
 	return result.InsertedID.(primitive.ObjectID).Hex(), err
 }
 
-func (r *mongoRepository) InsertMany(documents []models.User) ([]string, error) {
+func (r *Repository) InsertMany(documents []models.User) ([]string, error) {
 	var i []interface{}
 
 	for _, user := range documents {
@@ -158,7 +158,7 @@ func (r *mongoRepository) InsertMany(documents []models.User) ([]string, error) 
 	return insertedIDs, err
 }
 
-func (r *mongoRepository) IsDuplicate(email string, username string, fullname string) bool {
+func (r *Repository) IsDuplicate(email string, username string, fullname string) bool {
 	sameKeysFilter := &bson.M{
 		"$or": bson.A{
 			bson.M{"email": email},

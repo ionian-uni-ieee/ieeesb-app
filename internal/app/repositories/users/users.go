@@ -2,6 +2,8 @@ package users
 
 import "github.com/ionian-uni-ieee/ieee-webapp/internal/app/models"
 
+// Repository interface contains all the necessary
+// functions for a user's repository
 type Repository interface {
 	FindByID(userID string) (*models.User, error)
 	UpdateByID(userID string, update interface{}) error
