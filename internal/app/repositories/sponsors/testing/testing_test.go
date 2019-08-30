@@ -53,18 +53,15 @@ func TestFindByID(t *testing.T) {
 
 	// Regular example
 	sponsor := models.Sponsor{
-		ID:          primitive.NewObjectID(),
-		Name:        "name",
-		Description: "desc",
-		Tags:        []string{"tag1"},
-		Type:        "seminar",
-		Sponsors:    []models.Sponsor{},
-		Logo:        models.MediaMeta{},
-		Media:       []models.MediaMeta{},
+		ID:     primitive.NewObjectID(),
+		Name:   "name",
+		Emails: []string{},
+		Phones: []string{},
+		Logo:   models.MediaMeta{},
 	}
 	setupData(sponsorsRepository, sponsor)
 
-	sponsorFound, err := sponsorsRepository.FindByID(event.ID.Hex())
+	sponsorFound, err := sponsorsRepository.FindByID(sponsor.ID.Hex())
 
 	if err != nil {
 		t.Error(err)
@@ -74,8 +71,8 @@ func TestFindByID(t *testing.T) {
 		t.Error("Expected result to be an sponsor object, got nil instead")
 	}
 
-	if sponsorFound != nil && sponsorFound.ID != event.ID {
-		t.Error("Expected sponsor's id to be", sponsor.ID.Hex(), "but is", eventFound.ID.Hex())
+	if sponsorFound != nil && sponsorFound.ID != sponsor.ID {
+		t.Error("Expected sponsor's id to be", sponsor.ID.Hex(), "but is", sponsorFound.ID.Hex())
 	}
 }
 
@@ -84,14 +81,11 @@ func TestUpdateByID(t *testing.T) {
 
 	// Regular example
 	sponsor := models.Sponsor{
-		ID:          primitive.NewObjectID(),
-		Name:        "name",
-		Description: "desc",
-		Tags:        []string{"tag1"},
-		Type:        "seminar",
-		Sponsors:    []models.Sponsor{},
-		Logo:        models.MediaMeta{},
-		Media:       []models.MediaMeta{},
+		ID:     primitive.NewObjectID(),
+		Name:   "name",
+		Emails: []string{},
+		Phones: []string{},
+		Logo:   models.MediaMeta{},
 	}
 	setupData(sponsorsRepository, sponsor)
 
@@ -113,14 +107,11 @@ func TestDeleteByID(t *testing.T) {
 
 	// Regular example
 	sponsor := models.Sponsor{
-		ID:          primitive.NewObjectID(),
-		Name:        "name",
-		Description: "desc",
-		Tags:        []string{"tag1"},
-		Type:        "seminar",
-		Sponsors:    []models.Sponsor{},
-		Logo:        models.MediaMeta{},
-		Media:       []models.MediaMeta{},
+		ID:     primitive.NewObjectID(),
+		Name:   "name",
+		Emails: []string{},
+		Phones: []string{},
+		Logo:   models.MediaMeta{},
 	}
 	setupData(sponsorsRepository, sponsor)
 
@@ -141,40 +132,31 @@ func TestFind(t *testing.T) {
 	// Regular example
 	sponsors := []models.Sponsor{
 		models.Sponsor{
-			ID:          primitive.NewObjectID(),
-			Name:        "name",
-			Description: "desc",
-			Tags:        []string{"tag1"},
-			Type:        "seminar",
-			Sponsors:    []models.Sponsor{},
-			Logo:        models.MediaMeta{},
-			Media:       []models.MediaMeta{},
+			ID:     primitive.NewObjectID(),
+			Name:   "name",
+			Emails: []string{},
+			Phones: []string{},
+			Logo:   models.MediaMeta{},
 		},
 		models.Sponsor{
-			ID:          primitive.NewObjectID(),
-			Name:        "name2",
-			Description: "desc3",
-			Tags:        []string{"tag2"},
-			Type:        "workshop",
-			Sponsors:    []models.Sponsor{},
-			Logo:        models.MediaMeta{},
-			Media:       []models.MediaMeta{},
+			ID:     primitive.NewObjectID(),
+			Name:   "name2",
+			Emails: []string{},
+			Phones: []string{},
+			Logo:   models.MediaMeta{},
 		},
 		models.Sponsor{
-			ID:          primitive.NewObjectID(),
-			Name:        "name3",
-			Description: "desc3",
-			Tags:        []string{"tag3"},
-			Type:        "workshop",
-			Sponsors:    []models.Sponsor{},
-			Logo:        models.MediaMeta{},
-			Media:       []models.MediaMeta{},
+			ID:     primitive.NewObjectID(),
+			Name:   "name2",
+			Emails: []string{},
+			Phones: []string{},
+			Logo:   models.MediaMeta{},
 		},
 	}
 	setupData(sponsorsRepository, sponsors...)
 
 	sponsorsFound, err := sponsorsRepository.Find(map[string]interface{}{
-		"Description": "desc3",
+		"Name": "name2",
 	})
 
 	if err != nil {
@@ -185,10 +167,10 @@ func TestFind(t *testing.T) {
 		t.Error("Expected len(sponsors) to be 2, instead got", len(sponsorsFound))
 	}
 
-	if sponsorsFound[0].Description != sponsorsFound[1].Description {
+	if sponsorsFound[0].Name != sponsorsFound[1].Name {
 		t.Error("Expected sponsors' description to equal to each other, instead got",
-			sponsorsFound[0].Description,
-			sponsorsFound[1].Description)
+			sponsorsFound[0].Name,
+			sponsorsFound[1].Name)
 	}
 }
 
@@ -198,48 +180,39 @@ func TestFindOne(t *testing.T) {
 	// Regular example
 	sponsors := []models.Sponsor{
 		models.Sponsor{
-			ID:          primitive.NewObjectID(),
-			Name:        "name",
-			Description: "desc",
-			Tags:        []string{"tag1"},
-			Type:        "seminar",
-			Sponsors:    []models.Sponsor{},
-			Logo:        models.MediaMeta{},
-			Media:       []models.MediaMeta{},
+			ID:     primitive.NewObjectID(),
+			Name:   "name2",
+			Emails: []string{},
+			Phones: []string{},
+			Logo:   models.MediaMeta{},
 		},
 		models.Sponsor{
-			ID:          primitive.NewObjectID(),
-			Name:        "name2",
-			Description: "desc3",
-			Tags:        []string{"tag2"},
-			Type:        "workshop",
-			Sponsors:    []models.Sponsor{},
-			Logo:        models.MediaMeta{},
-			Media:       []models.MediaMeta{},
+			ID:     primitive.NewObjectID(),
+			Name:   "name2",
+			Emails: []string{},
+			Phones: []string{},
+			Logo:   models.MediaMeta{},
 		},
 		models.Sponsor{
-			ID:          primitive.NewObjectID(),
-			Name:        "name3",
-			Description: "desc3",
-			Tags:        []string{"tag3"},
-			Type:        "workshop",
-			Sponsors:    []models.Sponsor{},
-			Logo:        models.MediaMeta{},
-			Media:       []models.MediaMeta{},
+			ID:     primitive.NewObjectID(),
+			Name:   "name3",
+			Emails: []string{},
+			Phones: []string{},
+			Logo:   models.MediaMeta{},
 		},
 	}
 	setupData(sponsorsRepository, sponsors...)
 
 	sponsorFound, err := sponsorsRepository.FindOne(map[string]interface{}{
-		"Description": "desc3",
+		"Name": "name2",
 	})
 
 	if err != nil {
 		t.Error(err)
 	}
 
-	if sponsorFound.Description != "desc3" {
-		t.Error("Expected sponsor description to equal 'desc3', instead got", sponsorFound.Description)
+	if sponsorFound.Name != "name2" {
+		t.Error("Expected sponsor description to equal 'desc3', instead got", sponsorFound.Name)
 	}
 }
 
@@ -249,34 +222,25 @@ func TestUpdateMany(t *testing.T) {
 	// Regular example
 	sponsors := []models.Sponsor{
 		models.Sponsor{
-			ID:          primitive.NewObjectID(),
-			Name:        "name",
-			Description: "desc",
-			Tags:        []string{"tag1"},
-			Type:        "seminar",
-			Sponsors:    []models.Sponsor{},
-			Logo:        models.MediaMeta{},
-			Media:       []models.MediaMeta{},
+			ID:     primitive.NewObjectID(),
+			Name:   "name1",
+			Emails: []string{},
+			Phones: []string{},
+			Logo:   models.MediaMeta{},
 		},
 		models.Sponsor{
-			ID:          primitive.NewObjectID(),
-			Name:        "name2",
-			Description: "desc3",
-			Tags:        []string{"tag2"},
-			Type:        "workshop",
-			Sponsors:    []models.Sponsor{},
-			Logo:        models.MediaMeta{},
-			Media:       []models.MediaMeta{},
+			ID:     primitive.NewObjectID(),
+			Name:   "name2",
+			Emails: []string{},
+			Phones: []string{},
+			Logo:   models.MediaMeta{},
 		},
 		models.Sponsor{
-			ID:          primitive.NewObjectID(),
-			Name:        "name3",
-			Description: "desc3",
-			Tags:        []string{"tag3"},
-			Type:        "workshop",
-			Sponsors:    []models.Sponsor{},
-			Logo:        models.MediaMeta{},
-			Media:       []models.MediaMeta{},
+			ID:     primitive.NewObjectID(),
+			Name:   "name3",
+			Emails: []string{},
+			Phones: []string{},
+			Logo:   models.MediaMeta{},
 		},
 	}
 	setupData(sponsorsRepository, sponsors...)
@@ -289,34 +253,25 @@ func TestDeleteMany(t *testing.T) {
 	// Regular example
 	sponsors := []models.Sponsor{
 		models.Sponsor{
-			ID:          primitive.NewObjectID(),
-			Name:        "name",
-			Description: "desc",
-			Tags:        []string{"tag1"},
-			Type:        "seminar",
-			Sponsors:    []models.Sponsor{},
-			Logo:        models.MediaMeta{},
-			Media:       []models.MediaMeta{},
+			ID:     primitive.NewObjectID(),
+			Name:   "name1",
+			Emails: []string{},
+			Phones: []string{},
+			Logo:   models.MediaMeta{},
 		},
 		models.Sponsor{
-			ID:          primitive.NewObjectID(),
-			Name:        "name2",
-			Description: "desc3",
-			Tags:        []string{"tag2"},
-			Type:        "workshop",
-			Sponsors:    []models.Sponsor{},
-			Logo:        models.MediaMeta{},
-			Media:       []models.MediaMeta{},
+			ID:     primitive.NewObjectID(),
+			Name:   "name2",
+			Emails: []string{},
+			Phones: []string{},
+			Logo:   models.MediaMeta{},
 		},
 		models.Sponsor{
-			ID:          primitive.NewObjectID(),
-			Name:        "name3",
-			Description: "desc3",
-			Tags:        []string{"tag3"},
-			Type:        "workshop",
-			Sponsors:    []models.Sponsor{},
-			Logo:        models.MediaMeta{},
-			Media:       []models.MediaMeta{},
+			ID:     primitive.NewObjectID(),
+			Name:   "name3",
+			Emails: []string{},
+			Phones: []string{},
+			Logo:   models.MediaMeta{},
 		},
 	}
 	setupData(sponsorsRepository, sponsors...)
@@ -329,15 +284,12 @@ func TestInsertOne(t *testing.T) {
 	// Regular example
 	resetCollection(sponsorsRepository)
 
-	newSponsor := models.Event{
-		ID:          primitive.NewObjectID(),
-		Name:        "name3",
-		Description: "desc3",
-		Tags:        []string{"tag3"},
-		Type:        "workshop",
-		Sponsors:    []models.Sponsor{},
-		Logo:        models.MediaMeta{},
-		Media:       []models.MediaMeta{},
+	newSponsor := models.Sponsor{
+		ID:     primitive.NewObjectID(),
+		Name:   "name3",
+		Emails: []string{},
+		Phones: []string{},
+		Logo:   models.MediaMeta{},
 	}
 	insertedID, err := sponsorsRepository.InsertOne(newSponsor)
 
@@ -356,26 +308,20 @@ func TestInsertMany(t *testing.T) {
 	// Regular example
 	resetCollection(sponsorsRepository)
 
-	newSponsors := []models.Event{
+	newSponsors := []models.Sponsor{
 		models.Sponsor{
-			ID:          primitive.NewObjectID(),
-			Name:        "name",
-			Description: "desc",
-			Tags:        []string{"tag1"},
-			Type:        "seminar",
-			Sponsors:    []models.Sponsor{},
-			Logo:        models.MediaMeta{},
-			Media:       []models.MediaMeta{},
+			ID:     primitive.NewObjectID(),
+			Name:   "name1",
+			Emails: []string{},
+			Phones: []string{},
+			Logo:   models.MediaMeta{},
 		},
 		models.Sponsor{
-			ID:          primitive.NewObjectID(),
-			Name:        "name2",
-			Description: "desc3",
-			Tags:        []string{"tag2"},
-			Type:        "workshop",
-			Sponsors:    []models.Sponsor{},
-			Logo:        models.MediaMeta{},
-			Media:       []models.MediaMeta{},
+			ID:     primitive.NewObjectID(),
+			Name:   "name2",
+			Emails: []string{},
+			Phones: []string{},
+			Logo:   models.MediaMeta{},
 		},
 	}
 
@@ -387,7 +333,7 @@ func TestInsertMany(t *testing.T) {
 
 	if insertedIDs[0] != newSponsors[0].ID.Hex() ||
 		insertedIDs[1] != newSponsors[1].ID.Hex() {
-		t.Error("Expected inserted ids to be ", newSponsors[0].ID.Hex(), newEvents[1].ID.Hex(), "but instead got", insertedIDs)
+		t.Error("Expected inserted ids to be ", newSponsors[0].ID.Hex(), newSponsors[1].ID.Hex(), "but instead got", insertedIDs)
 	}
 }
 
@@ -397,14 +343,11 @@ func TestIsDuplicate(t *testing.T) {
 	// Name is duplicate
 	sponsors := []models.Sponsor{
 		models.Sponsor{
-			ID:          primitive.NewObjectID(),
-			Name:        "name2",
-			Description: "desc3",
-			Tags:        []string{"tag2"},
-			Type:        "workshop",
-			Sponsors:    []models.Sponsor{},
-			Logo:        models.MediaMeta{},
-			Media:       []models.MediaMeta{},
+			ID:     primitive.NewObjectID(),
+			Name:   "name2",
+			Emails: []string{},
+			Phones: []string{},
+			Logo:   models.MediaMeta{},
 		},
 	}
 	setupData(sponsorsRepository, sponsors...)

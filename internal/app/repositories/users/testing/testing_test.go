@@ -54,17 +54,15 @@ func TestFindByID(t *testing.T) {
 	// Regular example
 	user := models.User{
 		ID:          primitive.NewObjectID(),
-		Name:        "name",
-		Description: "desc",
-		Tags:        []string{"tag1"},
-		Type:        "seminar",
-		Sponsors:    []models.Sponsor{},
-		Logo:        models.MediaMeta{},
-		Media:       []models.MediaMeta{},
+		Username:    "username",
+		Password:    "password",
+		Email:       "email",
+		Fullname:    "fullname",
+		Permissions: models.Permissions{},
 	}
 	setupData(usersRepository, user)
 
-	userFound, err := usersRepository.FindByID(event.ID.Hex())
+	userFound, err := usersRepository.FindByID(user.ID.Hex())
 
 	if err != nil {
 		t.Error(err)
@@ -74,8 +72,8 @@ func TestFindByID(t *testing.T) {
 		t.Error("Expected result to be an user object, got nil instead")
 	}
 
-	if userFound != nil && userFound.ID != event.ID {
-		t.Error("Expected user's id to be", user.ID.Hex(), "but is", eventFound.ID.Hex())
+	if userFound != nil && userFound.ID != user.ID {
+		t.Error("Expected user's id to be", user.ID.Hex(), "but is", userFound.ID.Hex())
 	}
 }
 
@@ -85,26 +83,24 @@ func TestUpdateByID(t *testing.T) {
 	// Regular example
 	user := models.User{
 		ID:          primitive.NewObjectID(),
-		Name:        "name",
-		Description: "desc",
-		Tags:        []string{"tag1"},
-		Type:        "seminar",
-		Sponsors:    []models.Sponsor{},
-		Logo:        models.MediaMeta{},
-		Media:       []models.MediaMeta{},
+		Username:    "username",
+		Password:    "password",
+		Email:       "email",
+		Fullname:    "fullname",
+		Permissions: models.Permissions{},
 	}
 	setupData(usersRepository, user)
 
 	err := usersRepository.UpdateByID(user.ID.Hex(), map[string]interface{}{
-		"Name": "new name",
+		"Username": "new username",
 	})
 
 	if err != nil {
 		t.Error(err)
 	}
 
-	if name := usersRepository.Collection.Columns["Name"][0]; name != "new name" {
-		t.Error("Expected user name to be 'new name', but instead got", name)
+	if username := usersRepository.Collection.Columns["Username"][0]; username != "new username" {
+		t.Error("Expected username to be 'new name', but instead got", username)
 	}
 }
 
@@ -114,13 +110,11 @@ func TestDeleteByID(t *testing.T) {
 	// Regular example
 	user := models.User{
 		ID:          primitive.NewObjectID(),
-		Name:        "name",
-		Description: "desc",
-		Tags:        []string{"tag1"},
-		Type:        "seminar",
-		Sponsors:    []models.Sponsor{},
-		Logo:        models.MediaMeta{},
-		Media:       []models.MediaMeta{},
+		Username:    "username",
+		Password:    "password",
+		Email:       "email",
+		Fullname:    "fullname",
+		Permissions: models.Permissions{},
 	}
 	setupData(usersRepository, user)
 
@@ -142,39 +136,33 @@ func TestFind(t *testing.T) {
 	users := []models.User{
 		models.User{
 			ID:          primitive.NewObjectID(),
-			Name:        "name",
-			Description: "desc",
-			Tags:        []string{"tag1"},
-			Type:        "seminar",
-			Sponsors:    []models.Sponsor{},
-			Logo:        models.MediaMeta{},
-			Media:       []models.MediaMeta{},
+			Username:    "username",
+			Password:    "password",
+			Email:       "email",
+			Fullname:    "fullname",
+			Permissions: models.Permissions{},
 		},
 		models.User{
 			ID:          primitive.NewObjectID(),
-			Name:        "name2",
-			Description: "desc3",
-			Tags:        []string{"tag2"},
-			Type:        "workshop",
-			Sponsors:    []models.Sponsor{},
-			Logo:        models.MediaMeta{},
-			Media:       []models.MediaMeta{},
+			Username:    "username2",
+			Password:    "password2",
+			Email:       "email2",
+			Fullname:    "fullname2",
+			Permissions: models.Permissions{},
 		},
 		models.User{
 			ID:          primitive.NewObjectID(),
-			Name:        "name3",
-			Description: "desc3",
-			Tags:        []string{"tag3"},
-			Type:        "workshop",
-			Sponsors:    []models.Sponsor{},
-			Logo:        models.MediaMeta{},
-			Media:       []models.MediaMeta{},
+			Username:    "username2",
+			Password:    "password3",
+			Email:       "email3",
+			Fullname:    "fullname3",
+			Permissions: models.Permissions{},
 		},
 	}
 	setupData(usersRepository, users...)
 
 	usersFound, err := usersRepository.Find(map[string]interface{}{
-		"Description": "desc3",
+		"Username": "username2",
 	})
 
 	if err != nil {
@@ -185,10 +173,10 @@ func TestFind(t *testing.T) {
 		t.Error("Expected len(users) to be 2, instead got", len(usersFound))
 	}
 
-	if usersFound[0].Description != usersFound[1].Description {
-		t.Error("Expected users' description to equal to each other, instead got",
-			usersFound[0].Description,
-			usersFound[1].Description)
+	if usersFound[0].Username != usersFound[1].Username {
+		t.Error("Expected username to equal to each other, instead got",
+			usersFound[0].Username,
+			usersFound[1].Username)
 	}
 }
 
@@ -199,47 +187,41 @@ func TestFindOne(t *testing.T) {
 	users := []models.User{
 		models.User{
 			ID:          primitive.NewObjectID(),
-			Name:        "name",
-			Description: "desc",
-			Tags:        []string{"tag1"},
-			Type:        "seminar",
-			Sponsors:    []models.Sponsor{},
-			Logo:        models.MediaMeta{},
-			Media:       []models.MediaMeta{},
+			Username:    "username",
+			Password:    "password",
+			Email:       "email",
+			Fullname:    "fullname",
+			Permissions: models.Permissions{},
 		},
 		models.User{
 			ID:          primitive.NewObjectID(),
-			Name:        "name2",
-			Description: "desc3",
-			Tags:        []string{"tag2"},
-			Type:        "workshop",
-			Sponsors:    []models.Sponsor{},
-			Logo:        models.MediaMeta{},
-			Media:       []models.MediaMeta{},
+			Username:    "username2",
+			Password:    "password2",
+			Email:       "email2",
+			Fullname:    "fullname2",
+			Permissions: models.Permissions{},
 		},
 		models.User{
 			ID:          primitive.NewObjectID(),
-			Name:        "name3",
-			Description: "desc3",
-			Tags:        []string{"tag3"},
-			Type:        "workshop",
-			Sponsors:    []models.Sponsor{},
-			Logo:        models.MediaMeta{},
-			Media:       []models.MediaMeta{},
+			Username:    "username3",
+			Password:    "password3",
+			Email:       "email3",
+			Fullname:    "fullname3",
+			Permissions: models.Permissions{},
 		},
 	}
 	setupData(usersRepository, users...)
 
 	userFound, err := usersRepository.FindOne(map[string]interface{}{
-		"Description": "desc3",
+		"Username": "username2",
 	})
 
 	if err != nil {
 		t.Error(err)
 	}
 
-	if userFound.Description != "desc3" {
-		t.Error("Expected user description to equal 'desc3', instead got", userFound.Description)
+	if userFound.Username != "username2" {
+		t.Error("Expected username to equal 'username2', instead got", userFound.Username)
 	}
 }
 
@@ -250,33 +232,27 @@ func TestUpdateMany(t *testing.T) {
 	users := []models.User{
 		models.User{
 			ID:          primitive.NewObjectID(),
-			Name:        "name",
-			Description: "desc",
-			Tags:        []string{"tag1"},
-			Type:        "seminar",
-			Sponsors:    []models.Sponsor{},
-			Logo:        models.MediaMeta{},
-			Media:       []models.MediaMeta{},
+			Username:    "username",
+			Password:    "password",
+			Email:       "email",
+			Fullname:    "fullname",
+			Permissions: models.Permissions{},
 		},
 		models.User{
 			ID:          primitive.NewObjectID(),
-			Name:        "name2",
-			Description: "desc3",
-			Tags:        []string{"tag2"},
-			Type:        "workshop",
-			Sponsors:    []models.Sponsor{},
-			Logo:        models.MediaMeta{},
-			Media:       []models.MediaMeta{},
+			Username:    "username2",
+			Password:    "password2",
+			Email:       "email2",
+			Fullname:    "fullname2",
+			Permissions: models.Permissions{},
 		},
 		models.User{
 			ID:          primitive.NewObjectID(),
-			Name:        "name3",
-			Description: "desc3",
-			Tags:        []string{"tag3"},
-			Type:        "workshop",
-			Sponsors:    []models.Sponsor{},
-			Logo:        models.MediaMeta{},
-			Media:       []models.MediaMeta{},
+			Username:    "username3",
+			Password:    "password3",
+			Email:       "email3",
+			Fullname:    "fullname3",
+			Permissions: models.Permissions{},
 		},
 	}
 	setupData(usersRepository, users...)
@@ -290,33 +266,27 @@ func TestDeleteMany(t *testing.T) {
 	users := []models.User{
 		models.User{
 			ID:          primitive.NewObjectID(),
-			Name:        "name",
-			Description: "desc",
-			Tags:        []string{"tag1"},
-			Type:        "seminar",
-			Sponsors:    []models.Sponsor{},
-			Logo:        models.MediaMeta{},
-			Media:       []models.MediaMeta{},
+			Username:    "username",
+			Password:    "password",
+			Email:       "email",
+			Fullname:    "fullname",
+			Permissions: models.Permissions{},
 		},
 		models.User{
 			ID:          primitive.NewObjectID(),
-			Name:        "name2",
-			Description: "desc3",
-			Tags:        []string{"tag2"},
-			Type:        "workshop",
-			Sponsors:    []models.Sponsor{},
-			Logo:        models.MediaMeta{},
-			Media:       []models.MediaMeta{},
+			Username:    "username2",
+			Password:    "password2",
+			Email:       "email2",
+			Fullname:    "fullname2",
+			Permissions: models.Permissions{},
 		},
 		models.User{
 			ID:          primitive.NewObjectID(),
-			Name:        "name3",
-			Description: "desc3",
-			Tags:        []string{"tag3"},
-			Type:        "workshop",
-			Sponsors:    []models.Sponsor{},
-			Logo:        models.MediaMeta{},
-			Media:       []models.MediaMeta{},
+			Username:    "username3",
+			Password:    "password3",
+			Email:       "email3",
+			Fullname:    "fullname3",
+			Permissions: models.Permissions{},
 		},
 	}
 	setupData(usersRepository, users...)
@@ -329,15 +299,13 @@ func TestInsertOne(t *testing.T) {
 	// Regular example
 	resetCollection(usersRepository)
 
-	newUser := models.Event{
+	newUser := models.User{
 		ID:          primitive.NewObjectID(),
-		Name:        "name3",
-		Description: "desc3",
-		Tags:        []string{"tag3"},
-		Type:        "workshop",
-		Sponsors:    []models.Sponsor{},
-		Logo:        models.MediaMeta{},
-		Media:       []models.MediaMeta{},
+		Username:    "username",
+		Password:    "password",
+		Email:       "email",
+		Fullname:    "fullname",
+		Permissions: models.Permissions{},
 	}
 	insertedID, err := usersRepository.InsertOne(newUser)
 
@@ -356,26 +324,22 @@ func TestInsertMany(t *testing.T) {
 	// Regular example
 	resetCollection(usersRepository)
 
-	newUsers := []models.Event{
+	newUsers := []models.User{
 		models.User{
 			ID:          primitive.NewObjectID(),
-			Name:        "name",
-			Description: "desc",
-			Tags:        []string{"tag1"},
-			Type:        "seminar",
-			Sponsors:    []models.Sponsor{},
-			Logo:        models.MediaMeta{},
-			Media:       []models.MediaMeta{},
+			Username:    "username",
+			Password:    "password",
+			Email:       "email",
+			Fullname:    "fullname",
+			Permissions: models.Permissions{},
 		},
 		models.User{
 			ID:          primitive.NewObjectID(),
-			Name:        "name2",
-			Description: "desc3",
-			Tags:        []string{"tag2"},
-			Type:        "workshop",
-			Sponsors:    []models.Sponsor{},
-			Logo:        models.MediaMeta{},
-			Media:       []models.MediaMeta{},
+			Username:    "username2",
+			Password:    "password2",
+			Email:       "email2",
+			Fullname:    "fullname2",
+			Permissions: models.Permissions{},
 		},
 	}
 
@@ -387,7 +351,7 @@ func TestInsertMany(t *testing.T) {
 
 	if insertedIDs[0] != newUsers[0].ID.Hex() ||
 		insertedIDs[1] != newUsers[1].ID.Hex() {
-		t.Error("Expected inserted ids to be ", newUsers[0].ID.Hex(), newEvents[1].ID.Hex(), "but instead got", insertedIDs)
+		t.Error("Expected inserted ids to be ", newUsers[0].ID.Hex(), newUsers[1].ID.Hex(), "but instead got", insertedIDs)
 	}
 }
 
@@ -398,18 +362,16 @@ func TestIsDuplicate(t *testing.T) {
 	users := []models.User{
 		models.User{
 			ID:          primitive.NewObjectID(),
-			Name:        "name2",
-			Description: "desc3",
-			Tags:        []string{"tag2"},
-			Type:        "workshop",
-			Sponsors:    []models.Sponsor{},
-			Logo:        models.MediaMeta{},
-			Media:       []models.MediaMeta{},
+			Username:    "username2",
+			Password:    "password2",
+			Email:       "email2",
+			Fullname:    "fullname2",
+			Permissions: models.Permissions{},
 		},
 	}
 	setupData(usersRepository, users...)
 
-	isDuplicate := usersRepository.IsDuplicate("name2")
+	isDuplicate := usersRepository.IsDuplicate("email2", "username2", "fullname2")
 
 	if !isDuplicate {
 		t.Error("Expected name to be duplicate")

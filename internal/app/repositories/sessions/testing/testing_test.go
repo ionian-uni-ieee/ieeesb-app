@@ -53,18 +53,13 @@ func TestFindByID(t *testing.T) {
 
 	// Regular example
 	session := models.Session{
-		ID:          primitive.NewObjectID(),
-		Name:        "name",
-		Description: "desc",
-		Tags:        []string{"tag1"},
-		Type:        "seminar",
-		Sponsors:    []models.Sponsor{},
-		Logo:        models.MediaMeta{},
-		Media:       []models.MediaMeta{},
+		ID:       primitive.NewObjectID(),
+		Username: "bugs",
+		Expires:  1,
 	}
 	setupData(sessionsRepository, session)
 
-	sessionFound, err := sessionsRepository.FindByID(event.ID.Hex())
+	sessionFound, err := sessionsRepository.FindByID(session.ID.Hex())
 
 	if err != nil {
 		t.Error(err)
@@ -74,8 +69,8 @@ func TestFindByID(t *testing.T) {
 		t.Error("Expected result to be an session object, got nil instead")
 	}
 
-	if sessionFound != nil && sessionFound.ID != event.ID {
-		t.Error("Expected session's id to be", session.ID.Hex(), "but is", eventFound.ID.Hex())
+	if sessionFound != nil && sessionFound.ID != session.ID {
+		t.Error("Expected session's id to be", session.ID.Hex(), "but is", sessionFound.ID.Hex())
 	}
 }
 
@@ -84,27 +79,22 @@ func TestUpdateByID(t *testing.T) {
 
 	// Regular example
 	session := models.Session{
-		ID:          primitive.NewObjectID(),
-		Name:        "name",
-		Description: "desc",
-		Tags:        []string{"tag1"},
-		Type:        "seminar",
-		Sponsors:    []models.Sponsor{},
-		Logo:        models.MediaMeta{},
-		Media:       []models.MediaMeta{},
+		ID:       primitive.NewObjectID(),
+		Username: "bugs",
+		Expires:  1,
 	}
 	setupData(sessionsRepository, session)
 
 	err := sessionsRepository.UpdateByID(session.ID.Hex(), map[string]interface{}{
-		"Name": "new name",
+		"Username": "not bugs",
 	})
 
 	if err != nil {
 		t.Error(err)
 	}
 
-	if name := sessionsRepository.Collection.Columns["Name"][0]; name != "new name" {
-		t.Error("Expected session name to be 'new name', but instead got", name)
+	if name := sessionsRepository.Collection.Columns["Username"][0]; name != "not bugs" {
+		t.Error("Expected username to be 'not bugs', but instead got", name)
 	}
 }
 
@@ -113,14 +103,9 @@ func TestDeleteByID(t *testing.T) {
 
 	// Regular example
 	session := models.Session{
-		ID:          primitive.NewObjectID(),
-		Name:        "name",
-		Description: "desc",
-		Tags:        []string{"tag1"},
-		Type:        "seminar",
-		Sponsors:    []models.Sponsor{},
-		Logo:        models.MediaMeta{},
-		Media:       []models.MediaMeta{},
+		ID:       primitive.NewObjectID(),
+		Username: "bugs",
+		Expires:  1,
 	}
 	setupData(sessionsRepository, session)
 
@@ -141,40 +126,25 @@ func TestFind(t *testing.T) {
 	// Regular example
 	sessions := []models.Session{
 		models.Session{
-			ID:          primitive.NewObjectID(),
-			Name:        "name",
-			Description: "desc",
-			Tags:        []string{"tag1"},
-			Type:        "seminar",
-			Sponsors:    []models.Sponsor{},
-			Logo:        models.MediaMeta{},
-			Media:       []models.MediaMeta{},
+			ID:       primitive.NewObjectID(),
+			Username: "bugs",
+			Expires:  1,
 		},
 		models.Session{
-			ID:          primitive.NewObjectID(),
-			Name:        "name2",
-			Description: "desc3",
-			Tags:        []string{"tag2"},
-			Type:        "workshop",
-			Sponsors:    []models.Sponsor{},
-			Logo:        models.MediaMeta{},
-			Media:       []models.MediaMeta{},
+			ID:       primitive.NewObjectID(),
+			Username: "jake",
+			Expires:  2,
 		},
 		models.Session{
-			ID:          primitive.NewObjectID(),
-			Name:        "name3",
-			Description: "desc3",
-			Tags:        []string{"tag3"},
-			Type:        "workshop",
-			Sponsors:    []models.Sponsor{},
-			Logo:        models.MediaMeta{},
-			Media:       []models.MediaMeta{},
+			ID:       primitive.NewObjectID(),
+			Username: "jake",
+			Expires:  3,
 		},
 	}
 	setupData(sessionsRepository, sessions...)
 
 	sessionsFound, err := sessionsRepository.Find(map[string]interface{}{
-		"Description": "desc3",
+		"Username": "jake",
 	})
 
 	if err != nil {
@@ -185,10 +155,10 @@ func TestFind(t *testing.T) {
 		t.Error("Expected len(sessions) to be 2, instead got", len(sessionsFound))
 	}
 
-	if sessionsFound[0].Description != sessionsFound[1].Description {
-		t.Error("Expected sessions' description to equal to each other, instead got",
-			sessionsFound[0].Description,
-			sessionsFound[1].Description)
+	if sessionsFound[0].Username != sessionsFound[1].Username {
+		t.Error("Expected username to equal to each other, instead got",
+			sessionsFound[0].Username,
+			sessionsFound[1].Username)
 	}
 }
 
@@ -198,48 +168,33 @@ func TestFindOne(t *testing.T) {
 	// Regular example
 	sessions := []models.Session{
 		models.Session{
-			ID:          primitive.NewObjectID(),
-			Name:        "name",
-			Description: "desc",
-			Tags:        []string{"tag1"},
-			Type:        "seminar",
-			Sponsors:    []models.Sponsor{},
-			Logo:        models.MediaMeta{},
-			Media:       []models.MediaMeta{},
+			ID:       primitive.NewObjectID(),
+			Username: "username",
+			Expires:  1,
 		},
 		models.Session{
-			ID:          primitive.NewObjectID(),
-			Name:        "name2",
-			Description: "desc3",
-			Tags:        []string{"tag2"},
-			Type:        "workshop",
-			Sponsors:    []models.Sponsor{},
-			Logo:        models.MediaMeta{},
-			Media:       []models.MediaMeta{},
+			ID:       primitive.NewObjectID(),
+			Username: "username2",
+			Expires:  2,
 		},
 		models.Session{
-			ID:          primitive.NewObjectID(),
-			Name:        "name3",
-			Description: "desc3",
-			Tags:        []string{"tag3"},
-			Type:        "workshop",
-			Sponsors:    []models.Sponsor{},
-			Logo:        models.MediaMeta{},
-			Media:       []models.MediaMeta{},
+			ID:       primitive.NewObjectID(),
+			Username: "jake",
+			Expires:  3,
 		},
 	}
 	setupData(sessionsRepository, sessions...)
 
 	sessionFound, err := sessionsRepository.FindOne(map[string]interface{}{
-		"Description": "desc3",
+		"Username": "jake",
 	})
 
 	if err != nil {
 		t.Error(err)
 	}
 
-	if sessionFound.Description != "desc3" {
-		t.Error("Expected session description to equal 'desc3', instead got", sessionFound.Description)
+	if sessionFound.Username != "jake" {
+		t.Error("Expected session description to equal 'desc3', instead got", sessionFound.Username)
 	}
 }
 
@@ -249,34 +204,19 @@ func TestUpdateMany(t *testing.T) {
 	// Regular example
 	sessions := []models.Session{
 		models.Session{
-			ID:          primitive.NewObjectID(),
-			Name:        "name",
-			Description: "desc",
-			Tags:        []string{"tag1"},
-			Type:        "seminar",
-			Sponsors:    []models.Sponsor{},
-			Logo:        models.MediaMeta{},
-			Media:       []models.MediaMeta{},
+			ID:       primitive.NewObjectID(),
+			Username: "bugs",
+			Expires:  1,
 		},
 		models.Session{
-			ID:          primitive.NewObjectID(),
-			Name:        "name2",
-			Description: "desc3",
-			Tags:        []string{"tag2"},
-			Type:        "workshop",
-			Sponsors:    []models.Sponsor{},
-			Logo:        models.MediaMeta{},
-			Media:       []models.MediaMeta{},
+			ID:       primitive.NewObjectID(),
+			Username: "jake",
+			Expires:  2,
 		},
 		models.Session{
-			ID:          primitive.NewObjectID(),
-			Name:        "name3",
-			Description: "desc3",
-			Tags:        []string{"tag3"},
-			Type:        "workshop",
-			Sponsors:    []models.Sponsor{},
-			Logo:        models.MediaMeta{},
-			Media:       []models.MediaMeta{},
+			ID:       primitive.NewObjectID(),
+			Username: "jake",
+			Expires:  3,
 		},
 	}
 	setupData(sessionsRepository, sessions...)
@@ -289,34 +229,19 @@ func TestDeleteMany(t *testing.T) {
 	// Regular example
 	sessions := []models.Session{
 		models.Session{
-			ID:          primitive.NewObjectID(),
-			Name:        "name",
-			Description: "desc",
-			Tags:        []string{"tag1"},
-			Type:        "seminar",
-			Sponsors:    []models.Sponsor{},
-			Logo:        models.MediaMeta{},
-			Media:       []models.MediaMeta{},
+			ID:       primitive.NewObjectID(),
+			Username: "bugs",
+			Expires:  1,
 		},
 		models.Session{
-			ID:          primitive.NewObjectID(),
-			Name:        "name2",
-			Description: "desc3",
-			Tags:        []string{"tag2"},
-			Type:        "workshop",
-			Sponsors:    []models.Sponsor{},
-			Logo:        models.MediaMeta{},
-			Media:       []models.MediaMeta{},
+			ID:       primitive.NewObjectID(),
+			Username: "jake",
+			Expires:  2,
 		},
 		models.Session{
-			ID:          primitive.NewObjectID(),
-			Name:        "name3",
-			Description: "desc3",
-			Tags:        []string{"tag3"},
-			Type:        "workshop",
-			Sponsors:    []models.Sponsor{},
-			Logo:        models.MediaMeta{},
-			Media:       []models.MediaMeta{},
+			ID:       primitive.NewObjectID(),
+			Username: "jake",
+			Expires:  3,
 		},
 	}
 	setupData(sessionsRepository, sessions...)
@@ -329,15 +254,10 @@ func TestInsertOne(t *testing.T) {
 	// Regular example
 	resetCollection(sessionsRepository)
 
-	newSession := models.Event{
-		ID:          primitive.NewObjectID(),
-		Name:        "name3",
-		Description: "desc3",
-		Tags:        []string{"tag3"},
-		Type:        "workshop",
-		Sponsors:    []models.Sponsor{},
-		Logo:        models.MediaMeta{},
-		Media:       []models.MediaMeta{},
+	newSession := models.Session{
+		ID:       primitive.NewObjectID(),
+		Username: "jake",
+		Expires:  1,
 	}
 	insertedID, err := sessionsRepository.InsertOne(newSession)
 
@@ -356,26 +276,16 @@ func TestInsertMany(t *testing.T) {
 	// Regular example
 	resetCollection(sessionsRepository)
 
-	newSessions := []models.Event{
+	newSessions := []models.Session{
 		models.Session{
-			ID:          primitive.NewObjectID(),
-			Name:        "name",
-			Description: "desc",
-			Tags:        []string{"tag1"},
-			Type:        "seminar",
-			Sponsors:    []models.Sponsor{},
-			Logo:        models.MediaMeta{},
-			Media:       []models.MediaMeta{},
+			ID:       primitive.NewObjectID(),
+			Username: "jake",
+			Expires:  1,
 		},
 		models.Session{
-			ID:          primitive.NewObjectID(),
-			Name:        "name2",
-			Description: "desc3",
-			Tags:        []string{"tag2"},
-			Type:        "workshop",
-			Sponsors:    []models.Sponsor{},
-			Logo:        models.MediaMeta{},
-			Media:       []models.MediaMeta{},
+			ID:       primitive.NewObjectID(),
+			Username: "bugs",
+			Expires:  2,
 		},
 	}
 
@@ -387,7 +297,7 @@ func TestInsertMany(t *testing.T) {
 
 	if insertedIDs[0] != newSessions[0].ID.Hex() ||
 		insertedIDs[1] != newSessions[1].ID.Hex() {
-		t.Error("Expected inserted ids to be ", newSessions[0].ID.Hex(), newEvents[1].ID.Hex(), "but instead got", insertedIDs)
+		t.Error("Expected inserted ids to be ", newSessions[0].ID.Hex(), newSessions[1].ID.Hex(), "but instead got", insertedIDs)
 	}
 }
 
@@ -397,19 +307,14 @@ func TestIsDuplicate(t *testing.T) {
 	// Name is duplicate
 	sessions := []models.Session{
 		models.Session{
-			ID:          primitive.NewObjectID(),
-			Name:        "name2",
-			Description: "desc3",
-			Tags:        []string{"tag2"},
-			Type:        "workshop",
-			Sponsors:    []models.Sponsor{},
-			Logo:        models.MediaMeta{},
-			Media:       []models.MediaMeta{},
+			ID:       primitive.NewObjectID(),
+			Username: "bugs",
+			Expires:  2,
 		},
 	}
 	setupData(sessionsRepository, sessions...)
 
-	isDuplicate := sessionsRepository.IsDuplicate("name2")
+	isDuplicate := sessionsRepository.IsDuplicate("bugs")
 
 	if !isDuplicate {
 		t.Error("Expected name to be duplicate")

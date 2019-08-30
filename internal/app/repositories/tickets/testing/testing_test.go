@@ -53,18 +53,15 @@ func TestFindByID(t *testing.T) {
 
 	// Regular example
 	ticket := models.Ticket{
-		ID:          primitive.NewObjectID(),
-		Name:        "name",
-		Description: "desc",
-		Tags:        []string{"tag1"},
-		Type:        "seminar",
-		Sponsors:    []models.Sponsor{},
-		Logo:        models.MediaMeta{},
-		Media:       []models.MediaMeta{},
+		ID:       primitive.NewObjectID(),
+		Email:    "email",
+		Fullname: "fullname",
+		Message:  "message",
+		State:    "active",
 	}
 	setupData(ticketsRepository, ticket)
 
-	ticketFound, err := ticketsRepository.FindByID(event.ID.Hex())
+	ticketFound, err := ticketsRepository.FindByID(ticket.ID.Hex())
 
 	if err != nil {
 		t.Error(err)
@@ -74,8 +71,8 @@ func TestFindByID(t *testing.T) {
 		t.Error("Expected result to be an ticket object, got nil instead")
 	}
 
-	if ticketFound != nil && ticketFound.ID != event.ID {
-		t.Error("Expected ticket's id to be", ticket.ID.Hex(), "but is", eventFound.ID.Hex())
+	if ticketFound != nil && ticketFound.ID != ticket.ID {
+		t.Error("Expected ticket's id to be", ticket.ID.Hex(), "but is", ticketFound.ID.Hex())
 	}
 }
 
@@ -84,27 +81,24 @@ func TestUpdateByID(t *testing.T) {
 
 	// Regular example
 	ticket := models.Ticket{
-		ID:          primitive.NewObjectID(),
-		Name:        "name",
-		Description: "desc",
-		Tags:        []string{"tag1"},
-		Type:        "seminar",
-		Sponsors:    []models.Sponsor{},
-		Logo:        models.MediaMeta{},
-		Media:       []models.MediaMeta{},
+		ID:       primitive.NewObjectID(),
+		Email:    "email",
+		Fullname: "fullname",
+		Message:  "message",
+		State:    "active",
 	}
 	setupData(ticketsRepository, ticket)
 
 	err := ticketsRepository.UpdateByID(ticket.ID.Hex(), map[string]interface{}{
-		"Name": "new name",
+		"Fullname": "new name",
 	})
 
 	if err != nil {
 		t.Error(err)
 	}
 
-	if name := ticketsRepository.Collection.Columns["Name"][0]; name != "new name" {
-		t.Error("Expected ticket name to be 'new name', but instead got", name)
+	if name := ticketsRepository.Collection.Columns["Fullname"][0]; name != "new name" {
+		t.Error("Expected fullname to be 'new name', but instead got", name)
 	}
 }
 
@@ -113,14 +107,11 @@ func TestDeleteByID(t *testing.T) {
 
 	// Regular example
 	ticket := models.Ticket{
-		ID:          primitive.NewObjectID(),
-		Name:        "name",
-		Description: "desc",
-		Tags:        []string{"tag1"},
-		Type:        "seminar",
-		Sponsors:    []models.Sponsor{},
-		Logo:        models.MediaMeta{},
-		Media:       []models.MediaMeta{},
+		ID:       primitive.NewObjectID(),
+		Email:    "email",
+		Fullname: "fullname",
+		Message:  "message",
+		State:    "active",
 	}
 	setupData(ticketsRepository, ticket)
 
@@ -141,40 +132,31 @@ func TestFind(t *testing.T) {
 	// Regular example
 	tickets := []models.Ticket{
 		models.Ticket{
-			ID:          primitive.NewObjectID(),
-			Name:        "name",
-			Description: "desc",
-			Tags:        []string{"tag1"},
-			Type:        "seminar",
-			Sponsors:    []models.Sponsor{},
-			Logo:        models.MediaMeta{},
-			Media:       []models.MediaMeta{},
+			ID:       primitive.NewObjectID(),
+			Email:    "email",
+			Fullname: "fullname",
+			Message:  "message",
+			State:    "active",
 		},
 		models.Ticket{
-			ID:          primitive.NewObjectID(),
-			Name:        "name2",
-			Description: "desc3",
-			Tags:        []string{"tag2"},
-			Type:        "workshop",
-			Sponsors:    []models.Sponsor{},
-			Logo:        models.MediaMeta{},
-			Media:       []models.MediaMeta{},
+			ID:       primitive.NewObjectID(),
+			Email:    "email2",
+			Fullname: "fullname2",
+			Message:  "message2",
+			State:    "active",
 		},
 		models.Ticket{
-			ID:          primitive.NewObjectID(),
-			Name:        "name3",
-			Description: "desc3",
-			Tags:        []string{"tag3"},
-			Type:        "workshop",
-			Sponsors:    []models.Sponsor{},
-			Logo:        models.MediaMeta{},
-			Media:       []models.MediaMeta{},
+			ID:       primitive.NewObjectID(),
+			Email:    "email2",
+			Fullname: "fullname3",
+			Message:  "message3",
+			State:    "active",
 		},
 	}
 	setupData(ticketsRepository, tickets...)
 
 	ticketsFound, err := ticketsRepository.Find(map[string]interface{}{
-		"Description": "desc3",
+		"Email": "email2",
 	})
 
 	if err != nil {
@@ -185,10 +167,10 @@ func TestFind(t *testing.T) {
 		t.Error("Expected len(tickets) to be 2, instead got", len(ticketsFound))
 	}
 
-	if ticketsFound[0].Description != ticketsFound[1].Description {
-		t.Error("Expected tickets' description to equal to each other, instead got",
-			ticketsFound[0].Description,
-			ticketsFound[1].Description)
+	if ticketsFound[0].Email != ticketsFound[1].Email {
+		t.Error("Expected email to equal to each other, instead got",
+			ticketsFound[0].Email,
+			ticketsFound[1].Email)
 	}
 }
 
@@ -198,48 +180,39 @@ func TestFindOne(t *testing.T) {
 	// Regular example
 	tickets := []models.Ticket{
 		models.Ticket{
-			ID:          primitive.NewObjectID(),
-			Name:        "name",
-			Description: "desc",
-			Tags:        []string{"tag1"},
-			Type:        "seminar",
-			Sponsors:    []models.Sponsor{},
-			Logo:        models.MediaMeta{},
-			Media:       []models.MediaMeta{},
+			ID:       primitive.NewObjectID(),
+			Email:    "email",
+			Fullname: "fullname",
+			Message:  "message",
+			State:    "active",
 		},
 		models.Ticket{
-			ID:          primitive.NewObjectID(),
-			Name:        "name2",
-			Description: "desc3",
-			Tags:        []string{"tag2"},
-			Type:        "workshop",
-			Sponsors:    []models.Sponsor{},
-			Logo:        models.MediaMeta{},
-			Media:       []models.MediaMeta{},
+			ID:       primitive.NewObjectID(),
+			Email:    "email2",
+			Fullname: "fullname2",
+			Message:  "message2",
+			State:    "active",
 		},
 		models.Ticket{
-			ID:          primitive.NewObjectID(),
-			Name:        "name3",
-			Description: "desc3",
-			Tags:        []string{"tag3"},
-			Type:        "workshop",
-			Sponsors:    []models.Sponsor{},
-			Logo:        models.MediaMeta{},
-			Media:       []models.MediaMeta{},
+			ID:       primitive.NewObjectID(),
+			Email:    "email3",
+			Fullname: "fullname3",
+			Message:  "message3",
+			State:    "active",
 		},
 	}
 	setupData(ticketsRepository, tickets...)
 
 	ticketFound, err := ticketsRepository.FindOne(map[string]interface{}{
-		"Description": "desc3",
+		"Email": "email2",
 	})
 
 	if err != nil {
 		t.Error(err)
 	}
 
-	if ticketFound.Description != "desc3" {
-		t.Error("Expected ticket description to equal 'desc3', instead got", ticketFound.Description)
+	if ticketFound.Email != "email2" {
+		t.Error("Expected ticket email to equal 'email2', instead got", ticketFound.Email)
 	}
 }
 
@@ -249,34 +222,25 @@ func TestUpdateMany(t *testing.T) {
 	// Regular example
 	tickets := []models.Ticket{
 		models.Ticket{
-			ID:          primitive.NewObjectID(),
-			Name:        "name",
-			Description: "desc",
-			Tags:        []string{"tag1"},
-			Type:        "seminar",
-			Sponsors:    []models.Sponsor{},
-			Logo:        models.MediaMeta{},
-			Media:       []models.MediaMeta{},
+			ID:       primitive.NewObjectID(),
+			Email:    "email",
+			Fullname: "fullname",
+			Message:  "message",
+			State:    "active",
 		},
 		models.Ticket{
-			ID:          primitive.NewObjectID(),
-			Name:        "name2",
-			Description: "desc3",
-			Tags:        []string{"tag2"},
-			Type:        "workshop",
-			Sponsors:    []models.Sponsor{},
-			Logo:        models.MediaMeta{},
-			Media:       []models.MediaMeta{},
+			ID:       primitive.NewObjectID(),
+			Email:    "email2",
+			Fullname: "fullname2",
+			Message:  "message2",
+			State:    "active",
 		},
 		models.Ticket{
-			ID:          primitive.NewObjectID(),
-			Name:        "name3",
-			Description: "desc3",
-			Tags:        []string{"tag3"},
-			Type:        "workshop",
-			Sponsors:    []models.Sponsor{},
-			Logo:        models.MediaMeta{},
-			Media:       []models.MediaMeta{},
+			ID:       primitive.NewObjectID(),
+			Email:    "email3",
+			Fullname: "fullname3",
+			Message:  "message3",
+			State:    "active",
 		},
 	}
 	setupData(ticketsRepository, tickets...)
@@ -289,34 +253,25 @@ func TestDeleteMany(t *testing.T) {
 	// Regular example
 	tickets := []models.Ticket{
 		models.Ticket{
-			ID:          primitive.NewObjectID(),
-			Name:        "name",
-			Description: "desc",
-			Tags:        []string{"tag1"},
-			Type:        "seminar",
-			Sponsors:    []models.Sponsor{},
-			Logo:        models.MediaMeta{},
-			Media:       []models.MediaMeta{},
+			ID:       primitive.NewObjectID(),
+			Email:    "email",
+			Fullname: "fullname",
+			Message:  "message",
+			State:    "active",
 		},
 		models.Ticket{
-			ID:          primitive.NewObjectID(),
-			Name:        "name2",
-			Description: "desc3",
-			Tags:        []string{"tag2"},
-			Type:        "workshop",
-			Sponsors:    []models.Sponsor{},
-			Logo:        models.MediaMeta{},
-			Media:       []models.MediaMeta{},
+			ID:       primitive.NewObjectID(),
+			Email:    "email2",
+			Fullname: "fullname2",
+			Message:  "message2",
+			State:    "active",
 		},
 		models.Ticket{
-			ID:          primitive.NewObjectID(),
-			Name:        "name3",
-			Description: "desc3",
-			Tags:        []string{"tag3"},
-			Type:        "workshop",
-			Sponsors:    []models.Sponsor{},
-			Logo:        models.MediaMeta{},
-			Media:       []models.MediaMeta{},
+			ID:       primitive.NewObjectID(),
+			Email:    "email3",
+			Fullname: "fullname3",
+			Message:  "message3",
+			State:    "active",
 		},
 	}
 	setupData(ticketsRepository, tickets...)
@@ -329,15 +284,12 @@ func TestInsertOne(t *testing.T) {
 	// Regular example
 	resetCollection(ticketsRepository)
 
-	newTicket := models.Event{
-		ID:          primitive.NewObjectID(),
-		Name:        "name3",
-		Description: "desc3",
-		Tags:        []string{"tag3"},
-		Type:        "workshop",
-		Sponsors:    []models.Sponsor{},
-		Logo:        models.MediaMeta{},
-		Media:       []models.MediaMeta{},
+	newTicket := models.Ticket{
+		ID:       primitive.NewObjectID(),
+		Email:    "email3",
+		Fullname: "fullname3",
+		Message:  "message3",
+		State:    "active",
 	}
 	insertedID, err := ticketsRepository.InsertOne(newTicket)
 
@@ -356,26 +308,20 @@ func TestInsertMany(t *testing.T) {
 	// Regular example
 	resetCollection(ticketsRepository)
 
-	newTickets := []models.Event{
+	newTickets := []models.Ticket{
 		models.Ticket{
-			ID:          primitive.NewObjectID(),
-			Name:        "name",
-			Description: "desc",
-			Tags:        []string{"tag1"},
-			Type:        "seminar",
-			Sponsors:    []models.Sponsor{},
-			Logo:        models.MediaMeta{},
-			Media:       []models.MediaMeta{},
+			ID:       primitive.NewObjectID(),
+			Email:    "email",
+			Fullname: "fullname",
+			Message:  "message",
+			State:    "active",
 		},
 		models.Ticket{
-			ID:          primitive.NewObjectID(),
-			Name:        "name2",
-			Description: "desc3",
-			Tags:        []string{"tag2"},
-			Type:        "workshop",
-			Sponsors:    []models.Sponsor{},
-			Logo:        models.MediaMeta{},
-			Media:       []models.MediaMeta{},
+			ID:       primitive.NewObjectID(),
+			Email:    "email2",
+			Fullname: "fullname2",
+			Message:  "message2",
+			State:    "active",
 		},
 	}
 
@@ -387,31 +333,6 @@ func TestInsertMany(t *testing.T) {
 
 	if insertedIDs[0] != newTickets[0].ID.Hex() ||
 		insertedIDs[1] != newTickets[1].ID.Hex() {
-		t.Error("Expected inserted ids to be ", newTickets[0].ID.Hex(), newEvents[1].ID.Hex(), "but instead got", insertedIDs)
-	}
-}
-
-func TestIsDuplicate(t *testing.T) {
-	ticketsRepository := makeRepository()
-
-	// Name is duplicate
-	tickets := []models.Ticket{
-		models.Ticket{
-			ID:          primitive.NewObjectID(),
-			Name:        "name2",
-			Description: "desc3",
-			Tags:        []string{"tag2"},
-			Type:        "workshop",
-			Sponsors:    []models.Sponsor{},
-			Logo:        models.MediaMeta{},
-			Media:       []models.MediaMeta{},
-		},
-	}
-	setupData(ticketsRepository, tickets...)
-
-	isDuplicate := ticketsRepository.IsDuplicate("name2")
-
-	if !isDuplicate {
-		t.Error("Expected name to be duplicate")
+		t.Error("Expected inserted ids to be ", newTickets[0].ID.Hex(), newTickets[1].ID.Hex(), "but instead got", insertedIDs)
 	}
 }
