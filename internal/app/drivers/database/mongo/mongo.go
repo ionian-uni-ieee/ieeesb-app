@@ -39,7 +39,7 @@ func (d *DatabaseSession) GetClient() interface{} {
 	return d.client
 }
 
-// GetClient returns an instance of a database
+// GetDatabase returns an instance of a database
 func (d *DatabaseSession) GetDatabase() interface{} {
 	return d.database
 }
