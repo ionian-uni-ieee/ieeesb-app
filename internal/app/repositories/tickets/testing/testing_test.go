@@ -212,7 +212,7 @@ func TestFindOne(t *testing.T) {
 	}
 
 	if ticketFound.Email != "email2" {
-		t.Error("Expected ticket email to equal 'email2', instead got", ticketFound.Email)
+		t.Error("Expected email to equal 'email2', instead got", ticketFound.Email)
 	}
 }
 

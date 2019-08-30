@@ -194,7 +194,7 @@ func TestFindOne(t *testing.T) {
 	}
 
 	if sessionFound.Username != "jake" {
-		t.Error("Expected session description to equal 'desc3', instead got", sessionFound.Username)
+		t.Error("Expected session description to equal 'jake', instead got", sessionFound.Username)
 	}
 }
 

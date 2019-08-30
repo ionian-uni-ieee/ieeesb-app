@@ -72,7 +72,7 @@ func TestFindByID(t *testing.T) {
 	}
 
 	if sponsorFound != nil && sponsorFound.ID != sponsor.ID {
-		t.Error("Expected sponsor's id to be", sponsor.ID.Hex(), "but is", sponsorFound.ID.Hex())
+		t.Error("Expected id to be", sponsor.ID.Hex(), "but is", sponsorFound.ID.Hex())
 	}
 }
 
@@ -98,7 +98,7 @@ func TestUpdateByID(t *testing.T) {
 	}
 
 	if name := sponsorsRepository.Collection.Columns["Name"][0]; name != "new name" {
-		t.Error("Expected sponsor name to be 'new name', but instead got", name)
+		t.Error("Expected name to be 'new name', but instead got", name)
 	}
 }
 
@@ -122,7 +122,7 @@ func TestDeleteByID(t *testing.T) {
 	}
 
 	if ids := sponsorsRepository.Collection.Columns["ID"]; len(ids) == 0 {
-		t.Error("Expected sponsor id to have length of 0, but instead got", len(ids))
+		t.Error("Expected id to have length of 0, but instead got", len(ids))
 	}
 }
 
@@ -168,7 +168,7 @@ func TestFind(t *testing.T) {
 	}
 
 	if sponsorsFound[0].Name != sponsorsFound[1].Name {
-		t.Error("Expected sponsors' description to equal to each other, instead got",
+		t.Error("Expected names to equal to each other, instead got",
 			sponsorsFound[0].Name,
 			sponsorsFound[1].Name)
 	}
@@ -212,7 +212,7 @@ func TestFindOne(t *testing.T) {
 	}
 
 	if sponsorFound.Name != "name2" {
-		t.Error("Expected sponsor description to equal 'desc3', instead got", sponsorFound.Name)
+		t.Error("Expected name to equal 'name2', instead got", sponsorFound.Name)
 	}
 }
 
