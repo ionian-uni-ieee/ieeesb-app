@@ -106,8 +106,8 @@ func (r *Repository) DeleteByID(userID string) error {
 
 	for rowIndex, objectID := range objectIDs {
 		if objectID.(primitive.ObjectID).Hex() == userID {
-			for _, column := range r.Collection.Columns {
-				column = append(column[:rowIndex], column[rowIndex+1:])
+			for key, column := range r.Collection.Columns {
+				r.Collection.Columns[key] = append(column[:rowIndex], column[rowIndex+1:]...)
 			}
 
 			return nil
