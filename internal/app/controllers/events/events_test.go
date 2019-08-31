@@ -53,7 +53,7 @@ func resetCollection(db *testingDatabase.DatabaseSession, collectionName string)
 }
 
 // setupData resets the collection and inserts an array of data in it
-func setupData(db *testingDatabase.DatabaseSession, collectionName string, data ...models.Ticket) {
+func setupData(db *testingDatabase.DatabaseSession, collectionName string, data ...models.Event) {
 	resetCollection(db, collectionName)
 
 	ticketFieldNames, err := reflections.GetFieldNames(&models.Ticket{})
