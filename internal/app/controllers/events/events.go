@@ -8,7 +8,7 @@ type Controller struct {
 	repositories *repositories.Repositories
 }
 
-func MakeNewController(r *repositories.Repositories) *Controller {
+func MakeController(r *repositories.Repositories) *Controller {
 	return &Controller{
 		r,
 	}

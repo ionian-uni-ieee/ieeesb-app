@@ -8,8 +8,8 @@ type Controller struct {
 	repositories *repositories.Repositories
 }
 
-// MakeNewController creates a new user use case caller
-func MakeNewController(r *repositories.Repositories) *Controller {
+// MakeController creates a new user use case caller
+func MakeController(r *repositories.Repositories) *Controller {
 	return &Controller{
 		r,
 	}

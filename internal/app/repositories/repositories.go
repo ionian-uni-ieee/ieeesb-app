@@ -31,9 +31,9 @@ type Repositories struct {
 	SessionsRepository sessions.Repository
 }
 
-// MakeNewRepositories is a factory of Repositories
+// MakeRepositories is a factory of Repositories
 // which creates a set of repositories
-func MakeNewRepositories(database database.Driver) (repositories *Repositories) {
+func MakeRepositories(database database.Driver) (repositories *Repositories) {
 	repositories = &Repositories{}
 	repositories.database = database
 	if database.GetDatabaseType() == "mongo" {
