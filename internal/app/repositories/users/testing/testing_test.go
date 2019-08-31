@@ -124,8 +124,10 @@ func TestDeleteByID(t *testing.T) {
 		t.Error(err)
 	}
 
-	if ids := usersRepository.Collection.Columns["ID"]; len(ids) == 0 {
-		t.Error("Expected user id to have length of 0, but instead got", len(ids))
+	for key, column := range usersRepository.Collection.Columns {
+		if len(column) > 0 {
+			t.Error("Expected column", key, "to have length of 0, but instead got", len(column))
+		}
 	}
 }
 
