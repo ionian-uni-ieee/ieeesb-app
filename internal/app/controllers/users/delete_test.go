@@ -28,8 +28,9 @@ func TestDelete(t *testing.T) {
 
 	err = usersController.Delete("invalid object id")
 
-	if err.Error() != "Invalid ObjectID" {
-		t.Error("Expected error to be 'Invalid ObjectID' but is", err)
+	expectedError := "Invalid ObjectID"
+	if err.Error() != expectedError {
+		t.Error("Expected error to be '"+expectedError+"' but is", err)
 	}
 
 	// No such user ObjectID
@@ -38,7 +39,8 @@ func TestDelete(t *testing.T) {
 	objectID := primitive.NewObjectID()
 	err = usersController.Delete(objectID.Hex())
 
-	if err.Error() != ("No document found with this id " + objectID.Hex()) {
-		t.Error("Expected error to be 'No document found with this id "+objectID.Hex()+"' but is", err)
+	expectedError = "No document found with this id " + objectID.Hex()
+	if err.Error() != expectedError {
+		t.Error("Expected error to be '"+expectedError+"' but is", err)
 	}
 }
