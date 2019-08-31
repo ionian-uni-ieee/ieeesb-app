@@ -62,7 +62,6 @@ func TestAdd(t *testing.T) {
 	}
 	eventsController.Add(event)
 
-	t.Log(db.GetCollection("events").(*testingDatabase.Collection).Columns)
 	if !isEventEqualToDbRow(db, event, 0) {
 		t.Error("Expected event to have been added in database")
 	}
