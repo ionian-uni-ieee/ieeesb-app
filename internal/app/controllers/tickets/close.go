@@ -3,7 +3,7 @@ package tickets
 import (
 	"errors"
 
-	"github.com/ionian-uni-ieee/ieee-webapp/vendor/go.mongodb.org/mongo-driver/bson/primitive"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
 func (c *Controller) Close(ticketID string) error {
