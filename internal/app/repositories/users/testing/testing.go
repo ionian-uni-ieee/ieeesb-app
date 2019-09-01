@@ -2,6 +2,7 @@ package users
 
 import (
 	"errors"
+	"reflect"
 
 	"github.com/ionian-uni-ieee/ieee-webapp/internal/app/drivers/database"
 	testingDatabase "github.com/ionian-uni-ieee/ieee-webapp/internal/app/drivers/database/testing"
@@ -21,7 +22,7 @@ type Repository struct {
 func MakeRepository(database database.Driver) *Repository {
 	collection := database.GetCollection("users").(*testingDatabase.Collection)
 
-	userFieldNames, err := reflections.GetFieldNames(&models.User{})
+	userFieldNames, err := reflections.GetFieldNames(reflect.TypeOf(models.User{}))
 
 	if err != nil {
 		panic(err)
@@ -45,7 +46,7 @@ func (r *Repository) FindByID(userID string) (*models.User, error) {
 			// Take cell values of each column
 			for key, value := range r.Collection.Columns {
 				cellValue := value[rowIndex]
-				err := reflections.SetField(userFound, key, cellValue)
+				err := reflections.SetFieldValue(userFound, key, cellValue)
 				if err != nil {
 					return nil, err
 				}
@@ -68,7 +69,7 @@ func (r *Repository) UpdateByID(userID string, update interface{}) error {
 			// Take cell values of each column
 			for key, value := range r.Collection.Columns {
 				cellValue := value[rowIndex]
-				err := reflections.SetField(userFound, key, cellValue)
+				err := reflections.SetFieldValue(userFound, key, cellValue)
 				if err != nil {
 					return err
 				}
@@ -77,7 +78,22 @@ func (r *Repository) UpdateByID(userID string, update interface{}) error {
 			// Update user found
 			if updateMap, ok := update.(map[string]interface{}); ok {
 				for key, value := range updateMap {
-					err := reflections.SetField(userFound, key, value)
+					err := reflections.SetFieldValue(userFound, key, value)
+					if err != nil {
+						return err
+					}
+				}
+			} else if updateModel, ok := update.(models.User); ok {
+				fieldNames, err := reflections.GetFieldNames(reflect.TypeOf(models.User{}))
+				if err != nil {
+					return err
+				}
+				for _, fieldName := range fieldNames {
+					field, err := reflections.GetFieldValue(updateModel, fieldName)
+					if err != nil {
+						return err
+					}
+					err = reflections.SetFieldValue(userFound, fieldName, field)
 					if err != nil {
 						return err
 					}
@@ -88,7 +104,7 @@ func (r *Repository) UpdateByID(userID string, update interface{}) error {
 
 			// Update database
 			for key := range r.Collection.Columns {
-				cellValue, err := reflections.GetField(userFound, key)
+				cellValue, err := reflections.GetFieldValue(*userFound, key)
 				if err != nil {
 					return err
 				}
@@ -130,7 +146,7 @@ func (r *Repository) Find(filter interface{}) ([]models.User, error) {
 					newUser := models.User{}
 					for fieldName, column := range r.Collection.Columns {
 						value := column[rowIndex]
-						err := reflections.SetField(&newUser, fieldName, value)
+						err := reflections.SetFieldValue(&newUser, fieldName, value)
 						if err != nil {
 							return nil, err
 						}
@@ -158,7 +174,7 @@ func (r *Repository) FindOne(filter interface{}) (*models.User, error) {
 					newUser := models.User{}
 					for fieldName, column := range r.Collection.Columns {
 						value := column[rowIndex]
-						err := reflections.SetField(&newUser, fieldName, value)
+						err := reflections.SetFieldValue(&newUser, fieldName, value)
 						if err != nil {
 							return nil, err
 						}
@@ -167,7 +183,8 @@ func (r *Repository) FindOne(filter interface{}) (*models.User, error) {
 				}
 			}
 		}
-		return nil, errors.New("Update interface is not a string map of interfaces")
+	} else {
+		return nil, errors.New("Filter interface is not a string map of interfaces")
 	}
 	return nil, errors.New("No user found")
 }
@@ -192,7 +209,7 @@ func (r *Repository) UpdateMany(filter interface{}, update interface{}) ([]strin
 								}
 
 								// Update found user's field
-								err := reflections.SetField(&userModel, key, value)
+								err := reflections.SetFieldValue(&userModel, key, value)
 								if err != nil {
 									return nil, err
 								}
@@ -223,7 +240,7 @@ func (r *Repository) UpdateMany(filter interface{}, update interface{}) ([]strin
 				}
 			}
 		}
-		return nil, errors.New("Update interface is not a string map of interfaces")
+		return nil, errors.New("Filter interface is not a string map of interfaces")
 	}
 
 	return updatedIDs, nil
@@ -250,7 +267,7 @@ func (r *Repository) DeleteMany(filter interface{}) (int64, error) {
 				}
 			}
 		}
-		return 0, errors.New("Update interface is not a string map of interfaces")
+		return 0, errors.New("Filter interface is not a string map of interfaces")
 	}
 	return deletedCount, nil
 }
@@ -262,7 +279,7 @@ func (r *Repository) InsertOne(document models.User) (string, error) {
 	}
 
 	for key := range r.Collection.Columns {
-		docField, err := reflections.GetField(&document, key)
+		docField, err := reflections.GetFieldValue(document, key)
 
 		if err != nil {
 			return "", err
