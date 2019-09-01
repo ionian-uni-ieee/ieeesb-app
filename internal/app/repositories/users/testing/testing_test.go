@@ -37,7 +37,7 @@ func setupData(repository *users.Repository, data ...models.User) {
 
 	for _, item := range data {
 		for _, fieldName := range userFieldNames {
-			fieldValue, err := reflections.GetField(item, fieldName)
+			fieldValue, err := reflections.GetFieldValue(item, fieldName)
 			if err != nil {
 				panic(err)
 			}

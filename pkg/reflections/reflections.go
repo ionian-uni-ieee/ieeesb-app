@@ -5,8 +5,8 @@ import (
 	"reflect"
 )
 
-// SetField sets a map's field value to a new value
-func SetField(d interface{}, key string, value interface{}) error {
+// SetFieldValue sets a map's field value to a new value
+func SetFieldValue(d interface{}, key string, value interface{}) error {
 	r := reflect.ValueOf(d)
 
 	if r.Kind() != reflect.Ptr {
@@ -40,8 +40,8 @@ func SetField(d interface{}, key string, value interface{}) error {
 	return nil
 }
 
-// GetField returns a value of a field of a map
-func GetField(d interface{}, key string) (interface{}, error) {
+// GetFieldValue returns a value of a field of a map
+func GetFieldValue(d interface{}, key string) (interface{}, error) {
 	r := reflect.ValueOf(d)
 
 	if r.Kind() != reflect.Struct {
@@ -55,6 +55,34 @@ func GetField(d interface{}, key string) (interface{}, error) {
 	}
 
 	return field.Interface(), nil
+}
+
+// GetField returns a reflect type of a struct's field
+func GetField(rType reflect.Type, key string) (reflect.StructField, error) {
+	if rType.Kind() != reflect.Struct {
+		return reflect.StructField{}, errors.New("Expected type to be a struct, instead got " + rType.Kind().String())
+	}
+
+	field, ok := rType.FieldByName(key)
+
+	if !ok {
+		return reflect.StructField{}, errors.New("Field was not found")
+	}
+
+	return field, nil
+}
+
+// GetTagByFieldName returns a field's tag's name
+func GetTagByFieldName(rType reflect.Type, fieldName string, tagKey string) (string, error) {
+	field, err := GetField(rType, fieldName)
+
+	if err != nil {
+		return "", err
+	}
+
+	tag := field.Tag.Get(tagKey)
+
+	return tag, nil
 }
 
 // GetFieldNames returns all the field keys of a struct

@@ -1,12 +1,13 @@
 package reflections_test
 
 import (
+	"reflect"
 	"testing"
 
 	"github.com/ionian-uni-ieee/ieee-webapp/pkg/reflections"
 )
 
-func TestSetField(t *testing.T) {
+func TestSetFieldValue(t *testing.T) {
 	type testStruct struct {
 		Name string
 	}
@@ -15,7 +16,7 @@ func TestSetField(t *testing.T) {
 		Name: "jack",
 	}
 
-	err := reflections.SetField(&s, "Name", "john")
+	err := reflections.SetFieldValue(&s, "Name", "john")
 
 	if err != nil {
 		t.Error(err)
@@ -28,20 +29,21 @@ func TestSetField(t *testing.T) {
 	// Check for non struct type
 	invalidInterface := "string"
 
-	err = reflections.SetField(&invalidInterface, "Name", "")
+	err = reflections.SetFieldValue(&invalidInterface, "Name", "")
 
 	if err == nil {
 		t.Error("Expected an error for invalid type, but no error was returned")
 	}
 
-	if err.Error() != "Interface is not a struct" {
-		t.Error("Expected an error for invalid interface type, but got ", err.Error())
+	expectedError := "Pointed interface is not a struct"
+	if err.Error() != expectedError {
+		t.Error("Expected '"+expectedError+"' error, but got ", err.Error())
 	}
 
 	// Get a non existant field
 	s = testStruct{}
 
-	err = reflections.SetField(&s, "NotName", "")
+	err = reflections.SetFieldValue(&s, "NotName", "")
 
 	if err.Error() != "Field is not valid" {
 		t.Error("Expected invalid field error but got", err)
@@ -50,14 +52,15 @@ func TestSetField(t *testing.T) {
 	// No struct pointer provided
 	s = testStruct{}
 
-	err = reflections.SetField(s, "Name", "")
+	err = reflections.SetFieldValue(s, "Name", "")
 
-	if err.Error() != "Struct is not a pointer" {
-		t.Error("Expected 'Struct is not a pointer' error, instead got", err.Error())
+	expectedError = "Interface is not a pointer"
+	if err.Error() != expectedError {
+		t.Error("Expected '"+expectedError+"' error, but got ", err.Error())
 	}
 }
 
-func TestGetField(t *testing.T) {
+func TestGetFieldValue(t *testing.T) {
 	type testStruct struct {
 		Name string
 	}
@@ -67,7 +70,7 @@ func TestGetField(t *testing.T) {
 		Name: "john",
 	}
 
-	name, err := reflections.GetField(&s, "Name")
+	name, err := reflections.GetFieldValue(s, "Name")
 
 	if err != nil {
 		t.Error(err)
@@ -82,7 +85,7 @@ func TestGetField(t *testing.T) {
 		Name: "",
 	}
 
-	name, err = reflections.GetField(&s, "Name")
+	name, err = reflections.GetFieldValue(s, "Name")
 
 	if err != nil {
 		t.Error(err)
@@ -95,7 +98,7 @@ func TestGetField(t *testing.T) {
 	// Check for non struct type
 	invalidInterface := "string"
 
-	name, err = reflections.GetField(&invalidInterface, "Name")
+	name, err = reflections.GetFieldValue(invalidInterface, "Name")
 
 	if err == nil {
 		t.Error("Expected an error for invalid type, but no error was returned")
@@ -108,19 +111,27 @@ func TestGetField(t *testing.T) {
 	// Get a non existant field
 	s = testStruct{}
 
-	name, err = reflections.GetField(&s, "NotName")
+	name, err = reflections.GetFieldValue(s, "NotName")
 
 	if err.Error() != "Field is not valid" {
 		t.Error("Expected invalid field error but got", err)
 	}
+}
 
-	// No struct pointer provided
-	s = testStruct{}
+func TestGetTagByFieldName(t *testing.T) {
+	// Normal
+	type foo struct {
+		Username string `json:"uname"`
+	}
 
-	name, err = reflections.GetField(s, "Name")
+	tag, err := reflections.GetTagByFieldName(reflect.TypeOf(foo{}), "Username", "json")
 
-	if err.Error() != "Struct is not a pointer" {
-		t.Error("Expected 'Struct is not a pointer' error, instead got", err.Error())
+	if err != nil {
+		t.Error(err)
+	}
+
+	if tag != "uname" {
+		t.Error("Expected tag name 'uname' but instead got " + tag)
 	}
 }
 
@@ -132,7 +143,7 @@ func TestGetFieldNames(t *testing.T) {
 
 	s := testingStruct{}
 
-	fieldNames, err := reflections.GetFieldNames(&s)
+	fieldNames, err := reflections.GetFieldNames(reflect.TypeOf(s))
 
 	if err != nil {
 		t.Error(err)
@@ -151,7 +162,7 @@ func TestGetFieldNames(t *testing.T) {
 
 	s2 := testingStruct2{}
 
-	fieldNames, err = reflections.GetFieldNames(&s2)
+	fieldNames, err = reflections.GetFieldNames(reflect.TypeOf(s2))
 
 	if err != nil {
 		t.Error(err)
@@ -167,18 +178,59 @@ func TestGetFieldNames(t *testing.T) {
 	// Non struct
 	s3 := ""
 
-	fieldNames, err = reflections.GetFieldNames(&s3)
+	fieldNames, err = reflections.GetFieldNames(reflect.TypeOf(s3))
 
-	if err.Error() != "Interface is not a struct" {
-		t.Error("Expected 'interface is not struct' error, instead got", err.Error())
+	expectedError := "Expected type to be a struct, instead got " + reflect.TypeOf(s3).Kind().String()
+	if err.Error() != expectedError {
+		t.Error("Expected error '" + expectedError + "', instead got " + err.Error())
+	}
+}
+
+func TestGetTagNames(t *testing.T) {
+	// Single tag name
+	type foo struct {
+		Name string `json:"name"`
 	}
 
-	// No struct pointer provided
-	s = testingStruct{}
+	tagNames, err := reflections.GetTagNames(reflect.TypeOf(foo{}), "json")
 
-	fieldNames, err = reflections.GetFieldNames(s)
-
-	if err.Error() != "Struct is not a pointer" {
-		t.Error("Expected 'Struct is not a pointer' error, instead got", err.Error())
+	if err != nil {
+		t.Error(err)
 	}
+
+	if tagNames[0] != "name" {
+		t.Error("Expected first string element to be equal to 'name', but got ", tagNames[0])
+	}
+
+	// Multiple tag keys in a struct's field
+	type foo2 struct {
+		Name string `json:"name" bson:"_name"`
+	}
+
+	tagNames, err = reflections.GetTagNames(reflect.TypeOf(foo2{}), "bson")
+
+	if err != nil {
+		t.Error(err)
+	}
+
+	if tagNames[0] != "_name" {
+		t.Error("Expected first string element to be equal to '_name', but got ", tagNames[0])
+	}
+
+	// Multiple fields with tag names
+	type foo3 struct {
+		Name    string `json:"name"`
+		Surname string `json:"surname"`
+	}
+
+	tagNames, err = reflections.GetTagNames(reflect.TypeOf(foo3{}), "json")
+
+	if err != nil {
+		t.Error(err)
+	}
+
+	if tagNames[0] != "name" && tagNames[1] != "surname" {
+		t.Error("Expected string elements to be equal to 'name' & 'surname', but got ", tagNames[0], tagNames[1])
+	}
+
 }
