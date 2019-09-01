@@ -1,6 +1,7 @@
 package users_test
 
 import (
+	"reflect"
 	"testing"
 
 	testingDatabase "github.com/ionian-uni-ieee/ieee-webapp/internal/app/drivers/database/testing"
@@ -29,14 +30,14 @@ func resetCollection(repository *users.Repository) {
 func setupData(repository *users.Repository, data ...models.User) {
 	resetCollection(repository)
 
-	userFieldNames, err := reflections.GetFieldNames(&models.User{})
+	userFieldNames, err := reflections.GetFieldNames(reflect.TypeOf(models.User{}))
 	if err != nil {
 		panic(err)
 	}
 
 	for _, item := range data {
 		for _, fieldName := range userFieldNames {
-			fieldValue, err := reflections.GetField(&item, fieldName)
+			fieldValue, err := reflections.GetField(item, fieldName)
 			if err != nil {
 				panic(err)
 			}
