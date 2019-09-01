@@ -6,7 +6,6 @@ import (
 	"time"
 
 	"github.com/ionian-uni-ieee/ieee-webapp/internal/app/models"
-	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"golang.org/x/crypto/bcrypt"
 )
@@ -21,7 +20,7 @@ func (c *Controller) Login(username string, password string) (string, error) {
 		return "", errors.New("Password is empty string")
 	}
 
-	user, err := c.repositories.UsersRepository.FindOne(&bson.M{"username": username})
+	user, err := c.repositories.UsersRepository.FindOne(map[string]interface{}{"Username": username})
 
 	if err != nil {
 		return "", err

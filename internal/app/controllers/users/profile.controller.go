@@ -4,7 +4,6 @@ import (
 	"errors"
 
 	"github.com/ionian-uni-ieee/ieee-webapp/internal/app/models"
-	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
@@ -29,7 +28,7 @@ func (c *Controller) Profile(sessionID string) (*models.User, error) {
 	}
 
 	user, err := c.repositories.UsersRepository.FindOne(
-		bson.M{"Username": session.Username},
+		map[string]interface{}{"Username": session.Username},
 	)
 
 	if err != nil {
