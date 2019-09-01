@@ -3,9 +3,11 @@ package users
 import (
 	"context"
 	"errors"
+	"reflect"
 
 	"github.com/ionian-uni-ieee/ieee-webapp/internal/app/drivers/database"
 	"github.com/ionian-uni-ieee/ieee-webapp/internal/app/models"
+	"github.com/ionian-uni-ieee/ieee-webapp/pkg/reflections"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
@@ -63,7 +65,17 @@ func (r *Repository) UpdateByID(userID string, update interface{}) error {
 		return errors.New("No user with this ID exists")
 	}
 
-	_, err = r.collection.UpdateOne(context.Background(), &bson.M{"_id": userObjectID}, &bson.M{"$set": update})
+	updateBSON, err := reflections.ConvertFieldNamesToTagNames(
+		update.(map[string]interface{}),
+		reflect.TypeOf(models.User{}),
+		"bson",
+	)
+
+	if err != nil {
+		return err
+	}
+
+	_, err = r.collection.UpdateOne(context.Background(), &bson.M{"_id": userObjectID}, &bson.M{"$set": updateBSON})
 
 	return err
 }
@@ -91,7 +103,17 @@ func (r *Repository) DeleteByID(userID string) error {
 }
 
 func (r *Repository) Find(filter interface{}) ([]models.User, error) {
-	result, err := r.collection.Find(context.Background(), filter)
+	filterBSON, err := reflections.ConvertFieldNamesToTagNames(
+		filter.(map[string]interface{}),
+		reflect.TypeOf(models.User{}),
+		"bson",
+	)
+
+	if err != nil {
+		return nil, err
+	}
+
+	result, err := r.collection.Find(context.Background(), filterBSON)
 	defer result.Close(context.Background())
 
 	users := []models.User{}
@@ -112,23 +134,63 @@ func (r *Repository) Find(filter interface{}) ([]models.User, error) {
 }
 
 func (r *Repository) FindOne(filter interface{}) (*models.User, error) {
-	result := r.collection.FindOne(context.Background(), filter)
+	filterBSON, err := reflections.ConvertFieldNamesToTagNames(
+		filter.(map[string]interface{}),
+		reflect.TypeOf(models.User{}),
+		"bson",
+	)
+
+	if err != nil {
+		return nil, err
+	}
+
+	result := r.collection.FindOne(context.Background(), filterBSON)
 
 	user := &models.User{}
 
-	err := result.Decode(user)
+	err = result.Decode(user)
 
 	return user, err
 }
 
 func (r *Repository) UpdateMany(filter interface{}, update interface{}) ([]string, error) {
-	result, err := r.collection.UpdateMany(context.Background(), filter, update)
+	filterBSON, err := reflections.ConvertFieldNamesToTagNames(
+		filter.(map[string]interface{}),
+		reflect.TypeOf(models.User{}),
+		"bson",
+	)
+
+	if err != nil {
+		return nil, err
+	}
+
+	updateBSON, err := reflections.ConvertFieldNamesToTagNames(
+		filter.(map[string]interface{}),
+		reflect.TypeOf(models.User{}),
+		"bson",
+	)
+
+	if err != nil {
+		return nil, err
+	}
+
+	result, err := r.collection.UpdateMany(context.Background(), filterBSON, updateBSON)
 
 	return result.UpsertedID.([]string), err
 }
 
 func (r *Repository) DeleteMany(filter interface{}) (int64, error) {
-	result, err := r.collection.DeleteMany(context.Background(), filter)
+	filterBSON, err := reflections.ConvertFieldNamesToTagNames(
+		filter.(map[string]interface{}),
+		reflect.TypeOf(models.User{}),
+		"bson",
+	)
+
+	if err != nil {
+		return -1, err
+	}
+
+	result, err := r.collection.DeleteMany(context.Background(), filterBSON)
 
 	return result.DeletedCount, err
 }
