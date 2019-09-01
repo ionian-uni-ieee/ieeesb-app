@@ -28,7 +28,9 @@ func (c *Controller) Profile(sessionID string) (*models.User, error) {
 		return nil, errors.New("No session with this ID exists")
 	}
 
-	user, err := c.repositories.UsersRepository.FindOne(&bson.M{"username": session.Username})
+	user, err := c.repositories.UsersRepository.FindOne(
+		bson.M{"Username": session.Username},
+	)
 
 	if err != nil {
 		return nil, err

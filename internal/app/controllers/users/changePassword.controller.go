@@ -49,7 +49,7 @@ func (c *Controller) ChangePassword(userID string, oldPassword string, newPasswo
 
 	user.Password = string(hash)
 
-	err = c.repositories.UsersRepository.UpdateByID(userID, user)
+	err = c.repositories.UsersRepository.UpdateByID(userID, *user)
 
 	return err
 }
