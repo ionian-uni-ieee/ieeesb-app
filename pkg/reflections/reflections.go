@@ -117,6 +117,32 @@ func GetTagNames(rType reflect.Type, tagKey string) ([]string, error) {
 	return tagNames, nil
 }
 
+// ConvertFieldNamesToTagNames converts a map's field names to a struct's tag names
+func ConvertFieldNamesToTagNames(m map[string]interface{}, rType reflect.Type, tagKey string) (map[string]interface{}, error) {
+	fieldNames, err := GetFieldNames(rType)
+
+	if err != nil {
+		return nil, err
+	}
+
+	fieldTags, err := GetTagNames(rType, tagKey)
+
+	if err != nil {
+		return nil, err
+	}
+
+	convertedMap := map[string]interface{}{}
+
+	for fieldIndex, fieldName := range fieldNames {
+		if m[fieldName] != nil {
+			fieldTag := fieldTags[fieldIndex]
+			convertedMap[fieldTag] = m[fieldName]
+		}
+	}
+
+	return convertedMap, nil
+}
+
 // GetBSONTagNames returns all the bson tags of each struct's field
 // It's the same with GetTagNames but calls it with key "bson"
 func GetBSONTagNames(rType reflect.Type) ([]string, error) {

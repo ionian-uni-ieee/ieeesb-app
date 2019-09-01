@@ -234,3 +234,31 @@ func TestGetTagNames(t *testing.T) {
 	}
 
 }
+
+func TestConvertFieldNamesToTagNames(t *testing.T) {
+	// Normal
+	type foo struct {
+		Username string `json:"uname"`
+		Password string `json:"pass"`
+	}
+
+	m := map[string]interface{}{
+		"Username": "joe123",
+		"Password": "easy",
+	}
+
+	tagsM, err := reflections.ConvertFieldNamesToTagNames(
+		m,
+		reflect.TypeOf(foo{}),
+		"json",
+	)
+
+	if err != nil {
+		t.Error(err)
+	}
+
+	didChangeToTagNames := tagsM["uname"] != m["Username"] && tagsM["pass"] != m["Password"]
+	if didChangeToTagNames {
+		t.Error("Expected converted map's keys to have same values with the map, instead it's value is", tagsM)
+	}
+}
