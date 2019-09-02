@@ -140,3 +140,7 @@ func (r *Repository) InsertMany(documents []models.Sponsor) ([]string, error) {
 
 	return insertedIDs, err
 }
+
+func (r *Repository) IsDuplicate(name string) bool {
+	return false
+}
