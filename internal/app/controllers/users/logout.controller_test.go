@@ -20,7 +20,7 @@ func TestLogout(t *testing.T) {
 		t.Error(err)
 	}
 
-	if testUtils.IsCollectionEmpty(db, "sessions") {
+	if !testUtils.IsCollectionEmpty(db, "sessions") {
 		t.Error("Expected sessions collection to be empty")
 	}
 
