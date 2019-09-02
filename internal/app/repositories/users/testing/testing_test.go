@@ -1,69 +1,57 @@
 package users_test
 
 import (
-	"reflect"
 	"testing"
 
 	testingDatabase "github.com/ionian-uni-ieee/ieee-webapp/internal/app/drivers/database/testing"
 	"github.com/ionian-uni-ieee/ieee-webapp/internal/app/models"
 	users "github.com/ionian-uni-ieee/ieee-webapp/internal/app/repositories/users/testing"
-	"github.com/ionian-uni-ieee/ieee-webapp/pkg/reflections"
+	"github.com/ionian-uni-ieee/ieee-webapp/internal/app/testUtils"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
-func makeRepository() *users.Repository {
+func makeRepository() (*testingDatabase.DatabaseSession, *users.Repository) {
 	// Setup
 	database := testingDatabase.MakeDatabaseDriver()
 	usersRepository := users.MakeRepository(database)
 
-	return usersRepository
+	return database, usersRepository
 }
 
-// Clears the collection's data
-func resetCollection(repository *users.Repository) {
-	for key, _ := range repository.Collection.Columns {
-		repository.Collection.Columns[key] = []interface{}{}
-	}
+var testUser1 = models.User{
+	ID:          primitive.NewObjectID(),
+	Username:    "joe",
+	Password:    "joepassftw",
+	Email:       "joe@mail.com",
+	Fullname:    "joe jordinson",
+	Permissions: models.Permissions{},
 }
 
-// setupData resets the collection and inserts an array of data in it
-func setupData(repository *users.Repository, data ...models.User) {
-	resetCollection(repository)
+var testUser2 = models.User{
+	ID:          primitive.NewObjectID(),
+	Username:    "johndoe",
+	Password:    "hmm",
+	Email:       "johndoe@mail.com",
+	Fullname:    "John Doe",
+	Permissions: models.Permissions{},
+}
 
-	userFieldNames, err := reflections.GetFieldNames(reflect.TypeOf(models.User{}))
-	if err != nil {
-		panic(err)
-	}
-
-	for _, item := range data {
-		for _, fieldName := range userFieldNames {
-			fieldValue, err := reflections.GetFieldValue(item, fieldName)
-			if err != nil {
-				panic(err)
-			}
-
-			repository.Collection.Columns[fieldName] = append(
-				repository.Collection.Columns[fieldName],
-				fieldValue)
-		}
-	}
+var testUser3 = models.User{
+	ID:          primitive.NewObjectID(),
+	Username:    "smith",
+	Password:    "1983billsmith",
+	Email:       "billsmith@mail.com",
+	Fullname:    "Bill Smith",
+	Permissions: models.Permissions{},
 }
 
 func TestFindByID(t *testing.T) {
-	usersRepository := makeRepository()
+	db, usersRepository := makeRepository()
 
 	// Regular example
-	user := models.User{
-		ID:          primitive.NewObjectID(),
-		Username:    "username",
-		Password:    "password",
-		Email:       "email",
-		Fullname:    "fullname",
-		Permissions: models.Permissions{},
-	}
-	setupData(usersRepository, user)
+	testUtils.SetupData(db, "users", testUser1)
 
-	userFound, err := usersRepository.FindByID(user.ID.Hex())
+	userFound, err := usersRepository.FindByID(testUser1.ID.Hex())
 
 	if err != nil {
 		t.Error(err)
@@ -73,26 +61,18 @@ func TestFindByID(t *testing.T) {
 		t.Error("Expected result to be an user object, got nil instead")
 	}
 
-	if userFound != nil && userFound.ID != user.ID {
-		t.Error("Expected user's id to be", user.ID.Hex(), "but is", userFound.ID.Hex())
+	if userFound != nil && userFound.ID != testUser1.ID {
+		t.Error("Expected user's id to be", testUser1.ID.Hex(), "but is", userFound.ID.Hex())
 	}
 }
 
 func TestUpdateByID(t *testing.T) {
-	usersRepository := makeRepository()
+	db, usersRepository := makeRepository()
 
 	// Regular example
-	user := models.User{
-		ID:          primitive.NewObjectID(),
-		Username:    "username",
-		Password:    "password",
-		Email:       "email",
-		Fullname:    "fullname",
-		Permissions: models.Permissions{},
-	}
-	setupData(usersRepository, user)
+	testUtils.SetupData(db, "users", testUser1)
 
-	err := usersRepository.UpdateByID(user.ID.Hex(), map[string]interface{}{
+	err := usersRepository.UpdateByID(testUser1.ID.Hex(), map[string]interface{}{
 		"Username": "new username",
 	})
 
@@ -106,20 +86,12 @@ func TestUpdateByID(t *testing.T) {
 }
 
 func TestDeleteByID(t *testing.T) {
-	usersRepository := makeRepository()
+	db, usersRepository := makeRepository()
 
 	// Regular example
-	user := models.User{
-		ID:          primitive.NewObjectID(),
-		Username:    "username",
-		Password:    "password",
-		Email:       "email",
-		Fullname:    "fullname",
-		Permissions: models.Permissions{},
-	}
-	setupData(usersRepository, user)
+	testUtils.SetupData(db, "users", testUser1)
 
-	err := usersRepository.DeleteByID(user.ID.Hex())
+	err := usersRepository.DeleteByID(testUser1.ID.Hex())
 
 	if err != nil {
 		t.Error(err)
@@ -133,39 +105,13 @@ func TestDeleteByID(t *testing.T) {
 }
 
 func TestFind(t *testing.T) {
-	usersRepository := makeRepository()
+	db, usersRepository := makeRepository()
 
 	// Regular example
-	users := []models.User{
-		models.User{
-			ID:          primitive.NewObjectID(),
-			Username:    "username",
-			Password:    "password",
-			Email:       "email",
-			Fullname:    "fullname",
-			Permissions: models.Permissions{},
-		},
-		models.User{
-			ID:          primitive.NewObjectID(),
-			Username:    "username2",
-			Password:    "password2",
-			Email:       "email2",
-			Fullname:    "fullname2",
-			Permissions: models.Permissions{},
-		},
-		models.User{
-			ID:          primitive.NewObjectID(),
-			Username:    "username2",
-			Password:    "password3",
-			Email:       "email3",
-			Fullname:    "fullname3",
-			Permissions: models.Permissions{},
-		},
-	}
-	setupData(usersRepository, users...)
+	testUtils.SetupData(db, "users", testUser1, testUser1)
 
 	usersFound, err := usersRepository.Find(map[string]interface{}{
-		"Username": "username2",
+		"Email": testUser1.Email,
 	})
 
 	if err != nil {
@@ -184,195 +130,95 @@ func TestFind(t *testing.T) {
 }
 
 func TestFindOne(t *testing.T) {
-	usersRepository := makeRepository()
+	db, usersRepository := makeRepository()
 
 	// Regular example
-	users := []models.User{
-		models.User{
-			ID:          primitive.NewObjectID(),
-			Username:    "username",
-			Password:    "password",
-			Email:       "email",
-			Fullname:    "fullname",
-			Permissions: models.Permissions{},
-		},
-		models.User{
-			ID:          primitive.NewObjectID(),
-			Username:    "username2",
-			Password:    "password2",
-			Email:       "email2",
-			Fullname:    "fullname2",
-			Permissions: models.Permissions{},
-		},
-		models.User{
-			ID:          primitive.NewObjectID(),
-			Username:    "username3",
-			Password:    "password3",
-			Email:       "email3",
-			Fullname:    "fullname3",
-			Permissions: models.Permissions{},
-		},
-	}
-	setupData(usersRepository, users...)
+	testUtils.SetupData(db, "users", testUser1, testUser2)
 
 	userFound, err := usersRepository.FindOne(map[string]interface{}{
-		"Username": "username2",
+		"Username": testUser1.Username,
 	})
 
 	if err != nil {
 		t.Error(err)
 	}
 
-	if userFound.Username != "username2" {
+	if userFound.Username != testUser1.Username {
 		t.Error("Expected username to equal 'username2', instead got", userFound.Username)
 	}
 }
 
 func TestUpdateMany(t *testing.T) {
-	usersRepository := makeRepository()
+	// db, _ := makeRepository()
 
 	// Regular example
-	users := []models.User{
-		models.User{
-			ID:          primitive.NewObjectID(),
-			Username:    "username",
-			Password:    "password",
-			Email:       "email",
-			Fullname:    "fullname",
-			Permissions: models.Permissions{},
-		},
-		models.User{
-			ID:          primitive.NewObjectID(),
-			Username:    "username2",
-			Password:    "password2",
-			Email:       "email2",
-			Fullname:    "fullname2",
-			Permissions: models.Permissions{},
-		},
-		models.User{
-			ID:          primitive.NewObjectID(),
-			Username:    "username3",
-			Password:    "password3",
-			Email:       "email3",
-			Fullname:    "fullname3",
-			Permissions: models.Permissions{},
-		},
-	}
-	setupData(usersRepository, users...)
+	// users := []models.User{
+	// 	testUser1,
+	// 	testUser2,
+	// 	testUser3,
+	// }
+	// testUtils.SetupData(db, "users", testUser1, testUser2, testUser3)
 }
 
 func TestDeleteMany(t *testing.T) {
-
-	usersRepository := makeRepository()
+	// db, _ := makeRepository()
 
 	// Regular example
-	users := []models.User{
-		models.User{
-			ID:          primitive.NewObjectID(),
-			Username:    "username",
-			Password:    "password",
-			Email:       "email",
-			Fullname:    "fullname",
-			Permissions: models.Permissions{},
-		},
-		models.User{
-			ID:          primitive.NewObjectID(),
-			Username:    "username2",
-			Password:    "password2",
-			Email:       "email2",
-			Fullname:    "fullname2",
-			Permissions: models.Permissions{},
-		},
-		models.User{
-			ID:          primitive.NewObjectID(),
-			Username:    "username3",
-			Password:    "password3",
-			Email:       "email3",
-			Fullname:    "fullname3",
-			Permissions: models.Permissions{},
-		},
-	}
-	setupData(usersRepository, users...)
+	// users := []models.User{
+	// 	testUser1,
+	// 	testUser2,
+	// 	testUser3,
+	// }
+	// testUtils.SetupData(db, "users", testUser1, testUser2, testUser3)
 }
 
 func TestInsertOne(t *testing.T) {
 
-	usersRepository := makeRepository()
+	db, usersRepository := makeRepository()
 
 	// Regular example
-	resetCollection(usersRepository)
+	testUtils.ResetCollection(db, "users")
 
-	newUser := models.User{
-		ID:          primitive.NewObjectID(),
-		Username:    "username",
-		Password:    "password",
-		Email:       "email",
-		Fullname:    "fullname",
-		Permissions: models.Permissions{},
-	}
-	insertedID, err := usersRepository.InsertOne(newUser)
+	insertedID, err := usersRepository.InsertOne(testUser1)
 
 	if err != nil {
 		t.Error(err)
 	}
 
-	if insertedID != newUser.ID.Hex() {
-		t.Error("Expected inserted id to be ", newUser.ID.Hex(), "but instead got", insertedID)
+	if insertedID != testUser1.ID.Hex() {
+		t.Error("Expected inserted id to be ", testUser1.ID.Hex(), "but instead got", insertedID)
 	}
 }
 
 func TestInsertMany(t *testing.T) {
-	usersRepository := makeRepository()
+	db, usersRepository := makeRepository()
 
 	// Regular example
-	resetCollection(usersRepository)
+	testUtils.ResetCollection(db, "users")
 
-	newUsers := []models.User{
-		models.User{
-			ID:          primitive.NewObjectID(),
-			Username:    "username",
-			Password:    "password",
-			Email:       "email",
-			Fullname:    "fullname",
-			Permissions: models.Permissions{},
-		},
-		models.User{
-			ID:          primitive.NewObjectID(),
-			Username:    "username2",
-			Password:    "password2",
-			Email:       "email2",
-			Fullname:    "fullname2",
-			Permissions: models.Permissions{},
-		},
+	users := []models.User{
+		testUser1,
+		testUser2,
+		testUser3,
 	}
 
-	insertedIDs, err := usersRepository.InsertMany(newUsers)
+	insertedIDs, err := usersRepository.InsertMany(users)
 
 	if err != nil {
 		t.Error(err)
 	}
 
-	if insertedIDs[0] != newUsers[0].ID.Hex() ||
-		insertedIDs[1] != newUsers[1].ID.Hex() {
-		t.Error("Expected inserted ids to be ", newUsers[0].ID.Hex(), newUsers[1].ID.Hex(), "but instead got", insertedIDs)
+	if insertedIDs[0] != users[0].ID.Hex() ||
+		insertedIDs[1] != users[1].ID.Hex() {
+		t.Error("Expected inserted ids to be ", users[0].ID.Hex(), users[1].ID.Hex(), "but instead got", insertedIDs)
 	}
 }
 
 func TestIsDuplicate(t *testing.T) {
-	usersRepository := makeRepository()
+	db, usersRepository := makeRepository()
 
 	// Name is duplicate
-	users := []models.User{
-		models.User{
-			ID:          primitive.NewObjectID(),
-			Username:    "username2",
-			Password:    "password2",
-			Email:       "email2",
-			Fullname:    "fullname2",
-			Permissions: models.Permissions{},
-		},
-	}
-	setupData(usersRepository, users...)
+	testUtils.SetupData(db, "users", testUser1)
 
 	isDuplicate := usersRepository.IsDuplicate("email2", "username2", "fullname2")
 
