@@ -1,65 +1,49 @@
-package sessions_test
+package testing_test
 
 import (
 	"testing"
+	"time"
 
 	testingDatabase "github.com/ionian-uni-ieee/ieee-webapp/internal/app/drivers/database/testing"
 	"github.com/ionian-uni-ieee/ieee-webapp/internal/app/models"
 	sessions "github.com/ionian-uni-ieee/ieee-webapp/internal/app/repositories/sessions/testing"
-	"github.com/ionian-uni-ieee/ieee-webapp/pkg/reflections"
+	"github.com/ionian-uni-ieee/ieee-webapp/internal/app/testUtils"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
-func makeRepository() *sessions.Repository {
+func makeRepository() (*testingDatabase.DatabaseSession, *sessions.Repository) {
 	// Setup
 	database := testingDatabase.MakeDatabaseDriver()
 	sessionsRepository := sessions.MakeRepository(database)
 
-	return sessionsRepository
+	return database, sessionsRepository
 }
 
-// Clears the collection's data
-func resetCollection(repository *sessions.Repository) {
-	for key, _ := range repository.Collection.Columns {
-		repository.Collection.Columns[key] = []interface{}{}
-	}
+var testSession1 = models.Session{
+	ID:       primitive.NewObjectID(),
+	Username: "joejordinson",
+	Expires:  time.Now().Unix() + 30*60*1000,
 }
 
-// setupData resets the collection and inserts an array of data in it
-func setupData(repository *sessions.Repository, data ...models.Session) {
-	resetCollection(repository)
+var testSession2 = models.Session{
+	ID:       primitive.NewObjectID(),
+	Username: "billsmith",
+	Expires:  time.Now().Unix() + 30*60*1000,
+}
 
-	sessionFieldNames, err := reflections.GetFieldNames(&models.Session{})
-	if err != nil {
-		panic(err)
-	}
-
-	for _, item := range data {
-		for _, fieldName := range sessionFieldNames {
-			fieldValue, err := reflections.GetField(&item, fieldName)
-			if err != nil {
-				panic(err)
-			}
-
-			repository.Collection.Columns[fieldName] = append(
-				repository.Collection.Columns[fieldName],
-				fieldValue)
-		}
-	}
+var testSession3 = models.Session{
+	ID:       primitive.NewObjectID(),
+	Username: "johndoe",
+	Expires:  time.Now().Unix() + 30*60*1000,
 }
 
 func TestFindByID(t *testing.T) {
-	sessionsRepository := makeRepository()
+	db, sessionsRepository := makeRepository()
 
 	// Regular example
-	session := models.Session{
-		ID:       primitive.NewObjectID(),
-		Username: "bugs",
-		Expires:  1,
-	}
-	setupData(sessionsRepository, session)
+	testUtils.SetupData(db, "sessions", testSession1)
 
-	sessionFound, err := sessionsRepository.FindByID(session.ID.Hex())
+	sessionFound, err := sessionsRepository.FindByID(testSession1.ID.Hex())
 
 	if err != nil {
 		t.Error(err)
@@ -69,82 +53,60 @@ func TestFindByID(t *testing.T) {
 		t.Error("Expected result to be an session object, got nil instead")
 	}
 
-	if sessionFound != nil && sessionFound.ID != session.ID {
-		t.Error("Expected session's id to be", session.ID.Hex(), "but is", sessionFound.ID.Hex())
+	if sessionFound != nil && sessionFound.ID != testSession1.ID {
+		t.Error("Expected session's id to be", testSession1.ID.Hex(), "but is", sessionFound.ID.Hex())
 	}
 }
 
 func TestUpdateByID(t *testing.T) {
-	sessionsRepository := makeRepository()
+	db, sessionsRepository := makeRepository()
 
 	// Regular example
-	session := models.Session{
-		ID:       primitive.NewObjectID(),
-		Username: "bugs",
-		Expires:  1,
-	}
-	setupData(sessionsRepository, session)
+	testUtils.SetupData(db, "sessions", testSession1)
 
-	err := sessionsRepository.UpdateByID(session.ID.Hex(), map[string]interface{}{
-		"Username": "not bugs",
+	newUsername := "New Username"
+	err := sessionsRepository.UpdateByID(testSession1.ID.Hex(), map[string]interface{}{
+		"Username": newUsername,
 	})
 
 	if err != nil {
 		t.Error(err)
 	}
 
-	if name := sessionsRepository.Collection.Columns["Username"][0]; name != "not bugs" {
-		t.Error("Expected username to be 'not bugs', but instead got", name)
+	storedUsername := sessionsRepository.Collection.Columns["Username"][0]
+	nameChanged := storedUsername != newUsername
+	if nameChanged {
+		t.Error("Expected name to be '"+newUsername+"', but instead got", storedUsername)
 	}
 }
 
 func TestDeleteByID(t *testing.T) {
-	sessionsRepository := makeRepository()
+	db, sessionsRepository := makeRepository()
 
 	// Regular example
-	session := models.Session{
-		ID:       primitive.NewObjectID(),
-		Username: "bugs",
-		Expires:  1,
-	}
-	setupData(sessionsRepository, session)
+	testUtils.SetupData(db, "sessions", testSession1)
 
-	err := sessionsRepository.DeleteByID(session.ID.Hex())
+	err := sessionsRepository.DeleteByID(testSession1.ID.Hex())
 
 	if err != nil {
 		t.Error(err)
 	}
 
-	if ids := sessionsRepository.Collection.Columns["ID"]; len(ids) == 0 {
-		t.Error("Expected session id to have length of 0, but instead got", len(ids))
+	for key, column := range sessionsRepository.Collection.Columns {
+		if len(column) > 0 {
+			t.Error("Expected column", key, "to have length of 0, but instead got", len(column))
+		}
 	}
 }
 
 func TestFind(t *testing.T) {
-	sessionsRepository := makeRepository()
+	db, sessionsRepository := makeRepository()
 
 	// Regular example
-	sessions := []models.Session{
-		models.Session{
-			ID:       primitive.NewObjectID(),
-			Username: "bugs",
-			Expires:  1,
-		},
-		models.Session{
-			ID:       primitive.NewObjectID(),
-			Username: "jake",
-			Expires:  2,
-		},
-		models.Session{
-			ID:       primitive.NewObjectID(),
-			Username: "jake",
-			Expires:  3,
-		},
-	}
-	setupData(sessionsRepository, sessions...)
+	testUtils.SetupData(db, "sessions", testSession1, testSession1)
 
 	sessionsFound, err := sessionsRepository.Find(map[string]interface{}{
-		"Username": "jake",
+		"Username": testSession1.Username,
 	})
 
 	if err != nil {
@@ -156,167 +118,77 @@ func TestFind(t *testing.T) {
 	}
 
 	if sessionsFound[0].Username != sessionsFound[1].Username {
-		t.Error("Expected username to equal to each other, instead got",
+		t.Error("Expected sessionname to equal to each other, instead got",
 			sessionsFound[0].Username,
 			sessionsFound[1].Username)
 	}
 }
 
 func TestFindOne(t *testing.T) {
-	sessionsRepository := makeRepository()
+	db, sessionsRepository := makeRepository()
 
 	// Regular example
-	sessions := []models.Session{
-		models.Session{
-			ID:       primitive.NewObjectID(),
-			Username: "username",
-			Expires:  1,
-		},
-		models.Session{
-			ID:       primitive.NewObjectID(),
-			Username: "username2",
-			Expires:  2,
-		},
-		models.Session{
-			ID:       primitive.NewObjectID(),
-			Username: "jake",
-			Expires:  3,
-		},
-	}
-	setupData(sessionsRepository, sessions...)
+	testUtils.SetupData(db, "sessions", testSession1, testSession2)
 
 	sessionFound, err := sessionsRepository.FindOne(map[string]interface{}{
-		"Username": "jake",
+		"Username": testSession1.Username,
 	})
 
 	if err != nil {
 		t.Error(err)
 	}
 
-	if sessionFound.Username != "jake" {
-		t.Error("Expected session description to equal 'jake', instead got", sessionFound.Username)
+	if sessionFound.Username != testSession1.Username {
+		t.Error("Expected sessionname to equal '" + testSession1.Username + "', instead got " + sessionFound.Username)
 	}
 }
 
 func TestUpdateMany(t *testing.T) {
-	sessionsRepository := makeRepository()
-
-	// Regular example
-	sessions := []models.Session{
-		models.Session{
-			ID:       primitive.NewObjectID(),
-			Username: "bugs",
-			Expires:  1,
-		},
-		models.Session{
-			ID:       primitive.NewObjectID(),
-			Username: "jake",
-			Expires:  2,
-		},
-		models.Session{
-			ID:       primitive.NewObjectID(),
-			Username: "jake",
-			Expires:  3,
-		},
-	}
-	setupData(sessionsRepository, sessions...)
+	// TODO: Not implemented
 }
 
 func TestDeleteMany(t *testing.T) {
-
-	sessionsRepository := makeRepository()
-
-	// Regular example
-	sessions := []models.Session{
-		models.Session{
-			ID:       primitive.NewObjectID(),
-			Username: "bugs",
-			Expires:  1,
-		},
-		models.Session{
-			ID:       primitive.NewObjectID(),
-			Username: "jake",
-			Expires:  2,
-		},
-		models.Session{
-			ID:       primitive.NewObjectID(),
-			Username: "jake",
-			Expires:  3,
-		},
-	}
-	setupData(sessionsRepository, sessions...)
+	// TODO: Not implemented
 }
 
 func TestInsertOne(t *testing.T) {
 
-	sessionsRepository := makeRepository()
+	db, sessionsRepository := makeRepository()
 
 	// Regular example
-	resetCollection(sessionsRepository)
+	testUtils.ResetCollection(db, "sessions")
 
-	newSession := models.Session{
-		ID:       primitive.NewObjectID(),
-		Username: "jake",
-		Expires:  1,
-	}
-	insertedID, err := sessionsRepository.InsertOne(newSession)
+	insertedID, err := sessionsRepository.InsertOne(testSession1)
 
 	if err != nil {
 		t.Error(err)
 	}
 
-	if insertedID != newSession.ID.Hex() {
-		t.Error("Expected inserted id to be ", newSession.ID.Hex(), "but instead got", insertedID)
+	if insertedID != testSession1.ID.Hex() {
+		t.Error("Expected inserted id to be ", testSession1.ID.Hex(), "but instead got", insertedID)
 	}
 }
 
 func TestInsertMany(t *testing.T) {
-	sessionsRepository := makeRepository()
+	db, sessionsRepository := makeRepository()
 
 	// Regular example
-	resetCollection(sessionsRepository)
+	testUtils.ResetCollection(db, "sessions")
 
-	newSessions := []models.Session{
-		models.Session{
-			ID:       primitive.NewObjectID(),
-			Username: "jake",
-			Expires:  1,
-		},
-		models.Session{
-			ID:       primitive.NewObjectID(),
-			Username: "bugs",
-			Expires:  2,
-		},
+	sessions := []models.Session{
+		testSession1,
+		testSession2,
+		testSession3,
 	}
 
-	insertedIDs, err := sessionsRepository.InsertMany(newSessions)
+	insertedIDs, err := sessionsRepository.InsertMany(sessions)
 
 	if err != nil {
 		t.Error(err)
 	}
 
-	if insertedIDs[0] != newSessions[0].ID.Hex() ||
-		insertedIDs[1] != newSessions[1].ID.Hex() {
-		t.Error("Expected inserted ids to be ", newSessions[0].ID.Hex(), newSessions[1].ID.Hex(), "but instead got", insertedIDs)
-	}
-}
-
-func TestIsDuplicate(t *testing.T) {
-	sessionsRepository := makeRepository()
-
-	// Name is duplicate
-	sessions := []models.Session{
-		models.Session{
-			ID:       primitive.NewObjectID(),
-			Username: "bugs",
-			Expires:  2,
-		},
-	}
-	setupData(sessionsRepository, sessions...)
-
-	isDuplicate := sessionsRepository.IsDuplicate("bugs")
-
-	if !isDuplicate {
-		t.Error("Expected name to be duplicate")
+	if insertedIDs[0] != sessions[0].ID.Hex() ||
+		insertedIDs[1] != sessions[1].ID.Hex() {
+		t.Error("Expected inserted ids to be ", sessions[0].ID.Hex(), sessions[1].ID.Hex(), "but instead got", insertedIDs)
 	}
 }

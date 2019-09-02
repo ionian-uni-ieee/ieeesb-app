@@ -1,6 +1,7 @@
 package testing_test
 
 import (
+	"reflect"
 	"testing"
 
 	testingDatabase "github.com/ionian-uni-ieee/ieee-webapp/internal/app/drivers/database/testing"
@@ -72,16 +73,19 @@ func TestUpdateByID(t *testing.T) {
 	// Regular example
 	testUtils.SetupData(db, "users", testUser1)
 
+	newUsername := "newusername"
 	err := usersRepository.UpdateByID(testUser1.ID.Hex(), map[string]interface{}{
-		"Username": "new username",
+		"Username": newUsername,
 	})
 
 	if err != nil {
 		t.Error(err)
 	}
 
-	if username := usersRepository.Collection.Columns["Username"][0]; username != "new username" {
-		t.Error("Expected username to be 'new name', but instead got", username)
+	usernameStored := usersRepository.Collection.Columns["Username"][0]
+	usernameChanged := usernameStored != newUsername
+	if usernameChanged {
+		t.Error("Expected username to be '"+newUsername+"', but instead got", usernameStored)
 	}
 }
 
@@ -149,27 +153,11 @@ func TestFindOne(t *testing.T) {
 }
 
 func TestUpdateMany(t *testing.T) {
-	// db, _ := makeRepository()
-
-	// Regular example
-	// users := []models.User{
-	// 	testUser1,
-	// 	testUser2,
-	// 	testUser3,
-	// }
-	// testUtils.SetupData(db, "users", testUser1, testUser2, testUser3)
+	// TODO: Not implemented
 }
 
 func TestDeleteMany(t *testing.T) {
-	// db, _ := makeRepository()
-
-	// Regular example
-	// users := []models.User{
-	// 	testUser1,
-	// 	testUser2,
-	// 	testUser3,
-	// }
-	// testUtils.SetupData(db, "users", testUser1, testUser2, testUser3)
+	// TODO: Not implemented
 }
 
 func TestInsertOne(t *testing.T) {
@@ -187,6 +175,17 @@ func TestInsertOne(t *testing.T) {
 
 	if insertedID != testUser1.ID.Hex() {
 		t.Error("Expected inserted id to be ", testUser1.ID.Hex(), "but instead got", insertedID)
+	}
+
+	storedUser := testUtils.GetInterfaceAtCollectionRow(
+		db,
+		"users",
+		reflect.TypeOf(models.User{}),
+		0,
+	).(models.User)
+
+	if storedUser.ID.Hex() != insertedID {
+		t.Error("Expected stored user's ID to equal insertedID")
 	}
 }
 

@@ -1,7 +1,8 @@
-package tickets
+package testing
 
 import (
 	"errors"
+	"reflect"
 
 	"github.com/ionian-uni-ieee/ieee-webapp/internal/app/drivers/database"
 	testingDatabase "github.com/ionian-uni-ieee/ieee-webapp/internal/app/drivers/database/testing"
@@ -21,7 +22,7 @@ type Repository struct {
 func MakeRepository(database database.Driver) *Repository {
 	collection := database.GetCollection("tickets").(*testingDatabase.Collection)
 
-	ticketFieldNames, err := reflections.GetFieldNames(&models.Ticket{})
+	ticketFieldNames, err := reflections.GetFieldNames(reflect.TypeOf(models.Ticket{}))
 
 	if err != nil {
 		panic(err)
@@ -45,7 +46,7 @@ func (r *Repository) FindByID(ticketID string) (*models.Ticket, error) {
 			// Take cell values of each column
 			for key, value := range r.Collection.Columns {
 				cellValue := value[rowIndex]
-				err := reflections.SetField(ticketFound, key, cellValue)
+				err := reflections.SetFieldValue(ticketFound, key, cellValue)
 				if err != nil {
 					return nil, err
 				}
@@ -68,7 +69,7 @@ func (r *Repository) UpdateByID(ticketID string, update interface{}) error {
 			// Take cell values of each column
 			for key, value := range r.Collection.Columns {
 				cellValue := value[rowIndex]
-				err := reflections.SetField(ticketFound, key, cellValue)
+				err := reflections.SetFieldValue(ticketFound, key, cellValue)
 				if err != nil {
 					return err
 				}
@@ -77,7 +78,22 @@ func (r *Repository) UpdateByID(ticketID string, update interface{}) error {
 			// Update ticket found
 			if updateMap, ok := update.(map[string]interface{}); ok {
 				for key, value := range updateMap {
-					err := reflections.SetField(ticketFound, key, value)
+					err := reflections.SetFieldValue(ticketFound, key, value)
+					if err != nil {
+						return err
+					}
+				}
+			} else if updateModel, ok := update.(models.Ticket); ok {
+				fieldNames, err := reflections.GetFieldNames(reflect.TypeOf(models.Ticket{}))
+				if err != nil {
+					return err
+				}
+				for _, fieldName := range fieldNames {
+					field, err := reflections.GetFieldValue(updateModel, fieldName)
+					if err != nil {
+						return err
+					}
+					err = reflections.SetFieldValue(ticketFound, fieldName, field)
 					if err != nil {
 						return err
 					}
@@ -88,7 +104,7 @@ func (r *Repository) UpdateByID(ticketID string, update interface{}) error {
 
 			// Update database
 			for key := range r.Collection.Columns {
-				cellValue, err := reflections.GetField(ticketFound, key)
+				cellValue, err := reflections.GetFieldValue(*ticketFound, key)
 				if err != nil {
 					return err
 				}
@@ -106,8 +122,8 @@ func (r *Repository) DeleteByID(ticketID string) error {
 
 	for rowIndex, objectID := range objectIDs {
 		if objectID.(primitive.ObjectID).Hex() == ticketID {
-			for _, column := range r.Collection.Columns {
-				column = append(column[:rowIndex], column[rowIndex+1:])
+			for key, column := range r.Collection.Columns {
+				r.Collection.Columns[key] = append(column[:rowIndex], column[rowIndex+1:]...)
 			}
 
 			return nil
@@ -130,7 +146,7 @@ func (r *Repository) Find(filter interface{}) ([]models.Ticket, error) {
 					newTicket := models.Ticket{}
 					for fieldName, column := range r.Collection.Columns {
 						value := column[rowIndex]
-						err := reflections.SetField(&newTicket, fieldName, value)
+						err := reflections.SetFieldValue(&newTicket, fieldName, value)
 						if err != nil {
 							return nil, err
 						}
@@ -158,7 +174,7 @@ func (r *Repository) FindOne(filter interface{}) (*models.Ticket, error) {
 					newTicket := models.Ticket{}
 					for fieldName, column := range r.Collection.Columns {
 						value := column[rowIndex]
-						err := reflections.SetField(&newTicket, fieldName, value)
+						err := reflections.SetFieldValue(&newTicket, fieldName, value)
 						if err != nil {
 							return nil, err
 						}
@@ -167,7 +183,8 @@ func (r *Repository) FindOne(filter interface{}) (*models.Ticket, error) {
 				}
 			}
 		}
-		return nil, errors.New("Update interface is not a string map of interfaces")
+	} else {
+		return nil, errors.New("Filter interface is not a string map of interfaces")
 	}
 	return nil, errors.New("No ticket found")
 }
@@ -192,7 +209,7 @@ func (r *Repository) UpdateMany(filter interface{}, update interface{}) ([]strin
 								}
 
 								// Update found ticket's field
-								err := reflections.SetField(&ticketModel, key, value)
+								err := reflections.SetFieldValue(&ticketModel, key, value)
 								if err != nil {
 									return nil, err
 								}
@@ -223,7 +240,7 @@ func (r *Repository) UpdateMany(filter interface{}, update interface{}) ([]strin
 				}
 			}
 		}
-		return nil, errors.New("Update interface is not a string map of interfaces")
+		return nil, errors.New("Filter interface is not a string map of interfaces")
 	}
 
 	return updatedIDs, nil
@@ -250,7 +267,7 @@ func (r *Repository) DeleteMany(filter interface{}) (int64, error) {
 				}
 			}
 		}
-		return 0, errors.New("Update interface is not a string map of interfaces")
+		return 0, errors.New("Filter interface is not a string map of interfaces")
 	}
 	return deletedCount, nil
 }
@@ -262,7 +279,7 @@ func (r *Repository) InsertOne(document models.Ticket) (string, error) {
 	}
 
 	for key := range r.Collection.Columns {
-		docField, err := reflections.GetField(&document, key)
+		docField, err := reflections.GetFieldValue(document, key)
 
 		if err != nil {
 			return "", err
@@ -286,10 +303,4 @@ func (r *Repository) InsertMany(documents []models.Ticket) ([]string, error) {
 	}
 
 	return insertedIDs, nil
-}
-
-// IsDuplicate checks if the primary key values are unique in the repository
-// TODO: Not implemented
-func (r *Repository) IsDuplicate(name string) bool {
-	return false
 }

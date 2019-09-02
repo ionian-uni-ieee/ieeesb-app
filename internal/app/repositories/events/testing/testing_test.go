@@ -1,4 +1,4 @@
-package events_test
+package testing_test
 
 import (
 	"testing"
@@ -6,65 +6,58 @@ import (
 	testingDatabase "github.com/ionian-uni-ieee/ieee-webapp/internal/app/drivers/database/testing"
 	"github.com/ionian-uni-ieee/ieee-webapp/internal/app/models"
 	events "github.com/ionian-uni-ieee/ieee-webapp/internal/app/repositories/events/testing"
-	"github.com/ionian-uni-ieee/ieee-webapp/pkg/reflections"
+	"github.com/ionian-uni-ieee/ieee-webapp/internal/app/testUtils"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
-func makeRepository() *events.Repository {
+func makeRepository() (*testingDatabase.DatabaseSession, *events.Repository) {
 	// Setup
 	database := testingDatabase.MakeDatabaseDriver()
 	eventsRepository := events.MakeRepository(database)
 
-	return eventsRepository
+	return database, eventsRepository
 }
 
-// Clears the collection's data
-func resetCollection(repository *events.Repository) {
-	for key, _ := range repository.Collection.Columns {
-		repository.Collection.Columns[key] = []interface{}{}
-	}
+var testEvent1 = models.Event{
+	ID:          primitive.NewObjectID(),
+	Name:        "Arduino & Raspberry",
+	Description: "Learn how to deal with microcontrollers and micro pcs",
+	Tags:        []string{"arduino", "raspberry", "hardware", "electronics"},
+	Type:        "Workshop",
+	Sponsors:    []models.Sponsor{},
+	Logo:        models.MediaMeta{},
+	Media:       []models.MediaMeta{},
 }
 
-// setupData resets the collection and inserts an array of data in it
-func setupData(repository *events.Repository, data ...models.Event) {
-	resetCollection(repository)
+var testEvent2 = models.Event{
+	ID:          primitive.NewObjectID(),
+	Name:        "C++ for beginners",
+	Description: "Become a C++ master and get educated on programming standards",
+	Tags:        []string{"c++", "programming"},
+	Type:        "Weekly",
+	Sponsors:    []models.Sponsor{},
+	Logo:        models.MediaMeta{},
+	Media:       []models.MediaMeta{},
+}
 
-	eventFieldNames, err := reflections.GetFieldNames(&models.Event{})
-	if err != nil {
-		panic(err)
-	}
-
-	for _, item := range data {
-		for _, fieldName := range eventFieldNames {
-			fieldValue, err := reflections.GetField(&item, fieldName)
-			if err != nil {
-				panic(err)
-			}
-
-			repository.Collection.Columns[fieldName] = append(
-				repository.Collection.Columns[fieldName],
-				fieldValue)
-		}
-	}
+var testEvent3 = models.Event{
+	ID:          primitive.NewObjectID(),
+	Name:        "NodeJS Fullstack Web development",
+	Description: "Want to make your own application? This is your chance to build something big.",
+	Tags:        []string{"nodejs", "programming", "web development"},
+	Type:        "Seminar",
+	Sponsors:    []models.Sponsor{},
+	Logo:        models.MediaMeta{},
+	Media:       []models.MediaMeta{},
 }
 
 func TestFindByID(t *testing.T) {
-	eventsRepository := makeRepository()
+	db, eventsRepository := makeRepository()
 
 	// Regular example
-	event := models.Event{
-		ID:          primitive.NewObjectID(),
-		Name:        "name",
-		Description: "desc",
-		Tags:        []string{"tag1"},
-		Type:        "seminar",
-		Sponsors:    []models.Sponsor{},
-		Logo:        models.MediaMeta{},
-		Media:       []models.MediaMeta{},
-	}
-	setupData(eventsRepository, event)
+	testUtils.SetupData(db, "events", testEvent1)
 
-	eventFound, err := eventsRepository.FindByID(event.ID.Hex())
+	eventFound, err := eventsRepository.FindByID(testEvent1.ID.Hex())
 
 	if err != nil {
 		t.Error(err)
@@ -74,107 +67,60 @@ func TestFindByID(t *testing.T) {
 		t.Error("Expected result to be an event object, got nil instead")
 	}
 
-	if eventFound != nil && eventFound.ID != event.ID {
-		t.Error("Expected event's id to be", event.ID.Hex(), "but is", eventFound.ID.Hex())
+	if eventFound != nil && eventFound.ID != testEvent1.ID {
+		t.Error("Expected event's id to be", testEvent1.ID.Hex(), "but is", eventFound.ID.Hex())
 	}
 }
 
 func TestUpdateByID(t *testing.T) {
-	eventsRepository := makeRepository()
+	db, eventsRepository := makeRepository()
 
 	// Regular example
-	event := models.Event{
-		ID:          primitive.NewObjectID(),
-		Name:        "name",
-		Description: "desc",
-		Tags:        []string{"tag1"},
-		Type:        "seminar",
-		Sponsors:    []models.Sponsor{},
-		Logo:        models.MediaMeta{},
-		Media:       []models.MediaMeta{},
-	}
-	setupData(eventsRepository, event)
+	testUtils.SetupData(db, "events", testEvent1)
 
-	err := eventsRepository.UpdateByID(event.ID.Hex(), map[string]interface{}{
-		"Name": "new name",
+	newName := "New Name"
+	err := eventsRepository.UpdateByID(testEvent1.ID.Hex(), map[string]interface{}{
+		"Name": newName,
 	})
 
 	if err != nil {
 		t.Error(err)
 	}
 
-	if name := eventsRepository.Collection.Columns["Name"][0]; name != "new name" {
-		t.Error("Expected event name to be 'new name', but instead got", name)
+	storedName := eventsRepository.Collection.Columns["Name"][0]
+	nameChanged := storedName != newName
+	if nameChanged {
+		t.Error("Expected name to be '"+newName+"', but instead got", storedName)
 	}
 }
 
 func TestDeleteByID(t *testing.T) {
-	eventsRepository := makeRepository()
+	db, eventsRepository := makeRepository()
 
 	// Regular example
-	event := models.Event{
-		ID:          primitive.NewObjectID(),
-		Name:        "name",
-		Description: "desc",
-		Tags:        []string{"tag1"},
-		Type:        "seminar",
-		Sponsors:    []models.Sponsor{},
-		Logo:        models.MediaMeta{},
-		Media:       []models.MediaMeta{},
-	}
-	setupData(eventsRepository, event)
+	testUtils.SetupData(db, "events", testEvent1)
 
-	err := eventsRepository.DeleteByID(event.ID.Hex())
+	err := eventsRepository.DeleteByID(testEvent1.ID.Hex())
 
 	if err != nil {
 		t.Error(err)
 	}
 
-	if ids := eventsRepository.Collection.Columns["ID"]; len(ids) == 0 {
-		t.Error("Expected event id to have length of 0, but instead got", len(ids))
+	for key, column := range eventsRepository.Collection.Columns {
+		if len(column) > 0 {
+			t.Error("Expected column", key, "to have length of 0, but instead got", len(column))
+		}
 	}
 }
 
 func TestFind(t *testing.T) {
-	eventsRepository := makeRepository()
+	db, eventsRepository := makeRepository()
 
 	// Regular example
-	events := []models.Event{
-		models.Event{
-			ID:          primitive.NewObjectID(),
-			Name:        "name",
-			Description: "desc",
-			Tags:        []string{"tag1"},
-			Type:        "seminar",
-			Sponsors:    []models.Sponsor{},
-			Logo:        models.MediaMeta{},
-			Media:       []models.MediaMeta{},
-		},
-		models.Event{
-			ID:          primitive.NewObjectID(),
-			Name:        "name2",
-			Description: "desc3",
-			Tags:        []string{"tag2"},
-			Type:        "workshop",
-			Sponsors:    []models.Sponsor{},
-			Logo:        models.MediaMeta{},
-			Media:       []models.MediaMeta{},
-		},
-		models.Event{
-			ID:          primitive.NewObjectID(),
-			Name:        "name3",
-			Description: "desc3",
-			Tags:        []string{"tag3"},
-			Type:        "workshop",
-			Sponsors:    []models.Sponsor{},
-			Logo:        models.MediaMeta{},
-			Media:       []models.MediaMeta{},
-		},
-	}
-	setupData(eventsRepository, events...)
+	testUtils.SetupData(db, "events", testEvent1, testEvent1)
 
 	eventsFound, err := eventsRepository.Find(map[string]interface{}{
-		"Description": "desc3",
+		"Name": testEvent1.Name,
 	})
 
 	if err != nil {
@@ -185,233 +131,100 @@ func TestFind(t *testing.T) {
 		t.Error("Expected len(events) to be 2, instead got", len(eventsFound))
 	}
 
-	if eventsFound[0].Description != eventsFound[1].Description {
-		t.Error("Expected events' description to equal to each other, instead got",
-			eventsFound[0].Description,
-			eventsFound[1].Description)
+	if eventsFound[0].Name != eventsFound[1].Name {
+		t.Error("Expected name to equal to each other, instead got",
+			eventsFound[0].Name,
+			eventsFound[1].Name)
 	}
 }
 
 func TestFindOne(t *testing.T) {
-	eventsRepository := makeRepository()
+	db, eventsRepository := makeRepository()
 
 	// Regular example
-	events := []models.Event{
-		models.Event{
-			ID:          primitive.NewObjectID(),
-			Name:        "name",
-			Description: "desc",
-			Tags:        []string{"tag1"},
-			Type:        "seminar",
-			Sponsors:    []models.Sponsor{},
-			Logo:        models.MediaMeta{},
-			Media:       []models.MediaMeta{},
-		},
-		models.Event{
-			ID:          primitive.NewObjectID(),
-			Name:        "name2",
-			Description: "desc3",
-			Tags:        []string{"tag2"},
-			Type:        "workshop",
-			Sponsors:    []models.Sponsor{},
-			Logo:        models.MediaMeta{},
-			Media:       []models.MediaMeta{},
-		},
-		models.Event{
-			ID:          primitive.NewObjectID(),
-			Name:        "name3",
-			Description: "desc3",
-			Tags:        []string{"tag3"},
-			Type:        "workshop",
-			Sponsors:    []models.Sponsor{},
-			Logo:        models.MediaMeta{},
-			Media:       []models.MediaMeta{},
-		},
-	}
-	setupData(eventsRepository, events...)
+	testUtils.SetupData(db, "events", testEvent1, testEvent2)
 
 	eventFound, err := eventsRepository.FindOne(map[string]interface{}{
-		"Description": "desc3",
+		"Name": testEvent1.Name,
 	})
 
 	if err != nil {
 		t.Error(err)
 	}
 
-	if eventFound.Description != "desc3" {
-		t.Error("Expected event description to equal 'desc3', instead got", eventFound.Description)
+	if eventFound.Name != testEvent1.Name {
+		t.Error("Expected name to equal '"+testEvent1.Name+"', instead got", eventFound.Name)
 	}
 }
 
 func TestUpdateMany(t *testing.T) {
-	eventsRepository := makeRepository()
-
-	// Regular example
-	events := []models.Event{
-		models.Event{
-			ID:          primitive.NewObjectID(),
-			Name:        "name",
-			Description: "desc",
-			Tags:        []string{"tag1"},
-			Type:        "seminar",
-			Sponsors:    []models.Sponsor{},
-			Logo:        models.MediaMeta{},
-			Media:       []models.MediaMeta{},
-		},
-		models.Event{
-			ID:          primitive.NewObjectID(),
-			Name:        "name2",
-			Description: "desc3",
-			Tags:        []string{"tag2"},
-			Type:        "workshop",
-			Sponsors:    []models.Sponsor{},
-			Logo:        models.MediaMeta{},
-			Media:       []models.MediaMeta{},
-		},
-		models.Event{
-			ID:          primitive.NewObjectID(),
-			Name:        "name3",
-			Description: "desc3",
-			Tags:        []string{"tag3"},
-			Type:        "workshop",
-			Sponsors:    []models.Sponsor{},
-			Logo:        models.MediaMeta{},
-			Media:       []models.MediaMeta{},
-		},
-	}
-	setupData(eventsRepository, events...)
+	// TODO: Not implemented
 }
 
 func TestDeleteMany(t *testing.T) {
-
-	eventsRepository := makeRepository()
-
-	// Regular example
-	events := []models.Event{
-		models.Event{
-			ID:          primitive.NewObjectID(),
-			Name:        "name",
-			Description: "desc",
-			Tags:        []string{"tag1"},
-			Type:        "seminar",
-			Sponsors:    []models.Sponsor{},
-			Logo:        models.MediaMeta{},
-			Media:       []models.MediaMeta{},
-		},
-		models.Event{
-			ID:          primitive.NewObjectID(),
-			Name:        "name2",
-			Description: "desc3",
-			Tags:        []string{"tag2"},
-			Type:        "workshop",
-			Sponsors:    []models.Sponsor{},
-			Logo:        models.MediaMeta{},
-			Media:       []models.MediaMeta{},
-		},
-		models.Event{
-			ID:          primitive.NewObjectID(),
-			Name:        "name3",
-			Description: "desc3",
-			Tags:        []string{"tag3"},
-			Type:        "workshop",
-			Sponsors:    []models.Sponsor{},
-			Logo:        models.MediaMeta{},
-			Media:       []models.MediaMeta{},
-		},
-	}
-	setupData(eventsRepository, events...)
+	// TODO: Not implemented
 }
 
 func TestInsertOne(t *testing.T) {
 
-	eventsRepository := makeRepository()
+	db, eventsRepository := makeRepository()
 
 	// Regular example
-	resetCollection(eventsRepository)
+	testUtils.ResetCollection(db, "events")
 
-	newEvent := models.Event{
-		ID:          primitive.NewObjectID(),
-		Name:        "name3",
-		Description: "desc3",
-		Tags:        []string{"tag3"},
-		Type:        "workshop",
-		Sponsors:    []models.Sponsor{},
-		Logo:        models.MediaMeta{},
-		Media:       []models.MediaMeta{},
-	}
-	insertedID, err := eventsRepository.InsertOne(newEvent)
+	insertedID, err := eventsRepository.InsertOne(testEvent1)
 
 	if err != nil {
 		t.Error(err)
 	}
 
-	if insertedID != newEvent.ID.Hex() {
-		t.Error("Expected inserted id to be ", newEvent.ID.Hex(), "but instead got", insertedID)
+	if insertedID != testEvent1.ID.Hex() {
+		t.Error("Expected inserted id to be ", testEvent1.ID.Hex(), "but instead got", insertedID)
 	}
 }
 
 func TestInsertMany(t *testing.T) {
-	eventsRepository := makeRepository()
+	db, eventsRepository := makeRepository()
 
 	// Regular example
-	resetCollection(eventsRepository)
+	testUtils.ResetCollection(db, "events")
 
-	newEvents := []models.Event{
-		models.Event{
-			ID:          primitive.NewObjectID(),
-			Name:        "name",
-			Description: "desc",
-			Tags:        []string{"tag1"},
-			Type:        "seminar",
-			Sponsors:    []models.Sponsor{},
-			Logo:        models.MediaMeta{},
-			Media:       []models.MediaMeta{},
-		},
-		models.Event{
-			ID:          primitive.NewObjectID(),
-			Name:        "name2",
-			Description: "desc3",
-			Tags:        []string{"tag2"},
-			Type:        "workshop",
-			Sponsors:    []models.Sponsor{},
-			Logo:        models.MediaMeta{},
-			Media:       []models.MediaMeta{},
-		},
+	events := []models.Event{
+		testEvent1,
+		testEvent2,
+		testEvent3,
 	}
 
-	insertedIDs, err := eventsRepository.InsertMany(newEvents)
+	insertedIDs, err := eventsRepository.InsertMany(events)
 
 	if err != nil {
 		t.Error(err)
 	}
 
-	if insertedIDs[0] != newEvents[0].ID.Hex() ||
-		insertedIDs[1] != newEvents[1].ID.Hex() {
-		t.Error("Expected inserted ids to be ", newEvents[0].ID.Hex(), newEvents[1].ID.Hex(), "but instead got", insertedIDs)
+	if insertedIDs[0] != events[0].ID.Hex() ||
+		insertedIDs[1] != events[1].ID.Hex() {
+		t.Error("Expected inserted ids to be ", events[0].ID.Hex(), events[1].ID.Hex(), "but instead got", insertedIDs)
 	}
 }
 
 func TestIsDuplicate(t *testing.T) {
-	eventsRepository := makeRepository()
+	db, eventsRepository := makeRepository()
 
-	// Name is duplicate
-	events := []models.Event{
-		models.Event{
-			ID:          primitive.NewObjectID(),
-			Name:        "name2",
-			Description: "desc3",
-			Tags:        []string{"tag2"},
-			Type:        "workshop",
-			Sponsors:    []models.Sponsor{},
-			Logo:        models.MediaMeta{},
-			Media:       []models.MediaMeta{},
-		},
-	}
-	setupData(eventsRepository, events...)
+	// Event is duplicate
+	testUtils.SetupData(db, "events", testEvent1)
 
-	isDuplicate := eventsRepository.IsDuplicate("name2")
+	isDuplicate := eventsRepository.IsDuplicate(testEvent1.Name)
 
 	if !isDuplicate {
-		t.Error("Expected name to be duplicate")
+		t.Error("Expected event to be duplicate")
+	}
+
+	// Event is not duplicate
+	testUtils.ResetCollection(db, "events")
+
+	isDuplicate = eventsRepository.IsDuplicate(testEvent1.Name)
+
+	if isDuplicate {
+		t.Error("Expected event to not be duplicate")
 	}
 }
