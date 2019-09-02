@@ -4,8 +4,8 @@ import (
 	"reflect"
 	"testing"
 
-	"github.com/ionian-uni-ieee/ieee-webapp/internal/app/controllers/testUtils"
 	"github.com/ionian-uni-ieee/ieee-webapp/internal/app/models"
+	"github.com/ionian-uni-ieee/ieee-webapp/internal/app/testUtils"
 )
 
 func TestRegister(t *testing.T) {

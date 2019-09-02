@@ -4,7 +4,7 @@ import (
 	"reflect"
 	"testing"
 
-	"github.com/ionian-uni-ieee/ieee-webapp/internal/app/controllers/testUtils"
+	"github.com/ionian-uni-ieee/ieee-webapp/internal/app/testUtils"
 	"github.com/ionian-uni-ieee/ieee-webapp/internal/app/models"
 )
 

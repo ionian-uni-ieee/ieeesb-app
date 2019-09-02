@@ -3,7 +3,7 @@ package users_test
 import (
 	"testing"
 
-	"github.com/ionian-uni-ieee/ieee-webapp/internal/app/controllers/testUtils"
+	"github.com/ionian-uni-ieee/ieee-webapp/internal/app/testUtils"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
