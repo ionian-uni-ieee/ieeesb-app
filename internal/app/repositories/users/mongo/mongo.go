@@ -1,4 +1,4 @@
-package users
+package mongo
 
 import (
 	"context"
@@ -10,17 +10,16 @@ import (
 	"github.com/ionian-uni-ieee/ieee-webapp/pkg/reflections"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
-	"go.mongodb.org/mongo-driver/mongo"
+	mongod "go.mongodb.org/mongo-driver/mongo"
 )
 
 type Repository struct {
 	database   database.Driver
-	collection *mongo.Collection
+	collection *mongod.Collection
 }
 
 func MakeRepository(database database.Driver) *Repository {
-	db := database.GetDatabase().(*mongo.Database)
-	collection := db.Collection("users")
+	collection := database.GetCollection("users").(*mongod.Collection)
 	return &Repository{database, collection}
 }
 
