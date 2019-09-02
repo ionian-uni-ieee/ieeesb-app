@@ -41,11 +41,11 @@ type Handler struct {
 
 func MakeNewHandler(repositories *repositories.Repositories) *Handler {
 	return &Handler{
-		users.MakeNewController(repositories),
-		events.MakeNewController(repositories),
-		tickets.MakeNewController(repositories),
-		sponsors.MakeNewController(repositories),
-		media.MakeNewController(repositories),
+		users.MakeController(repositories),
+		events.MakeController(repositories),
+		tickets.MakeController(repositories),
+		sponsors.MakeController(repositories),
+		media.MakeController(repositories),
 	}
 }
 
