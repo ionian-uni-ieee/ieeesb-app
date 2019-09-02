@@ -1,4 +1,4 @@
-package events
+package mongo
 
 import (
 	"context"
@@ -8,17 +8,16 @@ import (
 	"github.com/ionian-uni-ieee/ieee-webapp/internal/app/models"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
-	"go.mongodb.org/mongo-driver/mongo"
+	mongod "go.mongodb.org/mongo-driver/mongo"
 )
 
 type Repository struct {
 	database   database.Driver
-	collection *mongo.Collection
+	collection *mongod.Collection
 }
 
 func MakeRepository(database database.Driver) *Repository {
-	db := database.GetDatabase().(*mongo.Database)
-	collection := db.Collection("events")
+	collection := database.GetCollection("events").(*mongod.Collection)
 	return &Repository{database, collection}
 }
 
