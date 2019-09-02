@@ -37,8 +37,9 @@ func TestRegister(t *testing.T) {
 
 	userID, err = usersController.Register(mockUser.Username, mockUserPass, mockUser.Email, mockUser.Fullname)
 
-	if err != nil {
-		t.Error(err)
+	expectedError := "A user with that username, fullname or email already exists"
+	if err.Error() != expectedError {
+		t.Error("Expected '" + expectedError + "' error but instead got " + err.Error())
 	}
 
 	if testUtils.GetCollectionLength(db, "users") == 2 {
