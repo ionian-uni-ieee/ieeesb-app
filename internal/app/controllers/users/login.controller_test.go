@@ -23,6 +23,17 @@ func TestLogin(t *testing.T) {
 		t.Error("Expected sessionID to be a non empty string")
 	}
 
+	storedSession := testUtils.GetInterfaceAtCollectionRow(
+		db,
+		"sessions",
+		reflect.TypeOf(models.Session{}),
+		0,
+	).(models.Session)
+
+	if storedSession.ID.Hex() != sessionID {
+		t.Error("Expected sessionID to match the stored session's ID, instead got " + storedSession.ID.Hex())
+	}
+
 	// Wrong pass
 	testUtils.SetupData(db, "users", mockUser)
 
