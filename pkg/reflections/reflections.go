@@ -154,3 +154,25 @@ func GetBSONTagNames(rType reflect.Type) ([]string, error) {
 func GetJSONTagNames(rType reflect.Type) ([]string, error) {
 	return GetTagNames(rType, "json")
 }
+
+// IsFieldValid returns true if a field exists in the struct type
+func IsFieldValid(rType reflect.Type, fieldName string) bool {
+	_, err := GetField(rType, fieldName)
+
+	return err == nil
+}
+
+// AreMapFieldsValid returns true if all map's fields exist in the struct
+func AreMapFieldsValid(rType reflect.Type, m map[string]interface{}) bool {
+	for key := range m {
+		fieldExists := IsFieldValid(
+			rType,
+			key,
+		)
+		if !fieldExists {
+			return false
+		}
+	}
+
+	return true
+}

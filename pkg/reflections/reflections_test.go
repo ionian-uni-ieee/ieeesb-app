@@ -262,3 +262,72 @@ func TestConvertFieldNamesToTagNames(t *testing.T) {
 		t.Error("Expected converted map's keys to have same values with the map, instead it's value is", tagsM)
 	}
 }
+
+func TestIsFieldValid(t *testing.T) {
+	// Ok
+	type foo struct {
+		Name string
+	}
+
+	fieldExists := reflections.IsFieldValid(reflect.TypeOf(foo{}), "Name")
+
+	if !fieldExists {
+		t.Error("Expected fieldExists to return true")
+	}
+
+	// Not Ok
+	fieldExists = reflections.IsFieldValid(reflect.TypeOf(foo{}), "Password")
+
+	if fieldExists {
+		t.Error("Expected fieldExists to return false")
+	}
+}
+
+func TestAreMapFieldsValid(t *testing.T) {
+	// Ok
+	type foo struct {
+		Name string
+	}
+
+	m := map[string]interface{}{
+		"Name": "joe",
+	}
+
+	isMapValid := reflections.AreMapFieldsValid(
+		reflect.TypeOf(foo{}),
+		m,
+	)
+
+	if !isMapValid {
+		t.Error("Expected isMapValid to return true")
+	}
+
+	// Non existant fields along with existant fields
+	m = map[string]interface{}{
+		"Name":     "joe",
+		"Password": "passjoe",
+	}
+
+	isMapValid = reflections.AreMapFieldsValid(
+		reflect.TypeOf(foo{}),
+		m,
+	)
+
+	if isMapValid {
+		t.Error("Expected isMapValid to return false")
+	}
+
+	// Only non existant fields
+	m = map[string]interface{}{
+		"Password": "passjoe",
+	}
+
+	isMapValid = reflections.AreMapFieldsValid(
+		reflect.TypeOf(foo{}),
+		m,
+	)
+
+	if isMapValid {
+		t.Error("Expected isMapValid to return false")
+	}
+}
