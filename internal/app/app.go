@@ -53,7 +53,7 @@ func (a *Application) Initialize(databaseDriver database.Driver) {
 	r.StrictSlash(true)
 
 	rep := repositories.MakeRepositories(databaseDriver)
-	h := httpHandler.MakeNewHandler(rep)
+	h := httpHandler.MakeHandler(rep)
 
 	r.HandleFunc("/ping", h.GetPing).Methods("GET")
 

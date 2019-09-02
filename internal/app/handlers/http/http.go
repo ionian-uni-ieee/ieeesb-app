@@ -39,7 +39,7 @@ type Handler struct {
 	mediaController    *media.Controller
 }
 
-func MakeNewHandler(repositories *repositories.Repositories) *Handler {
+func MakeHandler(repositories *repositories.Repositories) *Handler {
 	return &Handler{
 		users.MakeController(repositories),
 		events.MakeController(repositories),
