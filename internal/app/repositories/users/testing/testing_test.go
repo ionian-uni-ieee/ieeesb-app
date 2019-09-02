@@ -217,12 +217,21 @@ func TestInsertMany(t *testing.T) {
 func TestIsDuplicate(t *testing.T) {
 	db, usersRepository := makeRepository()
 
-	// Name is duplicate
+	// User is duplicate
 	testUtils.SetupData(db, "users", testUser1)
 
-	isDuplicate := usersRepository.IsDuplicate("email2", "username2", "fullname2")
+	isDuplicate := usersRepository.IsDuplicate(testUser1.Email, testUser1.Username, testUser1.Fullname)
 
 	if !isDuplicate {
-		t.Error("Expected name to be duplicate")
+		t.Error("Expected user to be duplicate")
+	}
+
+	// User is not duplicate
+	testUtils.ResetCollection(db, "users")
+
+	isDuplicate = usersRepository.IsDuplicate(testUser1.Email, testUser1.Username, testUser1.Fullname)
+
+	if isDuplicate {
+		t.Error("Expected user to not be duplicate")
 	}
 }
