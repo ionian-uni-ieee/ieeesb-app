@@ -28,8 +28,7 @@ func TestRegister(t *testing.T) {
 		0,
 	).(models.User)
 	
-	userIDEqualsRegisterID := firstUser.ID.Hex() != userID
-	if userIDEqualsRegisterID {
+	if firstUser.ID.Hex() != userID {
 		t.Error("Expected user's ID at row 0 to be equal to " + userID + " but instead it's equal to " + firstUsersID)
 	}
 
