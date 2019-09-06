@@ -29,7 +29,7 @@ func TestChangePassword(t *testing.T) {
 		reflect.TypeOf(models.User{}),
 		0).(models.User)
 
-	if firstUser.Password == string(mockUser.Password) {
+	if firstUser.Password == mockUser.Password {
 		t.Error("Expected password to have been changed, but it's the same with the old one")
 	}
 
