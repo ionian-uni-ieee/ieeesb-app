@@ -54,3 +54,18 @@ Its more important aspect is the fact that the student branch can advertise the 
 - [ ] Contact form
 
 - [ ] Control panel
+    - [ ] Events
+      - [ ] Create
+      - [ ] Delete
+      - [ ] Edit
+    - [ ] Tickets
+      - [ ] Respond
+      - [ ] Close
+    - [ ] Sponsors
+      - [ ] Add
+      - [ ] Remove
+      - [ ] Edit
+    - [ ] Managers
+      - [ ] Add
+      - [ ] Remove
+      - [ ] Edit
