@@ -1,7 +1,12 @@
+- [IEEE Web application](#ieee-web-application)
+  - [Why](#why)
+  - [Planned Features](#planned-features)
+    - [APP](#app)
+    - [WEB](#web)
+
 # IEEE Web application
 
 A IEEE Student Branch Dashboard & Management tool for student branches of the IEEE Organization.
-
 ## Why
 
 Members and the community of IEEE Student Branches will be able to advertise and interact with the community itself in an easier way. This application intends to tie the community in a much tighter form and shape a more robust social construct.
