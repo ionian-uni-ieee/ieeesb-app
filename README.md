@@ -8,7 +8,7 @@ Members and the community of IEEE Student Branches will be able to advertise and
 
 Its more important aspect is the fact that the student branch can advertise the SB's events. This means that the community will be more self-aware, more people will know about the SB's events and advertisment will be easier and more effortless.
 
-**In short: We spread knowledge, we make new friends and we meet people we haven't met before in a much more easier way.**
+**In short: We spread knowledge, we make new friends and we meet people we haven't met before in a much more easy way.**
 
 ## Planned Features
 
