@@ -6,11 +6,7 @@ import (
 )
 
 func main() {
-	app := &app.Application{
-		DatabasePort: "27017",
-		DatabaseHost: "mongodb://localhost",
-		DatabaseName: "test",
-	}
+	app := &app.Application{}
 
 	database := mongo.MakeDatabaseDriver()
 
