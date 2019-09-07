@@ -8,9 +8,6 @@
 *.dll
 *.test
 
-# Dependency directories
-/vendor/
-
 #######################
 # N O D E J S
 #
@@ -20,7 +17,7 @@
 coverage/
 
 # production
-build/
+web/build/
 
 # Dependency directories
 node_modules/
