@@ -3,7 +3,7 @@ FROM golang:1.13.0-alpine3.10
 # Default environment variables
 ENV API_HOST=app
 ENV API_PORT=5000
-ENV API_DATABASE_HOST=mongo://mongo
+ENV API_DATABASE_HOST=mongodb://mongo
 ENV API_DATABASE_NAME=local
 
 # Create directory for application's sources
@@ -20,7 +20,7 @@ COPY pkg ./pkg
 COPY go.mod go.sum ./
 
 # Copy vendors
-COPY vendors ./vendors
+COPY vendor ./vendor
 
 # Copy application
 COPY ./internal/app ./internal/app
