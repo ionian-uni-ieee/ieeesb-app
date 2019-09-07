@@ -198,7 +198,7 @@ func TestInsertOne(t *testing.T) {
 func TestInsertMany(t *testing.T) {
 	db, usersRepository := makeRepository()
 
-	t.Run("Inserts a user", func(t *testing.T) {
+	t.Run("Inserts many users", func(t *testing.T) {
 		testUtils.ResetCollection(db, "users")
 
 		users := []models.User{
@@ -223,7 +223,7 @@ func TestInsertMany(t *testing.T) {
 func TestIsDuplicate(t *testing.T) {
 	db, usersRepository := makeRepository()
 
-	t.Run("Duplicate user", func(t *testing.T) {
+	t.Run("Is duplicate user", func(t *testing.T) {
 		testUtils.SetupData(db, "users", testUser1)
 
 		isDuplicate := usersRepository.IsDuplicate(testUser1.Email, testUser1.Username, testUser1.Fullname)
@@ -231,11 +231,12 @@ func TestIsDuplicate(t *testing.T) {
 		if !isDuplicate {
 			t.Error("Expected user to be duplicate")
 		}
+	})
 
-		// User is not duplicate
+	t.Run("Is not a duplicate user", func(t *testing.T) {
 		testUtils.ResetCollection(db, "users")
 
-		isDuplicate = usersRepository.IsDuplicate(testUser1.Email, testUser1.Username, testUser1.Fullname)
+		isDuplicate := usersRepository.IsDuplicate(testUser1.Email, testUser1.Username, testUser1.Fullname)
 
 		if isDuplicate {
 			t.Error("Expected user to not be duplicate")
