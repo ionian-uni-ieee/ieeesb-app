@@ -37,11 +37,11 @@ Its more important aspect is the fact that the student branch can advertise the 
 
 - [ ] Blog (small priority)
   - [ ] Add article
-  - [ ] Remove article
+  - [ ] Delete article
   - [ ] Edit article
   - [ ] Add comment
   - [ ] Edit comment
-  - [ ] Remove comment
+  - [ ] Delete comment
 
 ### WEB
 
@@ -63,9 +63,9 @@ Its more important aspect is the fact that the student branch can advertise the 
       - [ ] Close
     - [ ] Sponsors
       - [ ] Add
-      - [ ] Remove
+      - [ ] Delete
       - [ ] Edit
     - [ ] Managers
       - [ ] Add
-      - [ ] Remove
+      - [ ] Delete
       - [ ] Edit
