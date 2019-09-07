@@ -49,107 +49,112 @@ var testUser3 = models.User{
 func TestFindByID(t *testing.T) {
 	db, usersRepository := makeRepository()
 
-	// Regular example
-	testUtils.SetupData(db, "users", testUser1)
+	t.Run("Finds user", func(t *testing.T) {
+		testUtils.SetupData(db, "users", testUser1)
 
-	userFound, err := usersRepository.FindByID(testUser1.ID.Hex())
+		userFound, err := usersRepository.FindByID(testUser1.ID.Hex())
 
-	if err != nil {
-		t.Error(err)
-	}
+		if err != nil {
+			t.Error(err)
+		}
 
-	if userFound == nil {
-		t.Error("Expected result to be an user object, got nil instead")
-	}
+		if userFound == nil {
+			t.Error("Expected result to be an user object, got nil instead")
+		}
 
-	if userFound != nil && userFound.ID != testUser1.ID {
-		t.Error("Expected user's id to be", testUser1.ID.Hex(), "but is", userFound.ID.Hex())
-	}
+		if userFound != nil && userFound.ID != testUser1.ID {
+			t.Error("Expected user's id to be", testUser1.ID.Hex(), "but is", userFound.ID.Hex())
+		}
+	})
 }
 
 func TestUpdateByID(t *testing.T) {
 	db, usersRepository := makeRepository()
 
-	// Regular example
-	testUtils.SetupData(db, "users", testUser1)
+	t.Run("Updates user", func(t *testing.T) {
+		testUtils.SetupData(db, "users", testUser1)
 
-	newUsername := "newusername"
-	err := usersRepository.UpdateByID(testUser1.ID.Hex(), map[string]interface{}{
-		"Username": newUsername,
+		newUsername := "newusername"
+		err := usersRepository.UpdateByID(testUser1.ID.Hex(), map[string]interface{}{
+			"Username": newUsername,
+		})
+
+		if err != nil {
+			t.Error(err)
+		}
+
+		usernameStored := usersRepository.Collection.Columns["Username"][0]
+		usernameChanged := usernameStored != newUsername
+		if usernameChanged {
+			t.Error("Expected username to be '"+newUsername+"', but instead got", usernameStored)
+		}
 	})
-
-	if err != nil {
-		t.Error(err)
-	}
-
-	usernameStored := usersRepository.Collection.Columns["Username"][0]
-	usernameChanged := usernameStored != newUsername
-	if usernameChanged {
-		t.Error("Expected username to be '"+newUsername+"', but instead got", usernameStored)
-	}
 }
 
 func TestDeleteByID(t *testing.T) {
 	db, usersRepository := makeRepository()
 
-	// Regular example
-	testUtils.SetupData(db, "users", testUser1)
+	t.Run("Deletes user", func(t *testing.T) {
+		testUtils.SetupData(db, "users", testUser1)
 
-	err := usersRepository.DeleteByID(testUser1.ID.Hex())
+		err := usersRepository.DeleteByID(testUser1.ID.Hex())
 
-	if err != nil {
-		t.Error(err)
-	}
-
-	for key, column := range usersRepository.Collection.Columns {
-		if len(column) > 0 {
-			t.Error("Expected column", key, "to have length of 0, but instead got", len(column))
+		if err != nil {
+			t.Error(err)
 		}
-	}
+
+		for key, column := range usersRepository.Collection.Columns {
+			if len(column) > 0 {
+				t.Error("Expected column", key, "to have length of 0, but instead got", len(column))
+			}
+		}
+	})
 }
 
 func TestFind(t *testing.T) {
 	db, usersRepository := makeRepository()
 
-	// Regular example
-	testUtils.SetupData(db, "users", testUser1, testUser1)
+	t.Run("Finds users", func(t *testing.T) {
+		testUtils.SetupData(db, "users", testUser1, testUser1)
 
-	usersFound, err := usersRepository.Find(map[string]interface{}{
-		"Email": testUser1.Email,
+		usersFound, err := usersRepository.Find(map[string]interface{}{
+			"Email": testUser1.Email,
+		})
+
+		if err != nil {
+			t.Error(err)
+		}
+
+		if len(usersFound) != 2 {
+			t.Error("Expected len(users) to be 2, instead got", len(usersFound))
+		}
+
+		if usersFound[0].Username != usersFound[1].Username {
+			t.Error("Expected username to equal to each other, instead got",
+				usersFound[0].Username,
+				usersFound[1].Username)
+		}
 	})
-
-	if err != nil {
-		t.Error(err)
-	}
-
-	if len(usersFound) != 2 {
-		t.Error("Expected len(users) to be 2, instead got", len(usersFound))
-	}
-
-	if usersFound[0].Username != usersFound[1].Username {
-		t.Error("Expected username to equal to each other, instead got",
-			usersFound[0].Username,
-			usersFound[1].Username)
-	}
 }
 
 func TestFindOne(t *testing.T) {
 	db, usersRepository := makeRepository()
 
-	// Regular example
-	testUtils.SetupData(db, "users", testUser1, testUser2)
+	t.Run("Find a user", func(t *testing.T) {
+		testUtils.SetupData(db, "users", testUser1, testUser2)
 
-	userFound, err := usersRepository.FindOne(map[string]interface{}{
-		"Username": testUser1.Username,
+		userFound, err := usersRepository.FindOne(map[string]interface{}{
+			"Username": testUser1.Username,
+		})
+
+		if err != nil {
+			t.Error(err)
+		}
+
+		if userFound.Username != testUser1.Username {
+			t.Error("Expected username to equal 'username2', instead got", userFound.Username)
+		}
 	})
-
-	if err != nil {
-		t.Error(err)
-	}
-
-	if userFound.Username != testUser1.Username {
-		t.Error("Expected username to equal 'username2', instead got", userFound.Username)
-	}
 }
 
 func TestUpdateMany(t *testing.T) {
@@ -164,73 +169,76 @@ func TestInsertOne(t *testing.T) {
 
 	db, usersRepository := makeRepository()
 
-	// Regular example
-	testUtils.ResetCollection(db, "users")
+	t.Run("Inserts a user", func(t *testing.T) {
+		testUtils.ResetCollection(db, "users")
 
-	insertedID, err := usersRepository.InsertOne(testUser1)
+		insertedID, err := usersRepository.InsertOne(testUser1)
 
-	if err != nil {
-		t.Error(err)
-	}
+		if err != nil {
+			t.Error(err)
+		}
 
-	if insertedID != testUser1.ID.Hex() {
-		t.Error("Expected inserted id to be ", testUser1.ID.Hex(), "but instead got", insertedID)
-	}
+		if insertedID != testUser1.ID.Hex() {
+			t.Error("Expected inserted id to be ", testUser1.ID.Hex(), "but instead got", insertedID)
+		}
 
-	storedUser := testUtils.GetInterfaceAtCollectionRow(
-		db,
-		"users",
-		reflect.TypeOf(models.User{}),
-		0,
-	).(models.User)
+		storedUser := testUtils.GetInterfaceAtCollectionRow(
+			db,
+			"users",
+			reflect.TypeOf(models.User{}),
+			0,
+		).(models.User)
 
-	if storedUser.ID.Hex() != insertedID {
-		t.Error("Expected stored user's ID to equal insertedID")
-	}
+		if storedUser.ID.Hex() != insertedID {
+			t.Error("Expected stored user's ID to equal insertedID")
+		}
+	})
 }
 
 func TestInsertMany(t *testing.T) {
 	db, usersRepository := makeRepository()
 
-	// Regular example
-	testUtils.ResetCollection(db, "users")
+	t.Run("Inserts a user", func(t *testing.T) {
+		testUtils.ResetCollection(db, "users")
 
-	users := []models.User{
-		testUser1,
-		testUser2,
-		testUser3,
-	}
+		users := []models.User{
+			testUser1,
+			testUser2,
+			testUser3,
+		}
 
-	insertedIDs, err := usersRepository.InsertMany(users)
+		insertedIDs, err := usersRepository.InsertMany(users)
 
-	if err != nil {
-		t.Error(err)
-	}
+		if err != nil {
+			t.Error(err)
+		}
 
-	if insertedIDs[0] != users[0].ID.Hex() ||
-		insertedIDs[1] != users[1].ID.Hex() {
-		t.Error("Expected inserted ids to be ", users[0].ID.Hex(), users[1].ID.Hex(), "but instead got", insertedIDs)
-	}
+		if insertedIDs[0] != users[0].ID.Hex() ||
+			insertedIDs[1] != users[1].ID.Hex() {
+			t.Error("Expected inserted ids to be ", users[0].ID.Hex(), users[1].ID.Hex(), "but instead got", insertedIDs)
+		}
+	})
 }
 
 func TestIsDuplicate(t *testing.T) {
 	db, usersRepository := makeRepository()
 
-	// User is duplicate
-	testUtils.SetupData(db, "users", testUser1)
+	t.Run("Duplicate user", func(t *testing.T) {
+		testUtils.SetupData(db, "users", testUser1)
 
-	isDuplicate := usersRepository.IsDuplicate(testUser1.Email, testUser1.Username, testUser1.Fullname)
+		isDuplicate := usersRepository.IsDuplicate(testUser1.Email, testUser1.Username, testUser1.Fullname)
 
-	if !isDuplicate {
-		t.Error("Expected user to be duplicate")
-	}
+		if !isDuplicate {
+			t.Error("Expected user to be duplicate")
+		}
 
-	// User is not duplicate
-	testUtils.ResetCollection(db, "users")
+		// User is not duplicate
+		testUtils.ResetCollection(db, "users")
 
-	isDuplicate = usersRepository.IsDuplicate(testUser1.Email, testUser1.Username, testUser1.Fullname)
+		isDuplicate = usersRepository.IsDuplicate(testUser1.Email, testUser1.Username, testUser1.Fullname)
 
-	if isDuplicate {
-		t.Error("Expected user to not be duplicate")
-	}
+		if isDuplicate {
+			t.Error("Expected user to not be duplicate")
+		}
+	})
 }

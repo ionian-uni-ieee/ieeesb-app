@@ -10,27 +10,30 @@ func TestLogout(t *testing.T) {
 	// Setup
 	db, usersController := makeController()
 
-	// Ok logout
-	testUtils.SetupData(db, "users", mockUser)
-	testUtils.SetupData(db, "sessions", mockSession)
+	t.Run("Logouts", func(t *testing.T) {
+		testUtils.SetupData(db, "users", mockUser)
+		testUtils.SetupData(db, "sessions", mockSession)
 
-	err := usersController.Logout(mockSession.ID.Hex())
+		err := usersController.Logout(mockSession.ID.Hex())
 
-	if err != nil {
-		t.Error(err)
-	}
+		if err != nil {
+			t.Error(err)
+		}
 
-	if !testUtils.IsCollectionEmpty(db, "sessions") {
-		t.Error("Expected sessions collection to be empty")
-	}
+		if !testUtils.IsCollectionEmpty(db, "sessions") {
+			t.Error("Expected sessions collection to be empty")
+		}
 
-	// No such session in database
-	testUtils.ResetCollection(db, "sessions")
+	})
 
-	err = usersController.Logout(mockSession.ID.Hex())
+	t.Run("No session to logout from", func(t *testing.T) {
+		testUtils.ResetCollection(db, "sessions")
 
-	expectedError := "No session with this ID exists"
-	if err.Error() != expectedError {
-		t.Error("Expected '" + expectedError + "' error but instead got " + err.Error())
-	}
+		err := usersController.Logout(mockSession.ID.Hex())
+
+		expectedError := "No session with this ID exists"
+		if err.Error() != expectedError {
+			t.Error("Expected '" + expectedError + "' error but instead got " + err.Error())
+		}
+	})
 }
