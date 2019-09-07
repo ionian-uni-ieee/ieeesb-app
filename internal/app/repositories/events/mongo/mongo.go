@@ -142,11 +142,12 @@ func (r *Repository) InsertMany(documents []models.Event) ([]string, error) {
 }
 
 func (r *Repository) IsDuplicate(name string) bool {
-	sameKeyFilter := &bson.M{
+	sameKeysFilter := &bson.M{
 		"name": name,
 	}
 
-	eventFound, err := r.FindOne(sameKeyFilter)
+	eventFound := models.Sponsor{}
+	r.collection.FindOne(context.Background(), sameKeysFilter).Decode(&eventFound)
 
-	return (err != nil) || (eventFound != nil)
+	return !eventFound.ID.IsZero()
 }

@@ -227,7 +227,8 @@ func (r *Repository) IsDuplicate(email string, username string, fullname string)
 			bson.M{"fullname": fullname},
 		}}
 
-	userFound, err := r.FindOne(sameKeysFilter)
+	userFound := models.User{}
+	r.collection.FindOne(context.Background(), sameKeysFilter).Decode(&userFound)
 
-	return (err != nil) || userFound != nil
+	return !userFound.ID.IsZero()
 }

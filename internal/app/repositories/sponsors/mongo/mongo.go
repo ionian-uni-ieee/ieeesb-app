@@ -142,5 +142,12 @@ func (r *Repository) InsertMany(documents []models.Sponsor) ([]string, error) {
 }
 
 func (r *Repository) IsDuplicate(name string) bool {
-	return false
+	sameKeysFilter := &bson.M{
+		"name": name,
+	}
+
+	sponsorFound := models.Sponsor{}
+	r.collection.FindOne(context.Background(), sameKeysFilter).Decode(&sponsorFound)
+
+	return !sponsorFound.ID.IsZero()
 }
