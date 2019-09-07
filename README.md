@@ -26,7 +26,7 @@ Its more important aspect is the fact that the student branch can advertise the 
   -  [x] Get Profile
 
 - [ ] Contact Tickets
-  - [ ] Contact
+  - [x] Contact
   - [ ] Manager Respond
   - [x] Close Ticket
 
