@@ -43,7 +43,7 @@ Its more important aspect is the fact that the student branch can advertise the 
   - [ ] Edit comment
   - [ ] Remove comment
 
-### Web
+### WEB
 
 - [ ] Calendar
   - [ ] Show events
