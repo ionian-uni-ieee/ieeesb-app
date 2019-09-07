@@ -16,6 +16,8 @@ services:
     environment:
       API_DATABASE_USERNAME: root
       API_DATABASE_PASSWORD: pass
+    volumes:
+      - app-storage:/data/
     networks:
       - backend
 
@@ -27,14 +29,15 @@ services:
       MONGO_INITDB_ROOT_USERNAME_FILE: /run/secrets/mongo-user
       MONGO_INITDB_ROOT_PASSWORD_FILE: /run/secrets/mongo-pass
     volumes:
-      - app-data:/data/db
+      - app-db:/data/db
     networks:
       - backend
     # TODO: To remove when db auth update is provided
     command: [--noauth]
 
 volumes:
-  app-data: {}
+  app-db: {}
+  app-storage: {}
 
 networks:
   frontend:
