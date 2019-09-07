@@ -28,7 +28,7 @@ Its more important aspect is the fact that the student branch can advertise the 
 - [ ] Contact Tickets
   - [ ] Contact
   - [ ] Manager Respond
-  - [ ] Close Ticket
+  - [x] Close Ticket
 
 - [ ] Sponsors
   - [ ] Add

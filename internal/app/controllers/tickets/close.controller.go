@@ -31,7 +31,7 @@ func (c *Controller) Close(ticketID string) error {
 
 	ticket.State = "closed"
 
-	err = c.repositories.TicketsRepository.UpdateByID(ticketID, ticket)
+	err = c.repositories.TicketsRepository.UpdateByID(ticketID, *ticket)
 
 	return err
 }
