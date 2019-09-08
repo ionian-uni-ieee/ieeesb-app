@@ -11,7 +11,7 @@ func TestProfile(t *testing.T) {
 	// Setup
 	db, usersController := makeController()
 
-	t.Run("Gets profile", func(t *testing.T) {
+	t.Run("Should return user's profile", func(t *testing.T) {
 		testUtils.SetupData(db, "users", mockUser)
 		testUtils.SetupData(db, "sessions", mockSession)
 
@@ -19,6 +19,7 @@ func TestProfile(t *testing.T) {
 
 		if gotErr != nil {
 			t.Error(gotErr)
+			t.SkipNow()
 		}
 
 		if gotUser.ID != mockUser.ID {
@@ -26,8 +27,7 @@ func TestProfile(t *testing.T) {
 		}
 	})
 
-	// No such session
-	t.Run("No session", func(t *testing.T) {
+	t.Run("Should return no such session error", func(t *testing.T) {
 		testUtils.ResetCollection(db, "users")
 		testUtils.ResetCollection(db, "sessions")
 

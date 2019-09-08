@@ -10,7 +10,7 @@ func TestLogout(t *testing.T) {
 	// Setup
 	db, usersController := makeController()
 
-	t.Run("Logouts", func(t *testing.T) {
+	t.Run("Should delete stored session", func(t *testing.T) {
 		testUtils.SetupData(db, "users", mockUser)
 		testUtils.SetupData(db, "sessions", mockSession)
 
@@ -18,6 +18,7 @@ func TestLogout(t *testing.T) {
 
 		if gotErr != nil {
 			t.Error(gotErr)
+			t.Skip()
 		}
 
 		if !testUtils.IsCollectionEmpty(db, "sessions") {
@@ -26,7 +27,7 @@ func TestLogout(t *testing.T) {
 
 	})
 
-	t.Run("No session to logout from", func(t *testing.T) {
+	t.Run("Should return no such session error", func(t *testing.T) {
 		testUtils.ResetCollection(db, "sessions")
 
 		gotErr := usersController.Logout(mockSession.ID.Hex())

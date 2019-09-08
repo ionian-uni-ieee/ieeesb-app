@@ -12,7 +12,7 @@ func TestChangePassword(t *testing.T) {
 	// Setup
 	db, usersController := makeController()
 
-	t.Run("Correct password", func(t *testing.T) {
+	t.Run("Should change stored user's password", func(t *testing.T) {
 		testUtils.SetupData(db, "users", mockUser)
 
 		newPassword := "new pass"
@@ -34,7 +34,7 @@ func TestChangePassword(t *testing.T) {
 		}
 	})
 
-	t.Run("Wrong password", func(t *testing.T) {
+	t.Run("Should return wrong password error", func(t *testing.T) {
 
 		testUtils.SetupData(db, "users", mockUser)
 

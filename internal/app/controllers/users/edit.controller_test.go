@@ -12,7 +12,7 @@ func TestEdit(t *testing.T) {
 	// Setup
 	db, usersController := makeController()
 
-	t.Run("Edits user", func(t *testing.T) {
+	t.Run("Should edit stored user", func(t *testing.T) {
 		testUtils.SetupData(db, "users", mockUser)
 
 		newFullname := "New Fullname"
@@ -23,6 +23,7 @@ func TestEdit(t *testing.T) {
 
 		if gotErr != nil {
 			t.Error(gotErr)
+			t.SkipNow()
 		}
 
 		storedUser := testUtils.GetInterfaceAtCollectionRow(

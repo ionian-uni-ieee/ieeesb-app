@@ -11,13 +11,14 @@ func TestDelete(t *testing.T) {
 	// Setup
 	db, usersController := makeController()
 
-	t.Run("Deletes user", func(t *testing.T) {
+	t.Run("Should delete stored user", func(t *testing.T) {
 		testUtils.SetupData(db, "users", mockUser)
 
 		gotErr := usersController.Delete(mockUser.ID.Hex())
 
 		if gotErr != nil {
 			t.Error(gotErr)
+			t.SkipNow()
 		}
 
 		if !testUtils.IsCollectionEmpty(db, "users") {
@@ -25,7 +26,7 @@ func TestDelete(t *testing.T) {
 		}
 	})
 
-	t.Run("Invalid ObjectID", func(t *testing.T) {
+	t.Run("Should return invalid ObjectID error", func(t *testing.T) {
 		testUtils.ResetCollection(db, "users")
 
 		gotErr := usersController.Delete("invalid object id")
@@ -33,6 +34,7 @@ func TestDelete(t *testing.T) {
 		expectedError := "Invalid ObjectID"
 		if gotErr.Error() != expectedError {
 			t.Error("Expected gotError to be '"+expectedError+"' but is", gotErr)
+			t.Skip()
 		}
 
 		// No such user ObjectID

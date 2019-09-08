@@ -13,13 +13,14 @@ func TestRegister(t *testing.T) {
 	db, usersController := makeController()
 
 	// Register user
-	t.Run("Registers user", func(t *testing.T) {
+	t.Run("Should store a new user", func(t *testing.T) {
 		testUtils.SetupData(db, "users")
 
 		gotUserID, gotErr := usersController.Register("john", "johnpass", "john@mail.com", "john doe")
 
 		if gotErr != nil {
 			t.Error(gotErr)
+			t.SkipNow()
 		}
 
 		firstUser := testUtils.GetInterfaceAtCollectionRow(
@@ -35,7 +36,7 @@ func TestRegister(t *testing.T) {
 		}
 	})
 
-	t.Run("Duplicate user", func(t *testing.T) {
+	t.Run("Should return user is duplicate error", func(t *testing.T) {
 
 		testUtils.SetupData(db, "users", mockUser)
 
@@ -44,6 +45,7 @@ func TestRegister(t *testing.T) {
 		expectedError := "A user with that username, fullname or email already exists"
 		if gotErr.Error() != expectedError {
 			t.Error("Expected '" + expectedError + "' gotError but instead got " + gotErr.Error())
+			t.SkipNow()
 		}
 
 		if testUtils.GetCollectionLength(db, "users") == 2 {

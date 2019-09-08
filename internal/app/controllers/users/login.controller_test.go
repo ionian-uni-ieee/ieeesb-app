@@ -12,17 +12,19 @@ func TestLogin(t *testing.T) {
 	// Setup
 	db, usersController := makeController()
 
-	t.Run("Correct Login", func(t *testing.T) {
+	t.Run("Should store a new session", func(t *testing.T) {
 		testUtils.SetupData(db, "users", mockUser)
 
 		gotSessionID, gotErr := usersController.Login(mockUser.Username, mockUserPass)
 
 		if gotErr != nil {
 			t.Error(gotErr)
+			t.SkipNow()
 		}
 
 		if gotSessionID == "" {
 			t.Error("Expected gotSessionID to be a non empty string")
+			t.SkipNow()
 		}
 
 		storedSession := testUtils.GetInterfaceAtCollectionRow(
@@ -37,7 +39,7 @@ func TestLogin(t *testing.T) {
 		}
 	})
 
-	t.Run("Wrong password", func(t *testing.T) {
+	t.Run("Should return wrong password error", func(t *testing.T) {
 		testUtils.SetupData(db, "users", mockUser)
 
 		gotSessionID, gotErr := usersController.Login(mockUser.Username, "wrong pass")
@@ -45,6 +47,7 @@ func TestLogin(t *testing.T) {
 		expectedError := "Password not verified"
 		if gotErr.Error() != expectedError {
 			t.Error("Expected '" + expectedError + "' gotError but instead got " + gotErr.Error())
+			t.Skip()
 		}
 
 		if gotSessionID != "" {
@@ -52,7 +55,7 @@ func TestLogin(t *testing.T) {
 		}
 	})
 
-	t.Run("User doesn't exist", func(t *testing.T) {
+	t.Run("Should return user not found error", func(t *testing.T) {
 		testUtils.ResetCollection(db, "users")
 
 		gotSessionID, gotErr := usersController.Login("randomuser", "randompass")
@@ -60,6 +63,7 @@ func TestLogin(t *testing.T) {
 		expectedError := "No user found"
 		if gotErr.Error() != expectedError {
 			t.Error("Expected '" + expectedError + "' gotError but instead got " + gotErr.Error())
+			t.Skip()
 		}
 
 		if gotSessionID != "" {
