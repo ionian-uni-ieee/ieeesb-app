@@ -176,3 +176,10 @@ func AreMapFieldsValid(rType reflect.Type, m map[string]interface{}) bool {
 
 	return true
 }
+
+// CreateEmptyInstance creates a new empty instance out of the struct's type
+func CreateEmptyInstance(rType reflect.Type) interface{} {
+	instance := reflect.New(rType)
+
+	return instance.Elem().Interface()
+}

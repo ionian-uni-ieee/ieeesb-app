@@ -330,4 +330,21 @@ func TestAreMapFieldsValid(t *testing.T) {
 	if isMapValid {
 		t.Error("Expected isMapValid to return false")
 	}
+	})
+}
+
+func TestCreateEmptyStructInstance(t *testing.T) {
+	t.Run("Should return an empty struct", func(t *testing.T) {
+		type foo struct {
+			Name string
+		}
+
+		gotInstance := reflections.CreateEmptyInstance(
+			reflect.TypeOf(foo{}),
+		).(foo)
+
+		if gotInstance.Name != "" {
+			t.Error("Expected empty instance name, but got " + gotInstance.Name)
+		}
+	})
 }
