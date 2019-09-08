@@ -12,7 +12,7 @@ func TestContact(t *testing.T) {
 	// Setup
 	db, ticketController := makeController()
 
-	t.Run("Creates a ticket", func(t *testing.T) {
+	t.Run("Should add a new ticket", func(t *testing.T) {
 		testUtils.ResetCollection(db, "tickets")
 		gotTicketID, gotErr := ticketController.Contact(
 			mockActiveTicket.Email,
@@ -30,6 +30,11 @@ func TestContact(t *testing.T) {
 			reflect.TypeOf(models.Ticket{}),
 			0,
 		).(models.Ticket)
+
+		if firstTicket.ID.IsZero() {
+			t.Error("Expected a non-zero ticket id")
+			t.Skip()
+		}
 
 		if firstTicket.ID.Hex() != gotTicketID {
 			t.Error("Expected first ticket's ID to equal the controller's returned ID, instead it's " + firstTicket.ID.Hex())
