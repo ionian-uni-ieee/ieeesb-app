@@ -12,7 +12,7 @@ func TestClose(t *testing.T) {
 	// Setup
 	db, ticketController := makeController()
 
-	t.Run("Closes ticket", func(t *testing.T) {
+	t.Run("Should change ticket's state to closed", func(t *testing.T) {
 		testUtils.SetupData(db, "tickets", mockActiveTicket)
 
 		gotErr := ticketController.Close(mockActiveTicket.ID.Hex())
@@ -33,7 +33,7 @@ func TestClose(t *testing.T) {
 		}
 	})
 
-	t.Run("Ticket already closed", func(t *testing.T) {
+	t.Run("Should return ticket is already closed error", func(t *testing.T) {
 		testUtils.SetupData(db, "tickets", mockClosedTicket)
 
 		gotErr := ticketController.Close(mockClosedTicket.ID.Hex())
@@ -44,7 +44,7 @@ func TestClose(t *testing.T) {
 		}
 	})
 
-	t.Run("No such ticket", func(t *testing.T) {
+	t.Run("Should return ticket was not found error", func(t *testing.T) {
 		testUtils.ResetCollection(db, "tickets")
 
 		gotErr := ticketController.Close(mockClosedTicket.ID.Hex())
