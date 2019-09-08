@@ -39,7 +39,7 @@ func GetInterfaceAtCollectionRow(db *testingDatabase.DatabaseSession, collection
 	users := db.GetCollection(collectionName).(*testingDatabase.Collection)
 
 	if IsCollectionEmpty(db, collectionName) {
-		return nil
+		return reflections.CreateEmptyInstance(structType)
 	}
 
 	fieldNames, err := reflections.GetFieldNames(structType)
