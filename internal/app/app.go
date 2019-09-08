@@ -7,9 +7,9 @@ import (
 
 	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
-	"github.com/ionian-uni-ieee/ieee-webapp/internal/app/drivers/database"
-	httpHandler "github.com/ionian-uni-ieee/ieee-webapp/internal/app/handlers/http"
-	"github.com/ionian-uni-ieee/ieee-webapp/internal/app/repositories"
+	"github.com/ionian-uni-ieee/ieeesb-app/internal/app/drivers/database"
+	httpHandler "github.com/ionian-uni-ieee/ieeesb-app/internal/app/handlers/http"
+	"github.com/ionian-uni-ieee/ieeesb-app/internal/app/repositories"
 	"github.com/joho/godotenv"
 )
 

@@ -5,9 +5,9 @@ import (
 	"errors"
 	"reflect"
 
-	"github.com/ionian-uni-ieee/ieee-webapp/internal/app/drivers/database"
-	"github.com/ionian-uni-ieee/ieee-webapp/internal/app/models"
-	"github.com/ionian-uni-ieee/ieee-webapp/pkg/reflections"
+	"github.com/ionian-uni-ieee/ieeesb-app/internal/app/drivers/database"
+	"github.com/ionian-uni-ieee/ieeesb-app/internal/app/models"
+	"github.com/ionian-uni-ieee/ieeesb-app/pkg/reflections"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	mongod "go.mongodb.org/mongo-driver/mongo"

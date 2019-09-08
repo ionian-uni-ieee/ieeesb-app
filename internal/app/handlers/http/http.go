@@ -5,12 +5,12 @@ import (
 	"net/http"
 
 	"github.com/gorilla/securecookie"
-	"github.com/ionian-uni-ieee/ieee-webapp/internal/app/controllers/events"
-	"github.com/ionian-uni-ieee/ieee-webapp/internal/app/controllers/media"
-	"github.com/ionian-uni-ieee/ieee-webapp/internal/app/controllers/sponsors"
-	"github.com/ionian-uni-ieee/ieee-webapp/internal/app/controllers/tickets"
-	"github.com/ionian-uni-ieee/ieee-webapp/internal/app/controllers/users"
-	"github.com/ionian-uni-ieee/ieee-webapp/internal/app/repositories"
+	"github.com/ionian-uni-ieee/ieeesb-app/internal/app/controllers/events"
+	"github.com/ionian-uni-ieee/ieeesb-app/internal/app/controllers/media"
+	"github.com/ionian-uni-ieee/ieeesb-app/internal/app/controllers/sponsors"
+	"github.com/ionian-uni-ieee/ieeesb-app/internal/app/controllers/tickets"
+	"github.com/ionian-uni-ieee/ieeesb-app/internal/app/controllers/users"
+	"github.com/ionian-uni-ieee/ieeesb-app/internal/app/repositories"
 )
 
 type httpError struct {

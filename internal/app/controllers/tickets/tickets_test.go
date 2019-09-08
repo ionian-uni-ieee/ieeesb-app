@@ -1,10 +1,10 @@
 package tickets_test
 
 import (
-	"github.com/ionian-uni-ieee/ieee-webapp/internal/app/controllers/tickets"
-	testingDatabase "github.com/ionian-uni-ieee/ieee-webapp/internal/app/drivers/database/testing"
-	"github.com/ionian-uni-ieee/ieee-webapp/internal/app/models"
-	"github.com/ionian-uni-ieee/ieee-webapp/internal/app/repositories"
+	"github.com/ionian-uni-ieee/ieeesb-app/internal/app/controllers/tickets"
+	testingDatabase "github.com/ionian-uni-ieee/ieeesb-app/internal/app/drivers/database/testing"
+	"github.com/ionian-uni-ieee/ieeesb-app/internal/app/models"
+	"github.com/ionian-uni-ieee/ieeesb-app/internal/app/repositories"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 

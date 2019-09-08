@@ -1,6 +1,6 @@
 package sessions
 
-import "github.com/ionian-uni-ieee/ieee-webapp/internal/app/models"
+import "github.com/ionian-uni-ieee/ieeesb-app/internal/app/models"
 
 type Repository interface {
 	FindByID(sessionID string) (*models.Session, error)

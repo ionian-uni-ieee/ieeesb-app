@@ -3,7 +3,7 @@ package tickets
 import (
 	"errors"
 
-	"github.com/ionian-uni-ieee/ieee-webapp/internal/app/models"
+	"github.com/ionian-uni-ieee/ieeesb-app/internal/app/models"
 )
 
 // Contact creates a new ticket

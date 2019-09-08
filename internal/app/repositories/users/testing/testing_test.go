@@ -4,10 +4,10 @@ import (
 	"reflect"
 	"testing"
 
-	testingDatabase "github.com/ionian-uni-ieee/ieee-webapp/internal/app/drivers/database/testing"
-	"github.com/ionian-uni-ieee/ieee-webapp/internal/app/models"
-	users "github.com/ionian-uni-ieee/ieee-webapp/internal/app/repositories/users/testing"
-	"github.com/ionian-uni-ieee/ieee-webapp/internal/app/testUtils"
+	testingDatabase "github.com/ionian-uni-ieee/ieeesb-app/internal/app/drivers/database/testing"
+	"github.com/ionian-uni-ieee/ieeesb-app/internal/app/models"
+	users "github.com/ionian-uni-ieee/ieeesb-app/internal/app/repositories/users/testing"
+	"github.com/ionian-uni-ieee/ieeesb-app/internal/app/testUtils"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 

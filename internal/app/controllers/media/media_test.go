@@ -1,9 +1,9 @@
 package media_test
 
 import (
-	"github.com/ionian-uni-ieee/ieee-webapp/internal/app/controllers/media"
-	testingDatabase "github.com/ionian-uni-ieee/ieee-webapp/internal/app/drivers/database/testing"
-	"github.com/ionian-uni-ieee/ieee-webapp/internal/app/repositories"
+	"github.com/ionian-uni-ieee/ieeesb-app/internal/app/controllers/media"
+	testingDatabase "github.com/ionian-uni-ieee/ieeesb-app/internal/app/drivers/database/testing"
+	"github.com/ionian-uni-ieee/ieeesb-app/internal/app/repositories"
 )
 
 func makeController() (*testingDatabase.DatabaseSession, *media.Controller) {

@@ -4,8 +4,8 @@ import (
 	"reflect"
 	"testing"
 
-	"github.com/ionian-uni-ieee/ieee-webapp/internal/app/models"
-	"github.com/ionian-uni-ieee/ieee-webapp/internal/app/testUtils"
+	"github.com/ionian-uni-ieee/ieeesb-app/internal/app/models"
+	"github.com/ionian-uni-ieee/ieeesb-app/internal/app/testUtils"
 )
 
 func TestLogin(t *testing.T) {

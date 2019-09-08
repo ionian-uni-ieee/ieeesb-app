@@ -4,7 +4,7 @@ import (
 	"reflect"
 	"testing"
 
-	"github.com/ionian-uni-ieee/ieee-webapp/pkg/reflections"
+	"github.com/ionian-uni-ieee/ieeesb-app/pkg/reflections"
 )
 
 func TestSetFieldValue(t *testing.T) {

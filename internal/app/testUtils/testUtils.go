@@ -3,8 +3,8 @@ package testUtils
 import (
 	"reflect"
 
-	testingDatabase "github.com/ionian-uni-ieee/ieee-webapp/internal/app/drivers/database/testing"
-	"github.com/ionian-uni-ieee/ieee-webapp/pkg/reflections"
+	testingDatabase "github.com/ionian-uni-ieee/ieeesb-app/internal/app/drivers/database/testing"
+	"github.com/ionian-uni-ieee/ieeesb-app/pkg/reflections"
 )
 
 // IsInterfaceEqualToCollectionRow checks if the collection at a specific row

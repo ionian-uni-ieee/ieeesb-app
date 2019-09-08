@@ -1,22 +1,22 @@
 package repositories
 
 import (
-	"github.com/ionian-uni-ieee/ieee-webapp/internal/app/drivers/database"
-	"github.com/ionian-uni-ieee/ieee-webapp/internal/app/repositories/events"
-	eventsMongo "github.com/ionian-uni-ieee/ieee-webapp/internal/app/repositories/events/mongo"
-	eventsTesting "github.com/ionian-uni-ieee/ieee-webapp/internal/app/repositories/events/testing"
-	"github.com/ionian-uni-ieee/ieee-webapp/internal/app/repositories/sessions"
-	sessionsMongo "github.com/ionian-uni-ieee/ieee-webapp/internal/app/repositories/sessions/mongo"
-	sessionsTesting "github.com/ionian-uni-ieee/ieee-webapp/internal/app/repositories/sessions/testing"
-	"github.com/ionian-uni-ieee/ieee-webapp/internal/app/repositories/sponsors"
-	sponsorsMongo "github.com/ionian-uni-ieee/ieee-webapp/internal/app/repositories/sponsors/mongo"
-	sponsorsTesting "github.com/ionian-uni-ieee/ieee-webapp/internal/app/repositories/sponsors/testing"
-	"github.com/ionian-uni-ieee/ieee-webapp/internal/app/repositories/tickets"
-	ticketsMongo "github.com/ionian-uni-ieee/ieee-webapp/internal/app/repositories/tickets/mongo"
-	ticketsTesting "github.com/ionian-uni-ieee/ieee-webapp/internal/app/repositories/tickets/testing"
-	"github.com/ionian-uni-ieee/ieee-webapp/internal/app/repositories/users"
-	usersMongo "github.com/ionian-uni-ieee/ieee-webapp/internal/app/repositories/users/mongo"
-	usersTesting "github.com/ionian-uni-ieee/ieee-webapp/internal/app/repositories/users/testing"
+	"github.com/ionian-uni-ieee/ieeesb-app/internal/app/drivers/database"
+	"github.com/ionian-uni-ieee/ieeesb-app/internal/app/repositories/events"
+	eventsMongo "github.com/ionian-uni-ieee/ieeesb-app/internal/app/repositories/events/mongo"
+	eventsTesting "github.com/ionian-uni-ieee/ieeesb-app/internal/app/repositories/events/testing"
+	"github.com/ionian-uni-ieee/ieeesb-app/internal/app/repositories/sessions"
+	sessionsMongo "github.com/ionian-uni-ieee/ieeesb-app/internal/app/repositories/sessions/mongo"
+	sessionsTesting "github.com/ionian-uni-ieee/ieeesb-app/internal/app/repositories/sessions/testing"
+	"github.com/ionian-uni-ieee/ieeesb-app/internal/app/repositories/sponsors"
+	sponsorsMongo "github.com/ionian-uni-ieee/ieeesb-app/internal/app/repositories/sponsors/mongo"
+	sponsorsTesting "github.com/ionian-uni-ieee/ieeesb-app/internal/app/repositories/sponsors/testing"
+	"github.com/ionian-uni-ieee/ieeesb-app/internal/app/repositories/tickets"
+	ticketsMongo "github.com/ionian-uni-ieee/ieeesb-app/internal/app/repositories/tickets/mongo"
+	ticketsTesting "github.com/ionian-uni-ieee/ieeesb-app/internal/app/repositories/tickets/testing"
+	"github.com/ionian-uni-ieee/ieeesb-app/internal/app/repositories/users"
+	usersMongo "github.com/ionian-uni-ieee/ieeesb-app/internal/app/repositories/users/mongo"
+	usersTesting "github.com/ionian-uni-ieee/ieeesb-app/internal/app/repositories/users/testing"
 )
 
 // Repositories stores all the model repositories

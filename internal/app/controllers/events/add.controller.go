@@ -4,7 +4,7 @@ import (
 	"errors"
 	"strconv"
 
-	"github.com/ionian-uni-ieee/ieee-webapp/internal/app/models"
+	"github.com/ionian-uni-ieee/ieeesb-app/internal/app/models"
 )
 
 // Add adds an event to the repository

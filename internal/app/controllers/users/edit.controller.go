@@ -4,8 +4,8 @@ import (
 	"errors"
 	"reflect"
 
-	"github.com/ionian-uni-ieee/ieee-webapp/internal/app/models"
-	"github.com/ionian-uni-ieee/ieee-webapp/pkg/reflections"
+	"github.com/ionian-uni-ieee/ieeesb-app/internal/app/models"
+	"github.com/ionian-uni-ieee/ieeesb-app/pkg/reflections"
 )
 
 // Edit updates a user to the model provided

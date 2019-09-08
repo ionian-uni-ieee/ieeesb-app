@@ -3,7 +3,7 @@ package users
 import (
 	"errors"
 
-	"github.com/ionian-uni-ieee/ieee-webapp/internal/app/models"
+	"github.com/ionian-uni-ieee/ieeesb-app/internal/app/models"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 

@@ -1,8 +1,8 @@
 package main
 
 import (
-	"github.com/ionian-uni-ieee/ieee-webapp/internal/app"
-	"github.com/ionian-uni-ieee/ieee-webapp/internal/app/drivers/database/mongo"
+	"github.com/ionian-uni-ieee/ieeesb-app/internal/app"
+	"github.com/ionian-uni-ieee/ieeesb-app/internal/app/drivers/database/mongo"
 )
 
 func main() {

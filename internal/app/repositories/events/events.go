@@ -1,6 +1,6 @@
 package events
 
-import "github.com/ionian-uni-ieee/ieee-webapp/internal/app/models"
+import "github.com/ionian-uni-ieee/ieeesb-app/internal/app/models"
 
 type Repository interface {
 	FindByID(eventID string) (*models.Event, error)

@@ -3,10 +3,10 @@ package testing_test
 import (
 	"testing"
 
-	testingDatabase "github.com/ionian-uni-ieee/ieee-webapp/internal/app/drivers/database/testing"
-	"github.com/ionian-uni-ieee/ieee-webapp/internal/app/models"
-	events "github.com/ionian-uni-ieee/ieee-webapp/internal/app/repositories/events/testing"
-	"github.com/ionian-uni-ieee/ieee-webapp/internal/app/testUtils"
+	testingDatabase "github.com/ionian-uni-ieee/ieeesb-app/internal/app/drivers/database/testing"
+	"github.com/ionian-uni-ieee/ieeesb-app/internal/app/models"
+	events "github.com/ionian-uni-ieee/ieeesb-app/internal/app/repositories/events/testing"
+	"github.com/ionian-uni-ieee/ieeesb-app/internal/app/testUtils"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 

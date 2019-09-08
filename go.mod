@@ -1,4 +1,4 @@
-module github.com/ionian-uni-ieee/ieee-webapp
+module github.com/ionian-uni-ieee/ieeesb-app
 
 go 1.12
 

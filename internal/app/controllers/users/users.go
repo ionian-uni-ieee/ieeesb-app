@@ -1,7 +1,7 @@
 package users
 
 import (
-	"github.com/ionian-uni-ieee/ieee-webapp/internal/app/repositories"
+	"github.com/ionian-uni-ieee/ieeesb-app/internal/app/repositories"
 )
 
 // Controller keeps the necessary structure for all controllers to function correctly
