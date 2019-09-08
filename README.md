@@ -31,8 +31,8 @@ Its more important aspect is the fact that the student branch can advertise the 
   - [x] Close Ticket
 
 - [ ] Sponsors
-  - [ ] Add
-  - [ ] Delete
+  - [x] Add
+  - [x] Delete
   - [ ] Edit
 
 - [ ] Events
