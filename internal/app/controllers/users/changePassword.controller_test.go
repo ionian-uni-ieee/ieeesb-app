@@ -21,6 +21,7 @@ func TestChangePassword(t *testing.T) {
 
 		if gotErr != nil {
 			t.Error(gotErr)
+			t.SkipNow()
 		}
 
 		firstUser := testUtils.GetInterfaceAtCollectionRow(
