@@ -18,7 +18,7 @@ func TestLogout(t *testing.T) {
 
 		if gotErr != nil {
 			t.Error(gotErr)
-			t.Skip()
+			t.SkipNow()
 		}
 
 		if !testUtils.IsCollectionEmpty(db, "sessions") {

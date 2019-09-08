@@ -34,7 +34,7 @@ func TestDelete(t *testing.T) {
 		expectedError := "Invalid ObjectID"
 		if gotErr.Error() != expectedError {
 			t.Error("Expected gotError to be '"+expectedError+"' but is", gotErr)
-			t.Skip()
+			t.SkipNow()
 		}
 
 		// No such user ObjectID

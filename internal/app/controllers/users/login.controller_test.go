@@ -47,7 +47,7 @@ func TestLogin(t *testing.T) {
 		expectedError := "Password not verified"
 		if gotErr.Error() != expectedError {
 			t.Error("Expected '" + expectedError + "' gotError but instead got " + gotErr.Error())
-			t.Skip()
+			t.SkipNow()
 		}
 
 		if gotSessionID != "" {
@@ -63,7 +63,7 @@ func TestLogin(t *testing.T) {
 		expectedError := "No user found"
 		if gotErr.Error() != expectedError {
 			t.Error("Expected '" + expectedError + "' gotError but instead got " + gotErr.Error())
-			t.Skip()
+			t.SkipNow()
 		}
 
 		if gotSessionID != "" {
