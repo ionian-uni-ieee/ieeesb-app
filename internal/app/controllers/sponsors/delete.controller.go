@@ -6,6 +6,7 @@ import (
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
+// Delete removes a sponsor from repositories
 func (c *Controller) Delete(sponsorID string) error {
 	if sponsorID == "" {
 		return errors.New("SponsorID is empty string")
