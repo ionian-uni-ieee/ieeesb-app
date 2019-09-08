@@ -49,18 +49,18 @@ func TestFindByID(t *testing.T) {
 	// Regular example
 	testUtils.SetupData(db, "sponsors", testSponsor1)
 
-	sponsorFound, err := sponsorsRepository.FindByID(testSponsor1.ID.Hex())
+	gotSponsor, gotErr := sponsorsRepository.FindByID(testSponsor1.ID.Hex())
 
-	if err != nil {
-		t.Error(err)
+	if gotErr != nil {
+		t.Error(gotErr)
 	}
 
-	if sponsorFound == nil {
+	if gotSponsor == nil {
 		t.Error("Expected result to be an sponsor object, got nil instead")
 	}
 
-	if sponsorFound != nil && sponsorFound.ID != testSponsor1.ID {
-		t.Error("Expected sponsor's id to be", testSponsor1.ID.Hex(), "but is", sponsorFound.ID.Hex())
+	if gotSponsor != nil && gotSponsor.ID != testSponsor1.ID {
+		t.Error("Expected sponsor's id to be", testSponsor1.ID.Hex(), "but is", gotSponsor.ID.Hex())
 	}
 }
 
@@ -71,12 +71,12 @@ func TestUpdateByID(t *testing.T) {
 	testUtils.SetupData(db, "sponsors", testSponsor1)
 
 	newName := "New Name"
-	err := sponsorsRepository.UpdateByID(testSponsor1.ID.Hex(), map[string]interface{}{
+	gotErr := sponsorsRepository.UpdateByID(testSponsor1.ID.Hex(), map[string]interface{}{
 		"Name": newName,
 	})
 
-	if err != nil {
-		t.Error(err)
+	if gotErr != nil {
+		t.Error(gotErr)
 	}
 
 	storedName := sponsorsRepository.Collection.Columns["Name"][0]
@@ -92,10 +92,10 @@ func TestDeleteByID(t *testing.T) {
 	// Regular example
 	testUtils.SetupData(db, "sponsors", testSponsor1)
 
-	err := sponsorsRepository.DeleteByID(testSponsor1.ID.Hex())
+	gotErr := sponsorsRepository.DeleteByID(testSponsor1.ID.Hex())
 
-	if err != nil {
-		t.Error(err)
+	if gotErr != nil {
+		t.Error(gotErr)
 	}
 
 	for key, column := range sponsorsRepository.Collection.Columns {
@@ -111,22 +111,22 @@ func TestFind(t *testing.T) {
 	// Regular example
 	testUtils.SetupData(db, "sponsors", testSponsor1, testSponsor1)
 
-	sponsorsFound, err := sponsorsRepository.Find(map[string]interface{}{
+	gotSponsors, gotErr := sponsorsRepository.Find(map[string]interface{}{
 		"Name": testSponsor1.Name,
 	})
 
-	if err != nil {
-		t.Error(err)
+	if gotErr != nil {
+		t.Error(gotErr)
 	}
 
-	if len(sponsorsFound) != 2 {
-		t.Error("Expected len(sponsors) to be 2, instead got", len(sponsorsFound))
+	if len(gotSponsors) != 2 {
+		t.Error("Expected len(sponsors) to be 2, instead got", len(gotSponsors))
 	}
 
-	if sponsorsFound[0].Name != sponsorsFound[1].Name {
+	if gotSponsors[0].Name != gotSponsors[1].Name {
 		t.Error("Expected sponsorname to equal to each other, instead got",
-			sponsorsFound[0].Name,
-			sponsorsFound[1].Name)
+			gotSponsors[0].Name,
+			gotSponsors[1].Name)
 	}
 }
 
@@ -136,16 +136,16 @@ func TestFindOne(t *testing.T) {
 	// Regular example
 	testUtils.SetupData(db, "sponsors", testSponsor1, testSponsor2)
 
-	sponsorFound, err := sponsorsRepository.FindOne(map[string]interface{}{
+	gotSponsor, gotErr := sponsorsRepository.FindOne(map[string]interface{}{
 		"Name": testSponsor1.Name,
 	})
 
-	if err != nil {
-		t.Error(err)
+	if gotErr != nil {
+		t.Error(gotErr)
 	}
 
-	if sponsorFound.Name != testSponsor1.Name {
-		t.Error("Expected name to equal '" + testSponsor1.Name + "', instead got " + sponsorFound.Name)
+	if gotSponsor.Name != testSponsor1.Name {
+		t.Error("Expected name to equal '" + testSponsor1.Name + "', instead got " + gotSponsor.Name)
 	}
 }
 
@@ -164,14 +164,14 @@ func TestInsertOne(t *testing.T) {
 	// Regular example
 	testUtils.ResetCollection(db, "sponsors")
 
-	insertedID, err := sponsorsRepository.InsertOne(testSponsor1)
+	gotInsertedID, gotErr := sponsorsRepository.InsertOne(testSponsor1)
 
-	if err != nil {
-		t.Error(err)
+	if gotErr != nil {
+		t.Error(gotErr)
 	}
 
-	if insertedID != testSponsor1.ID.Hex() {
-		t.Error("Expected inserted id to be ", testSponsor1.ID.Hex(), "but instead got", insertedID)
+	if gotInsertedID != testSponsor1.ID.Hex() {
+		t.Error("Expected inserted id to be ", testSponsor1.ID.Hex(), "but instead got", gotInsertedID)
 	}
 
 	storedSponsor := testUtils.GetInterfaceAtCollectionRow(
@@ -181,8 +181,8 @@ func TestInsertOne(t *testing.T) {
 		0,
 	).(models.Sponsor)
 
-	if storedSponsor.ID.Hex() != insertedID {
-		t.Error("Expected stored user's ID to equal insertedID")
+	if storedSponsor.ID.Hex() != gotInsertedID {
+		t.Error("Expected stored user's ID to equal gotInsertedID")
 	}
 }
 
@@ -198,15 +198,15 @@ func TestInsertMany(t *testing.T) {
 		testSponsor3,
 	}
 
-	insertedIDs, err := sponsorsRepository.InsertMany(sponsors)
+	gotInsertedIDs, gotErr := sponsorsRepository.InsertMany(sponsors)
 
-	if err != nil {
-		t.Error(err)
+	if gotErr != nil {
+		t.Error(gotErr)
 	}
 
-	if insertedIDs[0] != sponsors[0].ID.Hex() ||
-		insertedIDs[1] != sponsors[1].ID.Hex() {
-		t.Error("Expected inserted ids to be ", sponsors[0].ID.Hex(), sponsors[1].ID.Hex(), "but instead got", insertedIDs)
+	if gotInsertedIDs[0] != sponsors[0].ID.Hex() ||
+		gotInsertedIDs[1] != sponsors[1].ID.Hex() {
+		t.Error("Expected inserted ids to be ", sponsors[0].ID.Hex(), sponsors[1].ID.Hex(), "but instead got", gotInsertedIDs)
 	}
 }
 
@@ -216,18 +216,18 @@ func TestIsDuplicate(t *testing.T) {
 	// Sponsor is duplicate
 	testUtils.SetupData(db, "sponsors", testSponsor1)
 
-	isDuplicate := sponsorsRepository.IsDuplicate(testSponsor1.Name)
+	gotIsDuplicate := sponsorsRepository.IsDuplicate(testSponsor1.Name)
 
-	if !isDuplicate {
+	if !gotIsDuplicate {
 		t.Error("Expected sponsor to be duplicate")
 	}
 
 	// Sponsor is not duplicate
 	testUtils.ResetCollection(db, "sponsors")
 
-	isDuplicate = sponsorsRepository.IsDuplicate(testSponsor1.Name)
+	gotIsDuplicate = sponsorsRepository.IsDuplicate(testSponsor1.Name)
 
-	if isDuplicate {
+	if gotIsDuplicate {
 		t.Error("Expected sponsor to not be duplicate")
 	}
 }

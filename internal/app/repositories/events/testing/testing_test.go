@@ -20,9 +20,9 @@ func makeRepository() (*testingDatabase.DatabaseSession, *events.Repository) {
 
 var testEvent1 = models.Event{
 	ID:          primitive.NewObjectID(),
-	Name:        "Arduino & Raspberry",
+	Name:        "Arduino & RaspbgotErry",
 	Description: "Learn how to deal with microcontrollers and micro pcs",
-	Tags:        []string{"arduino", "raspberry", "hardware", "electronics"},
+	Tags:        []string{"arduino", "raspbgotErry", "hardware", "electronics"},
 	Type:        "Workshop",
 	Sponsors:    []models.Sponsor{},
 	Logo:        models.MediaMeta{},
@@ -57,18 +57,18 @@ func TestFindByID(t *testing.T) {
 	// Regular example
 	testUtils.SetupData(db, "events", testEvent1)
 
-	eventFound, err := eventsRepository.FindByID(testEvent1.ID.Hex())
+	gotEvent, gotErr := eventsRepository.FindByID(testEvent1.ID.Hex())
 
-	if err != nil {
-		t.Error(err)
+	if gotErr != nil {
+		t.Error(gotErr)
 	}
 
-	if eventFound == nil {
+	if gotEvent == nil {
 		t.Error("Expected result to be an event object, got nil instead")
 	}
 
-	if eventFound != nil && eventFound.ID != testEvent1.ID {
-		t.Error("Expected event's id to be", testEvent1.ID.Hex(), "but is", eventFound.ID.Hex())
+	if gotEvent != nil && gotEvent.ID != testEvent1.ID {
+		t.Error("Expected event's id to be", testEvent1.ID.Hex(), "but is", gotEvent.ID.Hex())
 	}
 }
 
@@ -79,12 +79,12 @@ func TestUpdateByID(t *testing.T) {
 	testUtils.SetupData(db, "events", testEvent1)
 
 	newName := "New Name"
-	err := eventsRepository.UpdateByID(testEvent1.ID.Hex(), map[string]interface{}{
+	gotErr := eventsRepository.UpdateByID(testEvent1.ID.Hex(), map[string]interface{}{
 		"Name": newName,
 	})
 
-	if err != nil {
-		t.Error(err)
+	if gotErr != nil {
+		t.Error(gotErr)
 	}
 
 	storedName := eventsRepository.Collection.Columns["Name"][0]
@@ -100,10 +100,10 @@ func TestDeleteByID(t *testing.T) {
 	// Regular example
 	testUtils.SetupData(db, "events", testEvent1)
 
-	err := eventsRepository.DeleteByID(testEvent1.ID.Hex())
+	gotErr := eventsRepository.DeleteByID(testEvent1.ID.Hex())
 
-	if err != nil {
-		t.Error(err)
+	if gotErr != nil {
+		t.Error(gotErr)
 	}
 
 	for key, column := range eventsRepository.Collection.Columns {
@@ -119,22 +119,22 @@ func TestFind(t *testing.T) {
 	// Regular example
 	testUtils.SetupData(db, "events", testEvent1, testEvent1)
 
-	eventsFound, err := eventsRepository.Find(map[string]interface{}{
+	gotEvents, gotErr := eventsRepository.Find(map[string]interface{}{
 		"Name": testEvent1.Name,
 	})
 
-	if err != nil {
-		t.Error(err)
+	if gotErr != nil {
+		t.Error(gotErr)
 	}
 
-	if len(eventsFound) != 2 {
-		t.Error("Expected len(events) to be 2, instead got", len(eventsFound))
+	if len(gotEvents) != 2 {
+		t.Error("Expected len(events) to be 2, instead got", len(gotEvents))
 	}
 
-	if eventsFound[0].Name != eventsFound[1].Name {
+	if gotEvents[0].Name != gotEvents[1].Name {
 		t.Error("Expected name to equal to each other, instead got",
-			eventsFound[0].Name,
-			eventsFound[1].Name)
+			gotEvents[0].Name,
+			gotEvents[1].Name)
 	}
 }
 
@@ -144,16 +144,16 @@ func TestFindOne(t *testing.T) {
 	// Regular example
 	testUtils.SetupData(db, "events", testEvent1, testEvent2)
 
-	eventFound, err := eventsRepository.FindOne(map[string]interface{}{
+	gotEvent, gotErr := eventsRepository.FindOne(map[string]interface{}{
 		"Name": testEvent1.Name,
 	})
 
-	if err != nil {
-		t.Error(err)
+	if gotErr != nil {
+		t.Error(gotErr)
 	}
 
-	if eventFound.Name != testEvent1.Name {
-		t.Error("Expected name to equal '"+testEvent1.Name+"', instead got", eventFound.Name)
+	if gotEvent.Name != testEvent1.Name {
+		t.Error("Expected name to equal '"+testEvent1.Name+"', instead got", gotEvent.Name)
 	}
 }
 
@@ -172,14 +172,14 @@ func TestInsertOne(t *testing.T) {
 	// Regular example
 	testUtils.ResetCollection(db, "events")
 
-	insertedID, err := eventsRepository.InsertOne(testEvent1)
+	gotInsertedID, gotErr := eventsRepository.InsertOne(testEvent1)
 
-	if err != nil {
-		t.Error(err)
+	if gotErr != nil {
+		t.Error(gotErr)
 	}
 
-	if insertedID != testEvent1.ID.Hex() {
-		t.Error("Expected inserted id to be ", testEvent1.ID.Hex(), "but instead got", insertedID)
+	if gotInsertedID != testEvent1.ID.Hex() {
+		t.Error("Expected inserted id to be ", testEvent1.ID.Hex(), "but instead got", gotInsertedID)
 	}
 }
 
@@ -195,15 +195,15 @@ func TestInsertMany(t *testing.T) {
 		testEvent3,
 	}
 
-	insertedIDs, err := eventsRepository.InsertMany(events)
+	gotInsertedIDs, gotErr := eventsRepository.InsertMany(events)
 
-	if err != nil {
-		t.Error(err)
+	if gotErr != nil {
+		t.Error(gotErr)
 	}
 
-	if insertedIDs[0] != events[0].ID.Hex() ||
-		insertedIDs[1] != events[1].ID.Hex() {
-		t.Error("Expected inserted ids to be ", events[0].ID.Hex(), events[1].ID.Hex(), "but instead got", insertedIDs)
+	if gotInsertedIDs[0] != events[0].ID.Hex() ||
+		gotInsertedIDs[1] != events[1].ID.Hex() {
+		t.Error("Expected inserted ids to be ", events[0].ID.Hex(), events[1].ID.Hex(), "but instead got", gotInsertedIDs)
 	}
 }
 
@@ -213,18 +213,18 @@ func TestIsDuplicate(t *testing.T) {
 	// Event is duplicate
 	testUtils.SetupData(db, "events", testEvent1)
 
-	isDuplicate := eventsRepository.IsDuplicate(testEvent1.Name)
+	gotIsDuplicate := eventsRepository.IsDuplicate(testEvent1.Name)
 
-	if !isDuplicate {
+	if !gotIsDuplicate {
 		t.Error("Expected event to be duplicate")
 	}
 
 	// Event is not duplicate
 	testUtils.ResetCollection(db, "events")
 
-	isDuplicate = eventsRepository.IsDuplicate(testEvent1.Name)
+	gotIsDuplicate = eventsRepository.IsDuplicate(testEvent1.Name)
 
-	if isDuplicate {
+	if gotIsDuplicate {
 		t.Error("Expected event to not be duplicate")
 	}
 }

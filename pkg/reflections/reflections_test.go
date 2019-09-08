@@ -12,52 +12,60 @@ func TestSetFieldValue(t *testing.T) {
 		Name string
 	}
 
-	s := testStruct{
-		Name: "jack",
-	}
+	t.Run("Should set field value", func(t *testing.T) {
 
-	err := reflections.SetFieldValue(&s, "Name", "john")
+		s := testStruct{
+			Name: "jack",
+		}
 
-	if err != nil {
-		t.Error(err)
-	}
+		gotErr := reflections.SetFieldValue(&s, "Name", "john")
 
-	if s.Name != "john" {
-		t.Error("Expected 'Name' to be equal to 'john', but is " + s.Name)
-	}
+		if gotErr != nil {
+			t.Error(gotErr)
+		}
+
+		if s.Name != "john" {
+			t.Error("Expected 'Name' to be equal to 'john', but is " + s.Name)
+		}
+	})
 
 	// Check for non struct type
-	invalidInterface := "string"
+	t.Run("Should return no interface pointer error", func(t *testing.T) {
+		invalidInterface := "string"
 
-	err = reflections.SetFieldValue(&invalidInterface, "Name", "")
+		gotErr := reflections.SetFieldValue(&invalidInterface, "Name", "")
 
-	if err == nil {
-		t.Error("Expected an error for invalid type, but no error was returned")
-	}
+		if gotErr == nil {
+			t.Error("Expected an error for invalid type, but no error was returned")
+		}
 
-	expectedError := "Pointed interface is not a struct"
-	if err.Error() != expectedError {
-		t.Error("Expected '"+expectedError+"' error, but got ", err.Error())
-	}
+		expectedError := "Pointed interface is not a struct"
+		if gotErr.Error() != expectedError {
+			t.Error("Expected '"+expectedError+"' error, but got ", gotErr.Error())
+		}
+	})
 
 	// Get a non existant field
-	s = testStruct{}
+	t.Run("Should return field is not valid error", func(t *testing.T) {
+		s := testStruct{}
 
-	err = reflections.SetFieldValue(&s, "NotName", "")
+		gotErr := reflections.SetFieldValue(&s, "NotName", "")
 
-	if err.Error() != "Field is not valid" {
-		t.Error("Expected invalid field error but got", err)
-	}
+		if gotErr.Error() != "Field is not valid" {
+			t.Error("Expected invalid field error but got", gotErr)
+		}
+	})
 
-	// No struct pointer provided
-	s = testStruct{}
+	t.Run("Should return interface is not a pointer error", func(t *testing.T) {
+		s := testStruct{}
 
-	err = reflections.SetFieldValue(s, "Name", "")
+		gotErr := reflections.SetFieldValue(s, "Name", "")
 
-	expectedError = "Interface is not a pointer"
-	if err.Error() != expectedError {
-		t.Error("Expected '"+expectedError+"' error, but got ", err.Error())
-	}
+		expectedError := "Interface is not a pointer"
+		if gotErr.Error() != expectedError {
+			t.Error("Expected '"+expectedError+"' error, but got ", gotErr.Error())
+		}
+	})
 }
 
 func TestGetFieldValue(t *testing.T) {
@@ -65,271 +73,300 @@ func TestGetFieldValue(t *testing.T) {
 		Name string
 	}
 
-	// Check for 'john'
-	s := testStruct{
-		Name: "john",
-	}
+	t.Run("Should return 'john'", func(t *testing.T) {
+		s := testStruct{
+			Name: "john",
+		}
 
-	name, err := reflections.GetFieldValue(s, "Name")
+		gotName, gotErr := reflections.GetFieldValue(s, "Name")
 
-	if err != nil {
-		t.Error(err)
-	}
+		if gotErr != nil {
+			t.Error(gotErr)
+		}
 
-	if name.(string) != "john" {
-		t.Error("Expected 'Name' to be equal to 'john', but it's ", name)
-	}
+		if gotName.(string) != "john" {
+			t.Error("Expected 'Name' to be equal to 'john', but it's ", gotName)
+		}
+	})
 
-	// Check for empty field
-	s = testStruct{
-		Name: "",
-	}
+	t.Run("Should return empty string", func(t *testing.T) {
+		s := testStruct{
+			Name: "",
+		}
 
-	name, err = reflections.GetFieldValue(s, "Name")
+		gotName, gotErr := reflections.GetFieldValue(s, "Name")
 
-	if err != nil {
-		t.Error(err)
-	}
+		if gotErr != nil {
+			t.Error(gotErr)
+		}
 
-	if name.(string) != "" {
-		t.Error("Expected 'Name' to be equal to '', but it's ", name)
-	}
+		if gotName.(string) != "" {
+			t.Error("Expected 'Name' to be equal to '', but it's ", gotName)
+		}
+	})
 
-	// Check for non struct type
-	invalidInterface := "string"
+	t.Run("Should return interface is not a struct error", func(t *testing.T) {
+		invalidInterface := "string"
 
-	name, err = reflections.GetFieldValue(invalidInterface, "Name")
+		_, gotErr := reflections.GetFieldValue(invalidInterface, "Name")
 
-	if err == nil {
-		t.Error("Expected an error for invalid type, but no error was returned")
-	}
+		if gotErr.Error() != "Interface is not a struct" {
+			t.Error("Expected an error for invalid interface type, but got ", gotErr.Error())
+		}
+	})
 
-	if err.Error() != "Interface is not a struct" {
-		t.Error("Expected an error for invalid interface type, but got ", err.Error())
-	}
+	t.Run("Should return field is not valid error", func(t *testing.T) {
+		s := testStruct{}
 
-	// Get a non existant field
-	s = testStruct{}
+		_, gotErr := reflections.GetFieldValue(s, "NotName")
 
-	name, err = reflections.GetFieldValue(s, "NotName")
-
-	if err.Error() != "Field is not valid" {
-		t.Error("Expected invalid field error but got", err)
-	}
+		if gotErr.Error() != "Field is not valid" {
+			t.Error("Expected invalid field error but got", gotErr)
+		}
+	})
 }
 
 func TestGetTagByFieldName(t *testing.T) {
-	// Normal
-	type foo struct {
-		Username string `json:"uname"`
-	}
+	t.Run("Should return 'uname' tag name", func(t *testing.T) {
+		type foo struct {
+			Username string `json:"uname"`
+		}
 
-	tag, err := reflections.GetTagByFieldName(reflect.TypeOf(foo{}), "Username", "json")
+		gotTag, gotErr := reflections.GetTagByFieldName(reflect.TypeOf(foo{}), "Username", "json")
 
-	if err != nil {
-		t.Error(err)
-	}
+		if gotErr != nil {
+			t.Error(gotErr)
+		}
 
-	if tag != "uname" {
-		t.Error("Expected tag name 'uname' but instead got " + tag)
-	}
+		if gotTag != "uname" {
+			t.Error("Expected tag name 'uname' but instead got " + gotTag)
+		}
+	})
 }
 
 func TestGetFieldNames(t *testing.T) {
-	// Struct with one field
-	type testingStruct struct {
-		Name string
-	}
+	t.Run("Should return array with 1 field name", func(t *testing.T) {
+		type testingStruct struct {
+			Name string
+		}
 
-	s := testingStruct{}
+		s := testingStruct{}
 
-	fieldNames, err := reflections.GetFieldNames(reflect.TypeOf(s))
+		gotFieldNames, gotErr := reflections.GetFieldNames(reflect.TypeOf(s))
 
-	if err != nil {
-		t.Error(err)
-	}
+		if gotErr != nil {
+			t.Error(gotErr)
+		}
 
-	if fieldNames[0] != "Name" {
-		t.Error("Expected first field name to be 'Name' but it's ", fieldNames[0])
-	}
+		if len(gotFieldNames) != 1 {
+			t.Error("Expected array length of 1 but got", len(gotFieldNames))
+		}
 
-	// Struct with many fields
-	type testingStruct2 struct {
-		Name    string
-		Address string
-		Number  int
-	}
+		if gotFieldNames[0] != "Name" {
+			t.Error("Expected first field name to be 'Name' but it's ", gotFieldNames[0])
+		}
+	})
 
-	s2 := testingStruct2{}
+	t.Run("Should return all field names", func(t *testing.T) {
+		type testingStruct2 struct {
+			Name    string
+			Address string
+			Number  int
+		}
 
-	fieldNames, err = reflections.GetFieldNames(reflect.TypeOf(s2))
+		s2 := testingStruct2{}
 
-	if err != nil {
-		t.Error(err)
-	}
+		gotFieldNames, gotErr := reflections.GetFieldNames(reflect.TypeOf(s2))
 
-	if fieldNames[0] != "Name" ||
-		fieldNames[1] != "Address" ||
-		fieldNames[2] != "Number" {
-		t.Error("Expected first field names to be 'Name', 'Address' & 'Number' but they are ",
-			fieldNames[0], fieldNames[1], fieldNames[2])
-	}
+		if gotErr != nil {
+			t.Error(gotErr)
+		}
 
-	// Non struct
-	s3 := ""
+		if gotFieldNames[0] != "Name" ||
+			gotFieldNames[1] != "Address" ||
+			gotFieldNames[2] != "Number" {
+			t.Error("Expected first field names to be 'Name', 'Address' & 'Number' but they are ",
+				gotFieldNames[0], gotFieldNames[1], gotFieldNames[2])
+		}
+	})
 
-	fieldNames, err = reflections.GetFieldNames(reflect.TypeOf(s3))
+	t.Run("Should return type is not a struct error", func(t *testing.T) {
+		s3 := ""
 
-	expectedError := "Expected type to be a struct, instead got " + reflect.TypeOf(s3).Kind().String()
-	if err.Error() != expectedError {
-		t.Error("Expected error '" + expectedError + "', instead got " + err.Error())
-	}
+		_, gotErr := reflections.GetFieldNames(reflect.TypeOf(s3))
+
+		expectedError := "Expected type to be a struct, instead got " + reflect.TypeOf(s3).Kind().String()
+		if gotErr.Error() != expectedError {
+			t.Error("Expected error '" + expectedError + "', instead got " + gotErr.Error())
+		}
+	})
 }
 
 func TestGetTagNames(t *testing.T) {
-	// Single tag name
-	type foo struct {
-		Name string `json:"name"`
-	}
+	t.Run("Should return tag name", func(t *testing.T) {
+		type foo struct {
+			Name string `json:"name"`
+		}
 
-	tagNames, err := reflections.GetTagNames(reflect.TypeOf(foo{}), "json")
+		gotTagNames, err := reflections.GetTagNames(reflect.TypeOf(foo{}), "json")
 
-	if err != nil {
-		t.Error(err)
-	}
+		if err != nil {
+			t.Error(err)
+		}
 
-	if tagNames[0] != "name" {
-		t.Error("Expected first string element to be equal to 'name', but got ", tagNames[0])
-	}
+		if gotTagNames[0] != "name" {
+			t.Error("Expected first string element to be equal to 'name', but got ", gotTagNames[0])
+		}
+	})
 
-	// Multiple tag keys in a struct's field
-	type foo2 struct {
-		Name string `json:"name" bson:"_name"`
-	}
+	t.Run("Should return the correct tag name", func(t *testing.T) {
+		type foo2 struct {
+			Name string `json:"name" bson:"_name"`
+		}
 
-	tagNames, err = reflections.GetTagNames(reflect.TypeOf(foo2{}), "bson")
+		gotTagNames, err := reflections.GetTagNames(reflect.TypeOf(foo2{}), "bson")
 
-	if err != nil {
-		t.Error(err)
-	}
+		if err != nil {
+			t.Error(err)
+		}
 
-	if tagNames[0] != "_name" {
-		t.Error("Expected first string element to be equal to '_name', but got ", tagNames[0])
-	}
+		if gotTagNames[0] != "_name" {
+			t.Error("Expected first string element to be equal to '_name', but got ", gotTagNames[0])
+		}
+	})
 
-	// Multiple fields with tag names
-	type foo3 struct {
-		Name    string `json:"name"`
-		Surname string `json:"surname"`
-	}
+	t.Run("Should return all tag names", func(t *testing.T) {
+		type foo3 struct {
+			Name    string `json:"name"`
+			Surname string `json:"surname"`
+		}
 
-	tagNames, err = reflections.GetTagNames(reflect.TypeOf(foo3{}), "json")
+		gotTagNames, err := reflections.GetTagNames(reflect.TypeOf(foo3{}), "json")
 
-	if err != nil {
-		t.Error(err)
-	}
+		if err != nil {
+			t.Error(err)
+		}
 
-	if tagNames[0] != "name" && tagNames[1] != "surname" {
-		t.Error("Expected string elements to be equal to 'name' & 'surname', but got ", tagNames[0], tagNames[1])
-	}
+		if gotTagNames[0] != "name" && gotTagNames[1] != "surname" {
+			t.Error("Expected string elements to be equal to 'name' & 'surname', but got ", gotTagNames[0], gotTagNames[1])
+		}
 
+	})
 }
 
 func TestConvertFieldNamesToTagNames(t *testing.T) {
-	// Normal
-	type foo struct {
-		Username string `json:"uname"`
-		Password string `json:"pass"`
-	}
+	t.Run("Should return map with converted fields to tag names", func(t *testing.T) {
+		type foo struct {
+			Username string `json:"uname"`
+			Password string `json:"pass"`
+		}
 
-	m := map[string]interface{}{
-		"Username": "joe123",
-		"Password": "easy",
-	}
+		m := map[string]interface{}{
+			"Username": "joe123",
+			"Password": "easy",
+		}
 
-	tagsM, err := reflections.ConvertFieldNamesToTagNames(
-		m,
-		reflect.TypeOf(foo{}),
-		"json",
-	)
+		gotTagMap, err := reflections.ConvertFieldNamesToTagNames(
+			m,
+			reflect.TypeOf(foo{}),
+			"json",
+		)
 
-	if err != nil {
-		t.Error(err)
-	}
+		if err != nil {
+			t.Error(err)
+		}
 
-	didChangeToTagNames := tagsM["uname"] != m["Username"] && tagsM["pass"] != m["Password"]
-	if didChangeToTagNames {
-		t.Error("Expected converted map's keys to have same values with the map, instead it's value is", tagsM)
-	}
+		didChangeToTagNames := gotTagMap["uname"] != m["Username"] &&
+			gotTagMap["pass"] != m["Password"]
+		if didChangeToTagNames {
+			t.Error("Expected converted map's keys to have same values with the map, instead it's value is", gotTagMap)
+		}
+	})
 }
 
 func TestIsFieldValid(t *testing.T) {
-	// Ok
-	type foo struct {
-		Name string
-	}
+	t.Run("Should return that existing field is valid", func(t *testing.T) {
+		type foo struct {
+			Name string
+		}
 
-	fieldExists := reflections.IsFieldValid(reflect.TypeOf(foo{}), "Name")
+		gotFieldExists := reflections.IsFieldValid(reflect.TypeOf(foo{}), "Name")
 
-	if !fieldExists {
-		t.Error("Expected fieldExists to return true")
-	}
+		if !gotFieldExists {
+			t.Error("Expected fieldExists to return true")
+		}
+	})
 
-	// Not Ok
-	fieldExists = reflections.IsFieldValid(reflect.TypeOf(foo{}), "Password")
+	t.Run("Should return that non-existant field is invalid", func(t *testing.T) {
+		type foo struct {
+			Name string
+		}
 
-	if fieldExists {
-		t.Error("Expected fieldExists to return false")
-	}
+		gotFieldExists := reflections.IsFieldValid(reflect.TypeOf(foo{}), "Password")
+
+		if gotFieldExists {
+			t.Error("Expected fieldExists to return false")
+		}
+	})
 }
 
 func TestAreMapFieldsValid(t *testing.T) {
-	// Ok
-	type foo struct {
-		Name string
-	}
+	t.Run("Should return that map is valid", func(t *testing.T) {
+		type foo struct {
+			Name string
+		}
 
-	m := map[string]interface{}{
-		"Name": "joe",
-	}
+		m := map[string]interface{}{
+			"Name": "joe",
+		}
 
-	isMapValid := reflections.AreMapFieldsValid(
-		reflect.TypeOf(foo{}),
-		m,
-	)
+		gotIsMapValid := reflections.AreMapFieldsValid(
+			reflect.TypeOf(foo{}),
+			m,
+		)
 
-	if !isMapValid {
-		t.Error("Expected isMapValid to return true")
-	}
+		if !gotIsMapValid {
+			t.Error("Expected isMapValid to return true")
+		}
+	})
 
-	// Non existant fields along with existant fields
-	m = map[string]interface{}{
-		"Name":     "joe",
-		"Password": "passjoe",
-	}
+	t.Run("Should return that map with mixed non-existant fields is invalid", func(t *testing.T) {
+		type foo struct {
+			Name string
+		}
 
-	isMapValid = reflections.AreMapFieldsValid(
-		reflect.TypeOf(foo{}),
-		m,
-	)
+		m := map[string]interface{}{
+			"Name":     "joe",
+			"Password": "passjoe",
+		}
 
-	if isMapValid {
-		t.Error("Expected isMapValid to return false")
-	}
+		gotIsMapValid := reflections.AreMapFieldsValid(
+			reflect.TypeOf(foo{}),
+			m,
+		)
 
-	// Only non existant fields
-	m = map[string]interface{}{
-		"Password": "passjoe",
-	}
+		if gotIsMapValid {
+			t.Error("Expected isMapValid to return false")
+		}
+	})
 
-	isMapValid = reflections.AreMapFieldsValid(
-		reflect.TypeOf(foo{}),
-		m,
-	)
+	t.Run("Should return that map with non-existant fields is invalid", func(t *testing.T) {
+		type foo struct {
+			Name string
+		}
 
-	if isMapValid {
-		t.Error("Expected isMapValid to return false")
-	}
+		m := map[string]interface{}{
+			"Password": "passjoe",
+		}
+
+		gotIsMapValid := reflections.AreMapFieldsValid(
+			reflect.TypeOf(foo{}),
+			m,
+		)
+
+		if gotIsMapValid {
+			t.Error("Expected isMapValid to return false")
+		}
 	})
 }
 

@@ -15,14 +15,14 @@ func TestLogin(t *testing.T) {
 	t.Run("Correct Login", func(t *testing.T) {
 		testUtils.SetupData(db, "users", mockUser)
 
-		sessionID, err := usersController.Login(mockUser.Username, mockUserPass)
+		gotSessionID, gotErr := usersController.Login(mockUser.Username, mockUserPass)
 
-		if err != nil {
-			t.Error(err)
+		if gotErr != nil {
+			t.Error(gotErr)
 		}
 
-		if sessionID == "" {
-			t.Error("Expected sessionID to be a non empty string")
+		if gotSessionID == "" {
+			t.Error("Expected gotSessionID to be a non empty string")
 		}
 
 		storedSession := testUtils.GetInterfaceAtCollectionRow(
@@ -32,38 +32,38 @@ func TestLogin(t *testing.T) {
 			0,
 		).(models.Session)
 
-		if storedSession.ID.Hex() != sessionID {
-			t.Error("Expected sessionID to match the stored session's ID, instead got " + storedSession.ID.Hex())
+		if storedSession.ID.Hex() != gotSessionID {
+			t.Error("Expected gotSessionID to match the stored session's ID, instead got " + storedSession.ID.Hex())
 		}
 	})
 
 	t.Run("Wrong password", func(t *testing.T) {
 		testUtils.SetupData(db, "users", mockUser)
 
-		sessionID, err := usersController.Login(mockUser.Username, "wrong pass")
+		gotSessionID, gotErr := usersController.Login(mockUser.Username, "wrong pass")
 
 		expectedError := "Password not verified"
-		if err.Error() != expectedError {
-			t.Error("Expected '" + expectedError + "' error but instead got " + err.Error())
+		if gotErr.Error() != expectedError {
+			t.Error("Expected '" + expectedError + "' gotError but instead got " + gotErr.Error())
 		}
 
-		if sessionID != "" {
-			t.Error("Expected sessionID to be empty string but instead got " + sessionID)
+		if gotSessionID != "" {
+			t.Error("Expected gotSessionID to be empty string but instead got " + gotSessionID)
 		}
 	})
 
 	t.Run("User doesn't exist", func(t *testing.T) {
 		testUtils.ResetCollection(db, "users")
 
-		sessionID, err := usersController.Login("randomuser", "randompass")
+		gotSessionID, gotErr := usersController.Login("randomuser", "randompass")
 
 		expectedError := "No user found"
-		if err.Error() != expectedError {
-			t.Error("Expected '" + expectedError + "' error but instead got " + err.Error())
+		if gotErr.Error() != expectedError {
+			t.Error("Expected '" + expectedError + "' gotError but instead got " + gotErr.Error())
 		}
 
-		if sessionID != "" {
-			t.Error("Expected sessionID to be empty string but instead got " + sessionID)
+		if gotSessionID != "" {
+			t.Error("Expected gotSessionID to be empty string but instead got " + gotSessionID)
 		}
 	})
 }

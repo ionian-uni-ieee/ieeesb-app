@@ -16,10 +16,10 @@ func TestRegister(t *testing.T) {
 	t.Run("Registers user", func(t *testing.T) {
 		testUtils.SetupData(db, "users")
 
-		userID, err := usersController.Register("john", "johnpass", "john@mail.com", "john doe")
+		gotUserID, gotErr := usersController.Register("john", "johnpass", "john@mail.com", "john doe")
 
-		if err != nil {
-			t.Error(err)
+		if gotErr != nil {
+			t.Error(gotErr)
 		}
 
 		firstUser := testUtils.GetInterfaceAtCollectionRow(
@@ -29,9 +29,9 @@ func TestRegister(t *testing.T) {
 			0,
 		).(models.User)
 
-		firstUserIDEqualsUserID := firstUser.ID.Hex() != userID
+		firstUserIDEqualsUserID := firstUser.ID.Hex() != gotUserID
 		if firstUserIDEqualsUserID {
-			t.Error("Expected user's ID at row 0 to be equal to " + userID + " but instead it's equal to " + firstUser.ID.Hex())
+			t.Error("Expected user's ID at row 0 to be equal to " + gotUserID + " but instead it's equal to " + firstUser.ID.Hex())
 		}
 	})
 
@@ -39,11 +39,11 @@ func TestRegister(t *testing.T) {
 
 		testUtils.SetupData(db, "users", mockUser)
 
-		_, err := usersController.Register(mockUser.Username, mockUserPass, mockUser.Email, mockUser.Fullname)
+		_, gotErr := usersController.Register(mockUser.Username, mockUserPass, mockUser.Email, mockUser.Fullname)
 
 		expectedError := "A user with that username, fullname or email already exists"
-		if err.Error() != expectedError {
-			t.Error("Expected '" + expectedError + "' error but instead got " + err.Error())
+		if gotErr.Error() != expectedError {
+			t.Error("Expected '" + expectedError + "' gotError but instead got " + gotErr.Error())
 		}
 
 		if testUtils.GetCollectionLength(db, "users") == 2 {

@@ -15,14 +15,14 @@ func TestProfile(t *testing.T) {
 		testUtils.SetupData(db, "users", mockUser)
 		testUtils.SetupData(db, "sessions", mockSession)
 
-		user, err := usersController.Profile(mockSession.ID.Hex())
+		gotUser, gotErr := usersController.Profile(mockSession.ID.Hex())
 
-		if err != nil {
-			t.Error(err)
+		if gotErr != nil {
+			t.Error(gotErr)
 		}
 
-		if user.ID != mockUser.ID {
-			t.Error("Expected profile to have ID " + mockUser.ID.Hex() + ", instead it has " + user.ID.Hex())
+		if gotUser.ID != mockUser.ID {
+			t.Error("Expected profile to have ID " + mockUser.ID.Hex() + ", instead it has " + gotUser.ID.Hex())
 		}
 	})
 
@@ -31,11 +31,11 @@ func TestProfile(t *testing.T) {
 		testUtils.ResetCollection(db, "users")
 		testUtils.ResetCollection(db, "sessions")
 
-		_, err := usersController.Profile(primitive.NewObjectID().Hex())
+		_, gotErr := usersController.Profile(primitive.NewObjectID().Hex())
 
 		expectedError := "No session with this ID exists"
-		if err.Error() != expectedError {
-			t.Error("Expected '" + expectedError + "' error but instead got " + err.Error())
+		if gotErr.Error() != expectedError {
+			t.Error("Expected '" + expectedError + "' gotError but instead got " + gotErr.Error())
 		}
 	})
 }

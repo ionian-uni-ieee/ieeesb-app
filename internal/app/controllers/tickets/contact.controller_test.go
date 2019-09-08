@@ -14,14 +14,14 @@ func TestContact(t *testing.T) {
 
 	t.Run("Creates a ticket", func(t *testing.T) {
 		testUtils.ResetCollection(db, "tickets")
-		ticketID, err := ticketController.Contact(
+		gotTicketID, gotErr := ticketController.Contact(
 			mockActiveTicket.Email,
 			mockActiveTicket.Fullname,
 			mockActiveTicket.Message,
 		)
 
-		if err != nil {
-			t.Error(err)
+		if gotErr != nil {
+			t.Error(gotErr)
 		}
 
 		firstTicket := testUtils.GetInterfaceAtCollectionRow(
@@ -31,7 +31,7 @@ func TestContact(t *testing.T) {
 			0,
 		).(models.Ticket)
 
-		if firstTicket.ID.Hex() != ticketID {
+		if firstTicket.ID.Hex() != gotTicketID {
 			t.Error("Expected first ticket's ID to equal the controller's returned ID, instead it's " + firstTicket.ID.Hex())
 		}
 

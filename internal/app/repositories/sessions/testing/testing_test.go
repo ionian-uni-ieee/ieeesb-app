@@ -43,18 +43,18 @@ func TestFindByID(t *testing.T) {
 	// Regular example
 	testUtils.SetupData(db, "sessions", testSession1)
 
-	sessionFound, err := sessionsRepository.FindByID(testSession1.ID.Hex())
+	gotSession, gotErr := sessionsRepository.FindByID(testSession1.ID.Hex())
 
-	if err != nil {
-		t.Error(err)
+	if gotErr != nil {
+		t.Error(gotErr)
 	}
 
-	if sessionFound == nil {
+	if gotSession == nil {
 		t.Error("Expected result to be an session object, got nil instead")
 	}
 
-	if sessionFound != nil && sessionFound.ID != testSession1.ID {
-		t.Error("Expected session's id to be", testSession1.ID.Hex(), "but is", sessionFound.ID.Hex())
+	if gotSession != nil && gotSession.ID != testSession1.ID {
+		t.Error("Expected session's id to be", testSession1.ID.Hex(), "but is", gotSession.ID.Hex())
 	}
 }
 
@@ -65,12 +65,12 @@ func TestUpdateByID(t *testing.T) {
 	testUtils.SetupData(db, "sessions", testSession1)
 
 	newUsername := "New Username"
-	err := sessionsRepository.UpdateByID(testSession1.ID.Hex(), map[string]interface{}{
+	gotErr := sessionsRepository.UpdateByID(testSession1.ID.Hex(), map[string]interface{}{
 		"Username": newUsername,
 	})
 
-	if err != nil {
-		t.Error(err)
+	if gotErr != nil {
+		t.Error(gotErr)
 	}
 
 	storedUsername := sessionsRepository.Collection.Columns["Username"][0]
@@ -86,10 +86,10 @@ func TestDeleteByID(t *testing.T) {
 	// Regular example
 	testUtils.SetupData(db, "sessions", testSession1)
 
-	err := sessionsRepository.DeleteByID(testSession1.ID.Hex())
+	gotErr := sessionsRepository.DeleteByID(testSession1.ID.Hex())
 
-	if err != nil {
-		t.Error(err)
+	if gotErr != nil {
+		t.Error(gotErr)
 	}
 
 	for key, column := range sessionsRepository.Collection.Columns {
@@ -105,22 +105,22 @@ func TestFind(t *testing.T) {
 	// Regular example
 	testUtils.SetupData(db, "sessions", testSession1, testSession1)
 
-	sessionsFound, err := sessionsRepository.Find(map[string]interface{}{
+	gotSessions, gotErr := sessionsRepository.Find(map[string]interface{}{
 		"Username": testSession1.Username,
 	})
 
-	if err != nil {
-		t.Error(err)
+	if gotErr != nil {
+		t.Error(gotErr)
 	}
 
-	if len(sessionsFound) != 2 {
-		t.Error("Expected len(sessions) to be 2, instead got", len(sessionsFound))
+	if len(gotSessions) != 2 {
+		t.Error("Expected len(sessions) to be 2, instead got", len(gotSessions))
 	}
 
-	if sessionsFound[0].Username != sessionsFound[1].Username {
+	if gotSessions[0].Username != gotSessions[1].Username {
 		t.Error("Expected sessionname to equal to each other, instead got",
-			sessionsFound[0].Username,
-			sessionsFound[1].Username)
+			gotSessions[0].Username,
+			gotSessions[1].Username)
 	}
 }
 
@@ -130,16 +130,16 @@ func TestFindOne(t *testing.T) {
 	// Regular example
 	testUtils.SetupData(db, "sessions", testSession1, testSession2)
 
-	sessionFound, err := sessionsRepository.FindOne(map[string]interface{}{
+	gotSession, gotErr := sessionsRepository.FindOne(map[string]interface{}{
 		"Username": testSession1.Username,
 	})
 
-	if err != nil {
-		t.Error(err)
+	if gotErr != nil {
+		t.Error(gotErr)
 	}
 
-	if sessionFound.Username != testSession1.Username {
-		t.Error("Expected sessionname to equal '" + testSession1.Username + "', instead got " + sessionFound.Username)
+	if gotSession.Username != testSession1.Username {
+		t.Error("Expected sessionname to equal '" + testSession1.Username + "', instead got " + gotSession.Username)
 	}
 }
 
@@ -158,14 +158,14 @@ func TestInsertOne(t *testing.T) {
 	// Regular example
 	testUtils.ResetCollection(db, "sessions")
 
-	insertedID, err := sessionsRepository.InsertOne(testSession1)
+	gotInsertedID, gotErr := sessionsRepository.InsertOne(testSession1)
 
-	if err != nil {
-		t.Error(err)
+	if gotErr != nil {
+		t.Error(gotErr)
 	}
 
-	if insertedID != testSession1.ID.Hex() {
-		t.Error("Expected inserted id to be ", testSession1.ID.Hex(), "but instead got", insertedID)
+	if gotInsertedID != testSession1.ID.Hex() {
+		t.Error("Expected inserted id to be ", testSession1.ID.Hex(), "but instead got", gotInsertedID)
 	}
 }
 
@@ -181,14 +181,14 @@ func TestInsertMany(t *testing.T) {
 		testSession3,
 	}
 
-	insertedIDs, err := sessionsRepository.InsertMany(sessions)
+	gotInsertedIDs, gotErr := sessionsRepository.InsertMany(sessions)
 
-	if err != nil {
-		t.Error(err)
+	if gotErr != nil {
+		t.Error(gotErr)
 	}
 
-	if insertedIDs[0] != sessions[0].ID.Hex() ||
-		insertedIDs[1] != sessions[1].ID.Hex() {
-		t.Error("Expected inserted ids to be ", sessions[0].ID.Hex(), sessions[1].ID.Hex(), "but instead got", insertedIDs)
+	if gotInsertedIDs[0] != sessions[0].ID.Hex() ||
+		gotInsertedIDs[1] != sessions[1].ID.Hex() {
+		t.Error("Expected inserted ids to be ", sessions[0].ID.Hex(), sessions[1].ID.Hex(), "but instead got", gotInsertedIDs)
 	}
 }

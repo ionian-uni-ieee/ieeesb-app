@@ -15,10 +15,10 @@ func TestClose(t *testing.T) {
 	t.Run("Closes ticket", func(t *testing.T) {
 		testUtils.SetupData(db, "tickets", mockActiveTicket)
 
-		err := ticketController.Close(mockActiveTicket.ID.Hex())
+		gotErr := ticketController.Close(mockActiveTicket.ID.Hex())
 
-		if err != nil {
-			t.Error(err)
+		if gotErr != nil {
+			t.Error(gotErr)
 		}
 
 		firstRowTicket := testUtils.GetInterfaceAtCollectionRow(
@@ -36,22 +36,22 @@ func TestClose(t *testing.T) {
 	t.Run("Ticket already closed", func(t *testing.T) {
 		testUtils.SetupData(db, "tickets", mockClosedTicket)
 
-		err := ticketController.Close(mockClosedTicket.ID.Hex())
+		gotErr := ticketController.Close(mockClosedTicket.ID.Hex())
 
 		expectedError := "Ticket is already closed"
-		if err.Error() != expectedError {
-			t.Error("Expected '" + expectedError + "' error but got '" + err.Error() + "'")
+		if gotErr.Error() != expectedError {
+			t.Error("Expected '" + expectedError + "' gotError but got '" + gotErr.Error() + "'")
 		}
 	})
 
 	t.Run("No such ticket", func(t *testing.T) {
 		testUtils.ResetCollection(db, "tickets")
 
-		err := ticketController.Close(mockClosedTicket.ID.Hex())
+		gotErr := ticketController.Close(mockClosedTicket.ID.Hex())
 
 		expectedError := "No ticketID was found with this ObjectID"
-		if err.Error() != expectedError {
-			t.Error("Expected '" + expectedError + "' error but got '" + err.Error() + "'")
+		if gotErr.Error() != expectedError {
+			t.Error("Expected '" + expectedError + "' gotError but got '" + gotErr.Error() + "'")
 		}
 	})
 }

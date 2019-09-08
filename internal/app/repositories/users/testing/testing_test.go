@@ -52,18 +52,18 @@ func TestFindByID(t *testing.T) {
 	t.Run("Finds user", func(t *testing.T) {
 		testUtils.SetupData(db, "users", testUser1)
 
-		userFound, err := usersRepository.FindByID(testUser1.ID.Hex())
+		gotUser, err := usersRepository.FindByID(testUser1.ID.Hex())
 
 		if err != nil {
 			t.Error(err)
 		}
 
-		if userFound == nil {
+		if gotUser == nil {
 			t.Error("Expected result to be an user object, got nil instead")
 		}
 
-		if userFound != nil && userFound.ID != testUser1.ID {
-			t.Error("Expected user's id to be", testUser1.ID.Hex(), "but is", userFound.ID.Hex())
+		if gotUser != nil && gotUser.ID != testUser1.ID {
+			t.Error("Expected user's id to be", testUser1.ID.Hex(), "but is", gotUser.ID.Hex())
 		}
 	})
 }
@@ -75,18 +75,20 @@ func TestUpdateByID(t *testing.T) {
 		testUtils.SetupData(db, "users", testUser1)
 
 		newUsername := "newusername"
-		err := usersRepository.UpdateByID(testUser1.ID.Hex(), map[string]interface{}{
+
+		gotErr := usersRepository.UpdateByID(testUser1.ID.Hex(), map[string]interface{}{
 			"Username": newUsername,
 		})
 
-		if err != nil {
-			t.Error(err)
+		if gotErr != nil {
+			t.Error(gotErr)
 		}
 
-		usernameStored := usersRepository.Collection.Columns["Username"][0]
-		usernameChanged := usernameStored != newUsername
+		storedUsername := usersRepository.Collection.Columns["Username"][0]
+
+		usernameChanged := storedUsername != newUsername
 		if usernameChanged {
-			t.Error("Expected username to be '"+newUsername+"', but instead got", usernameStored)
+			t.Error("Expected username to be '"+newUsername+"', but instead got", storedUsername)
 		}
 	})
 }
@@ -97,10 +99,10 @@ func TestDeleteByID(t *testing.T) {
 	t.Run("Deletes user", func(t *testing.T) {
 		testUtils.SetupData(db, "users", testUser1)
 
-		err := usersRepository.DeleteByID(testUser1.ID.Hex())
+		gotErr := usersRepository.DeleteByID(testUser1.ID.Hex())
 
-		if err != nil {
-			t.Error(err)
+		if gotErr != nil {
+			t.Error(gotErr)
 		}
 
 		for key, column := range usersRepository.Collection.Columns {
@@ -117,22 +119,22 @@ func TestFind(t *testing.T) {
 	t.Run("Finds users", func(t *testing.T) {
 		testUtils.SetupData(db, "users", testUser1, testUser1)
 
-		usersFound, err := usersRepository.Find(map[string]interface{}{
+		gotUsers, gotErr := usersRepository.Find(map[string]interface{}{
 			"Email": testUser1.Email,
 		})
 
-		if err != nil {
-			t.Error(err)
+		if gotErr != nil {
+			t.Error(gotErr)
 		}
 
-		if len(usersFound) != 2 {
-			t.Error("Expected len(users) to be 2, instead got", len(usersFound))
+		if len(gotUsers) != 2 {
+			t.Error("Expected len(users) to be 2, instead got", len(gotUsers))
 		}
 
-		if usersFound[0].Username != usersFound[1].Username {
+		if gotUsers[0].Username != gotUsers[1].Username {
 			t.Error("Expected username to equal to each other, instead got",
-				usersFound[0].Username,
-				usersFound[1].Username)
+				gotUsers[0].Username,
+				gotUsers[1].Username)
 		}
 	})
 }
@@ -143,16 +145,16 @@ func TestFindOne(t *testing.T) {
 	t.Run("Find a user", func(t *testing.T) {
 		testUtils.SetupData(db, "users", testUser1, testUser2)
 
-		userFound, err := usersRepository.FindOne(map[string]interface{}{
+		gotUser, gotErr := usersRepository.FindOne(map[string]interface{}{
 			"Username": testUser1.Username,
 		})
 
-		if err != nil {
-			t.Error(err)
+		if gotErr != nil {
+			t.Error(gotErr)
 		}
 
-		if userFound.Username != testUser1.Username {
-			t.Error("Expected username to equal 'username2', instead got", userFound.Username)
+		if gotUser.Username != testUser1.Username {
+			t.Error("Expected username to equal 'username2', instead got", gotUser.Username)
 		}
 	})
 }
@@ -172,14 +174,14 @@ func TestInsertOne(t *testing.T) {
 	t.Run("Inserts a user", func(t *testing.T) {
 		testUtils.ResetCollection(db, "users")
 
-		insertedID, err := usersRepository.InsertOne(testUser1)
+		gotInsertedID, gotErr := usersRepository.InsertOne(testUser1)
 
-		if err != nil {
-			t.Error(err)
+		if gotErr != nil {
+			t.Error(gotErr)
 		}
 
-		if insertedID != testUser1.ID.Hex() {
-			t.Error("Expected inserted id to be ", testUser1.ID.Hex(), "but instead got", insertedID)
+		if gotInsertedID != testUser1.ID.Hex() {
+			t.Error("Expected inserted id to be ", testUser1.ID.Hex(), "but instead got", gotInsertedID)
 		}
 
 		storedUser := testUtils.GetInterfaceAtCollectionRow(
@@ -189,7 +191,7 @@ func TestInsertOne(t *testing.T) {
 			0,
 		).(models.User)
 
-		if storedUser.ID.Hex() != insertedID {
+		if storedUser.ID.Hex() != gotInsertedID {
 			t.Error("Expected stored user's ID to equal insertedID")
 		}
 	})
@@ -207,15 +209,15 @@ func TestInsertMany(t *testing.T) {
 			testUser3,
 		}
 
-		insertedIDs, err := usersRepository.InsertMany(users)
+		gotInsertedIDs, gotErr := usersRepository.InsertMany(users)
 
-		if err != nil {
-			t.Error(err)
+		if gotErr != nil {
+			t.Error(gotErr)
 		}
 
-		if insertedIDs[0] != users[0].ID.Hex() ||
-			insertedIDs[1] != users[1].ID.Hex() {
-			t.Error("Expected inserted ids to be ", users[0].ID.Hex(), users[1].ID.Hex(), "but instead got", insertedIDs)
+		if gotInsertedIDs[0] != users[0].ID.Hex() ||
+			gotInsertedIDs[1] != users[1].ID.Hex() {
+			t.Error("Expected inserted ids to be ", users[0].ID.Hex(), users[1].ID.Hex(), "but instead got", gotInsertedIDs)
 		}
 	})
 }
@@ -226,9 +228,9 @@ func TestIsDuplicate(t *testing.T) {
 	t.Run("Is duplicate user", func(t *testing.T) {
 		testUtils.SetupData(db, "users", testUser1)
 
-		isDuplicate := usersRepository.IsDuplicate(testUser1.Email, testUser1.Username, testUser1.Fullname)
+		gotIsDuplicate := usersRepository.IsDuplicate(testUser1.Email, testUser1.Username, testUser1.Fullname)
 
-		if !isDuplicate {
+		if !gotIsDuplicate {
 			t.Error("Expected user to be duplicate")
 		}
 	})
@@ -236,9 +238,9 @@ func TestIsDuplicate(t *testing.T) {
 	t.Run("Is not a duplicate user", func(t *testing.T) {
 		testUtils.ResetCollection(db, "users")
 
-		isDuplicate := usersRepository.IsDuplicate(testUser1.Email, testUser1.Username, testUser1.Fullname)
+		gotIsDuplicate := usersRepository.IsDuplicate(testUser1.Email, testUser1.Username, testUser1.Fullname)
 
-		if isDuplicate {
+		if gotIsDuplicate {
 			t.Error("Expected user to not be duplicate")
 		}
 	})

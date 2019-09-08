@@ -14,10 +14,10 @@ func TestLogout(t *testing.T) {
 		testUtils.SetupData(db, "users", mockUser)
 		testUtils.SetupData(db, "sessions", mockSession)
 
-		err := usersController.Logout(mockSession.ID.Hex())
+		gotErr := usersController.Logout(mockSession.ID.Hex())
 
-		if err != nil {
-			t.Error(err)
+		if gotErr != nil {
+			t.Error(gotErr)
 		}
 
 		if !testUtils.IsCollectionEmpty(db, "sessions") {
@@ -29,11 +29,11 @@ func TestLogout(t *testing.T) {
 	t.Run("No session to logout from", func(t *testing.T) {
 		testUtils.ResetCollection(db, "sessions")
 
-		err := usersController.Logout(mockSession.ID.Hex())
+		gotErr := usersController.Logout(mockSession.ID.Hex())
 
 		expectedError := "No session with this ID exists"
-		if err.Error() != expectedError {
-			t.Error("Expected '" + expectedError + "' error but instead got " + err.Error())
+		if gotErr.Error() != expectedError {
+			t.Error("Expected '" + expectedError + "' gotError but instead got " + gotErr.Error())
 		}
 	})
 }

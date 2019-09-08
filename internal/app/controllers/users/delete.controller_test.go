@@ -14,10 +14,10 @@ func TestDelete(t *testing.T) {
 	t.Run("Deletes user", func(t *testing.T) {
 		testUtils.SetupData(db, "users", mockUser)
 
-		err := usersController.Delete(mockUser.ID.Hex())
+		gotErr := usersController.Delete(mockUser.ID.Hex())
 
-		if err != nil {
-			t.Error(err)
+		if gotErr != nil {
+			t.Error(gotErr)
 		}
 
 		if !testUtils.IsCollectionEmpty(db, "users") {
@@ -28,22 +28,22 @@ func TestDelete(t *testing.T) {
 	t.Run("Invalid ObjectID", func(t *testing.T) {
 		testUtils.ResetCollection(db, "users")
 
-		err := usersController.Delete("invalid object id")
+		gotErr := usersController.Delete("invalid object id")
 
 		expectedError := "Invalid ObjectID"
-		if err.Error() != expectedError {
-			t.Error("Expected error to be '"+expectedError+"' but is", err)
+		if gotErr.Error() != expectedError {
+			t.Error("Expected gotError to be '"+expectedError+"' but is", gotErr)
 		}
 
 		// No such user ObjectID
 		testUtils.ResetCollection(db, "users")
 
 		objectID := primitive.NewObjectID()
-		err = usersController.Delete(objectID.Hex())
+		gotErr = usersController.Delete(objectID.Hex())
 
 		expectedError = "No document found with this id " + objectID.Hex()
-		if err.Error() != expectedError {
-			t.Error("Expected error to be '"+expectedError+"' but is", err)
+		if gotErr.Error() != expectedError {
+			t.Error("Expected gotError to be '"+expectedError+"' but is", gotErr)
 		}
 
 	})

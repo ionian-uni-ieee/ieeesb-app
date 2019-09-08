@@ -17,10 +17,10 @@ func TestChangePassword(t *testing.T) {
 
 		newPassword := "new pass"
 
-		err := usersController.ChangePassword(mockUser.ID.Hex(), mockUserPass, newPassword)
+		gotErr := usersController.ChangePassword(mockUser.ID.Hex(), mockUserPass, newPassword)
 
-		if err != nil {
-			t.Error(err)
+		if gotErr != nil {
+			t.Error(gotErr)
 		}
 
 		firstUser := testUtils.GetInterfaceAtCollectionRow(
@@ -38,10 +38,10 @@ func TestChangePassword(t *testing.T) {
 
 		testUtils.SetupData(db, "users", mockUser)
 
-		err := usersController.ChangePassword(mockUser.ID.Hex(), "wrong pass", "new password")
+		gotErr := usersController.ChangePassword(mockUser.ID.Hex(), "wrong pass", "new password")
 
-		if err.Error() != "Old password is not valid" {
-			t.Error("Expected error to be 'Old password is not valid' but instead is ", err)
+		if gotErr.Error() != "Old password is not valid" {
+			t.Error("Expected gotError to be 'Old password is not valid' but instead is ", gotErr)
 		}
 
 		firstUser := testUtils.GetInterfaceAtCollectionRow(

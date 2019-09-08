@@ -19,10 +19,10 @@ func TestEdit(t *testing.T) {
 		updateMap := map[string]interface{}{
 			"Fullname": "New Fullname",
 		}
-		err := usersController.Edit(mockUser.ID.Hex(), updateMap)
+		gotErr := usersController.Edit(mockUser.ID.Hex(), updateMap)
 
-		if err != nil {
-			t.Error(err)
+		if gotErr != nil {
+			t.Error(gotErr)
 		}
 
 		storedUser := testUtils.GetInterfaceAtCollectionRow(
