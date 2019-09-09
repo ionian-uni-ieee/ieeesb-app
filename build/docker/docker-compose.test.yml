@@ -1,0 +1,18 @@
+version: "3.3"
+
+services:
+  web:
+    build:
+      context: ../web
+      dockerfile: ../build/web.Dockerfile
+
+  app:
+    build:
+      context: ../
+      dockerfile: ./build/app.Dockerfile
+
+secrets:
+  mongo-user:
+    file: mongo-fake-user.txt
+  mongo-pass:
+    file: mongo-fake-pass.txt

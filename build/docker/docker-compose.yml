@@ -1,0 +1,9 @@
+version: "3.3"
+
+services:
+  web:
+    image: ieeeioniansb/ieeesb-web
+  app:
+    image: ieeeioniansb/ieeesb-app
+  mongo:
+    image: mongo:3.4

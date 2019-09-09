@@ -1,44 +1,76 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+- [IEEE Web application](#ieee-web-application)
+  - [Why](#why)
+  - [Planned Features](#planned-features)
+    - [APP](#app)
+    - [WEB](#web)
 
-## Available Scripts
+# IEEE Web application
 
-In the project directory, you can run:
+A IEEE Student Branch Dashboard & Management tool for student branches of the IEEE Organization.
+## Why
 
-### `npm start`
+Members and the community of IEEE Student Branches will be able to advertise and interact with the community itself in an easier way. This application intends to tie the community in a much tighter form and shape a more robust social construct.
 
-Runs the app in the development mode.<br>
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+Its more important aspect is the fact that the student branch can advertise the SB's events. This means that the community will be more self-aware, more people will know about the SB's events and advertisment will be easier and more effortless.
 
-The page will reload if you make edits.<br>
-You will also see any lint errors in the console.
+**In short: We spread knowledge, we make new friends and we meet people we haven't met before in a much more easy way.**
 
-### `npm test`
+## Planned Features
 
-Launches the test runner in the interactive watch mode.<br>
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### APP
+- [x] Manager Users
+  -  [x] Register
+  -  [x] Login
+  -  [x] Logout
+  -  [x] Edit
+  -  [x] Get Profile
 
-### `npm run build`
+- [ ] Contact Tickets
+  - [x] Contact
+  - [ ] Manager Respond
+  - [x] Close Ticket
 
-Builds the app for production to the `build` folder.<br>
-It correctly bundles React in production mode and optimizes the build for the best performance.
+- [ ] Sponsors
+  - [x] Add
+  - [x] Delete
+  - [ ] Edit
 
-The build is minified and the filenames include the hashes.<br>
-Your app is ready to be deployed!
+- [ ] Events
+  - [ ] Add
+  - [ ] Delete
+  - [ ] Edit
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+- [ ] Blog (small priority)
+  - [ ] Add article
+  - [ ] Delete article
+  - [ ] Edit article
+  - [ ] Add comment
+  - [ ] Edit comment
+  - [ ] Delete comment
 
-### `npm run eject`
+### WEB
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+- [ ] Calendar
+  - [ ] Show events
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+- [ ] Upcoming Events
+  - [ ] Show upcoming events
 
-Instead, it will copy all the configuration files and the transitive dependencies (Webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+- [ ] Contact form
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+- [ ] Control panel
+    - [ ] Events
+      - [ ] Create
+      - [ ] Delete
+      - [ ] Edit
+    - [ ] Tickets
+      - [ ] Respond
+      - [ ] Close
+    - [ ] Sponsors
+      - [ ] Add
+      - [ ] Delete
+      - [ ] Edit
+    - [ ] Managers
+      - [ ] Add
+      - [ ] Delete
+      - [ ] Edit
