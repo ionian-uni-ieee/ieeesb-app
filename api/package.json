@@ -1,0 +1,23 @@
+{
+  "name": "api",
+  "version": "1.0.0",
+  "main": "index.ts",
+  "author": "IEEE SB Ionian Team",
+  "license": "MIT",
+  "scripts": {
+    "start": "yarn live",
+    "compile": "yarn compile-yaml && yarn compile-swagger",
+    "compile-yaml": "yarn yamlinc ./swagger.yaml",
+    "compile-swagger": "yarn browserify --require swagger-ui -o ./bundle.js",
+    "cc": "yarn yamlinc && xclip -selection clipboard ./swagger.inc.yaml",
+    "watch-yaml": "yarn yamlinc --watch ./swagger.yaml",
+    "live": "(exec yarn watch-yaml &) && yarn swagger",
+    "swagger": "yarn compile && yarn http-server -p 8081 -o ./build.js"
+  },
+  "dependencies": {
+    "browserify": "^16.5.0",
+    "http-server": "^0.11.1",
+    "swagger-ui": "^3.23.9",
+    "yamlinc": "^0.1.9"
+  }
+}

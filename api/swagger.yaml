@@ -1,0 +1,13 @@
+openapi: 3.0.0
+info:
+  version: 0.1.0
+  title: IEEE SB Application
+  description: >-
+    A great way to manage your branch and advertise your content
+security:
+  - application:
+      - read
+      - write
+paths:
+  /ping:
+    $include: "./routes/ping.yaml"

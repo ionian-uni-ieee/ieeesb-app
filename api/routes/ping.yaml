@@ -1,0 +1,11 @@
+get:
+  summary: Gets server's heartbeat
+  security: []
+  responses:
+    "200":
+      description: "Sends a heartbeat"
+      content:
+        application/json:
+          schema:
+            type: string
+            enum: [pong]
