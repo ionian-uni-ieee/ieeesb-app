@@ -37,4 +37,4 @@ yarn-error.log*
 #######################
 
 .env
-.swagger.inc.yaml
+swagger.inc.yaml
