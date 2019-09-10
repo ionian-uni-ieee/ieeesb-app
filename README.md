@@ -30,10 +30,10 @@ Its more important aspect is the fact that the student branch can advertise the 
   - [ ] Manager Respond
   - [x] Close Ticket
 
-- [ ] Sponsors
+- [x] Sponsors
   - [x] Add
   - [x] Delete
-  - [ ] Edit
+  - [x] Edit
 
 - [ ] Events
   - [ ] Add
