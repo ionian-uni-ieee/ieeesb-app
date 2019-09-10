@@ -1,0 +1,52 @@
+version: "3.3"
+
+services:
+  web:
+    ports:
+      - 80:80
+    networks:
+      - frontend
+
+  app:
+    ports:
+      - 5000:5000
+    secrets:
+      - mongo-user
+      - mongo-pass
+    environment:
+      API_DATABASE_USERNAME: root
+      API_DATABASE_PASSWORD: pass
+    volumes:
+      - app-storage:/data/
+    networks:
+      - backend
+
+  mongo:
+    secrets:
+      - mongo-user
+      - mongo-pass
+    environment:
+      MONGO_INITDB_ROOT_USERNAME_FILE: /run/secrets/mongo-user
+      MONGO_INITDB_ROOT_PASSWORD_FILE: /run/secrets/mongo-pass
+    volumes:
+      - app-db:/data/db
+    networks:
+      - backend
+    # TODO: To remove when db auth update is provided
+    command: [--noauth]
+
+volumes:
+  app-db: {}
+  app-storage: {}
+
+networks:
+  frontend:
+    driver: overlay
+  backend:
+    driver: overlay
+
+secrets:
+  mongo-user:
+    external: true
+  mongo-pass:
+    external: true

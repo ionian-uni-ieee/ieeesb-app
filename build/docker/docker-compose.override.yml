@@ -1,0 +1,26 @@
+version: "3.3"
+
+services:
+  web:
+    build:
+      context: ../../web
+      dockerfile: ../build/docker/web.Dockerfile
+
+  app:
+    build:
+      context: ../../
+      dockerfile: ./build/docker/app.Dockerfile
+    ports:
+      - 5000:5000
+    environment:
+      API_DATABASE_USERNAME: root
+      API_DATABASE_PASSWORD: pass
+
+  mongo:
+    # secrets:
+    #   - mongo-pass
+    # environment:
+    #   MONGO_INITDB_ROOT_USERNAME_FILE: /run/secrets/mongo-user
+    #   MONGO_INITDB_ROOT_PASSWORD_FILE: /run/secrets/mongo-pass
+    # TODO: To remove when db auth update is provided
+    command: [--noauth]
