@@ -8,6 +8,14 @@ security:
   - application:
       - read
       - write
+
 paths:
   /ping:
     $include: "./routes/ping.yaml"
+
+components:
+  schemas:
+    User:
+      $include: "./components/schemas/User.yaml"
+    UserObject:
+      $include: "./components/schemas/User.object.yaml"

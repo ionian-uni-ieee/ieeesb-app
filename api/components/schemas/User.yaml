@@ -1,0 +1,21 @@
+type: object
+properties:
+  id:
+    type: string
+  username:
+    type: string
+  email:
+    type: string
+  fullname:
+    type: string
+  permissions:
+    type: object
+    properties:
+      users:
+        type: bool
+      events:
+        type: bool
+      tickets:
+        type: bool
+      sponsors:
+        type: bool
