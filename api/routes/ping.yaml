@@ -1,5 +1,7 @@
 get:
   summary: Gets server's heartbeat
+  tags:
+    - Utilities
   security: []
   responses:
     "200":
