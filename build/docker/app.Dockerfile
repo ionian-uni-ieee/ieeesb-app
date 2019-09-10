@@ -11,19 +11,19 @@ RUN mkdir -p /opt/go-app
 WORKDIR /opt/go-app
 
 # Get main file
-COPY ../../main.go ./
+COPY main.go ./
 
 # Copy packages
-COPY ../../pkg ./pkg 
+COPY pkg ./pkg 
 
 # Get go module files
-COPY ../../go.mod ../../go.sum ./
+COPY go.mod go.sum ./
 
 # Copy vendors
-COPY ../../vendor ./vendor
+COPY vendor ./vendor
 
 # Copy application
-COPY ../../internal/app ./internal/app
+COPY internal/app ./internal/app
 
 EXPOSE 5000
 
