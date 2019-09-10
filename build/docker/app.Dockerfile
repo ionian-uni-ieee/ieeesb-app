@@ -23,7 +23,7 @@ COPY ../../go.mod ../../go.sum ./
 COPY ../../vendor ./vendor
 
 # Copy application
-COPY ../../internal/app ./internal/app
+COPY internal/app ./internal/app
 
 EXPOSE 5000
 
