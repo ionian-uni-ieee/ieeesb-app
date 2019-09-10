@@ -1,0 +1,16 @@
+get:
+  summary: Get a bulk of users
+  security: []
+  tags:
+    - Users
+  responses:
+    "200":
+      description: Return a filtered chunk of users
+      contect:
+        application/json:
+          schema:
+            type: object
+            properties:
+              data:
+                type: array
+                items: "#/components/schemas/UserObject"

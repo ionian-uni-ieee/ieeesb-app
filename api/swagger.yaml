@@ -1,17 +1,60 @@
 openapi: 3.0.0
+
 info:
   version: 0.1.0
   title: IEEE SB Application
   description: >-
     A great way to manage your branch and advertise your content
+
 security:
   - application:
       - read
       - write
 
 paths:
+  # Utilities
   /ping:
-    $include: "./routes/ping.yaml"
+    $include: "./routes/utilities/ping.yaml"
+
+  # Users
+  /users:
+    $include: "./routes/users/users.yaml"
+  /user/{user_id}:
+    $include: "./routes/users/users.yaml"
+
+  # Authorization
+  /login:
+    $include: "./routes/auth/users.yaml"
+  /logout:
+    $include: "./routes/auth/users.yaml"
+  /profile:
+    $include: "./routes/auth/users.yaml"
+
+  # Events
+  /events:
+    $include: "./routes/events/users.yaml"
+  /events/{event_id}:
+    $include: "./routes/events/users.yaml"
+
+  # Sponsors
+  /sponsors:
+    $include: "./routes/sponsors/users.yaml"
+  /sponsors/{sponsor_id}:
+    $include: "./routes/sponsors/users.yaml"
+
+  # Tickets
+  /tickets:
+    $include: "./routes/tickets/users.yaml"
+  /ticket/{sponsor_id}:
+    $include: "./routes/tickets/users.yaml"
+  /tickets/contact:
+    $include: "./routes/tickets/users.yaml"
+
+  # Media
+  /media/upload:
+    $include: "./routes/media/users.yaml"
+  /media/download/{media_id}:
+    $include: "./routes/media/users.yaml"
 
 components:
   schemas:
