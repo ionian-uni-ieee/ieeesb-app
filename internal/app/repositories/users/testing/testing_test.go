@@ -121,14 +121,14 @@ func TestFind(t *testing.T) {
 
 		gotUsers, gotErr := usersRepository.Find(map[string]interface{}{
 			"Email": testUser1.Email,
-		})
+		}, 0, 2)
 
 		if gotErr != nil {
 			t.Error(gotErr)
 		}
 
 		if len(gotUsers) != 2 {
-			t.Error("Expected len(users) to be 2, instead got", len(gotUsers))
+			t.Error("Expected length of users got to be 2, instead got", len(gotUsers))
 		}
 
 		if gotUsers[0].Username != gotUsers[1].Username {
@@ -136,6 +136,22 @@ func TestFind(t *testing.T) {
 				gotUsers[0].Username,
 				gotUsers[1].Username)
 		}
+	})
+
+	t.Run("Should limit the batch to 2 users", func(t *testing.T) {
+		testUtils.SetupData(db, "users", testUser1, testUser2, testUser3)
+
+		gotUsers, gotErr := usersRepository.Find(map[string]interface{}{}, 0, 2)
+
+		if gotErr != nil {
+			t.Error(gotErr)
+			t.SkipNow()
+		}
+
+		if len(gotUsers) != 2 {
+			t.Error("Expected length of 2 but got", len(gotUsers))
+		}
+
 	})
 }
 

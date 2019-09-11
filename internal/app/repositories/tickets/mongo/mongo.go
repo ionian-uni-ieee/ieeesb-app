@@ -3,12 +3,15 @@ package mongo
 import (
 	"context"
 	"errors"
+	"reflect"
 
 	"github.com/ionian-uni-ieee/ieeesb-app/internal/app/drivers/database"
 	"github.com/ionian-uni-ieee/ieeesb-app/internal/app/models"
+	"github.com/ionian-uni-ieee/ieeesb-app/pkg/reflections"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	mongod "go.mongodb.org/mongo-driver/mongo"
+	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
 type Repository struct {
@@ -73,8 +76,31 @@ func (r *Repository) DeleteByID(ticketID string) error {
 	return err
 }
 
-func (r *Repository) Find(filter interface{}) ([]models.Ticket, error) {
-	result, err := r.collection.Find(context.Background(), filter)
+func (r *Repository) Find(filter interface{}, skip int64, limit int64) ([]models.Ticket, error) {
+	filterBSON, err := reflections.ConvertFieldNamesToTagNames(
+		filter.(map[string]interface{}),
+		reflect.TypeOf(models.Ticket{}),
+		"bson",
+	)
+
+	if err != nil {
+		return nil, err
+	}
+
+	if skip < 0 {
+		skip = 0
+	}
+	if limit <= 0 {
+		skip = 12
+	}
+
+	result, err := r.collection.Find(
+		context.Background(),
+		filterBSON,
+		&options.FindOptions{
+			Skip:  &skip,
+			Limit: &limit,
+		})
 	defer result.Close(context.Background())
 
 	tickets := []models.Ticket{}

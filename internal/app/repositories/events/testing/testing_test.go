@@ -114,28 +114,46 @@ func TestDeleteByID(t *testing.T) {
 }
 
 func TestFind(t *testing.T) {
+	// Setup
 	db, eventsRepository := makeRepository()
 
-	// Regular example
-	testUtils.SetupData(db, "events", testEvent1, testEvent1)
+	t.Run("Should return 2 events", func(t *testing.T) {
+		testUtils.SetupData(db, "events", testEvent1, testEvent1)
 
-	gotEvents, gotErr := eventsRepository.Find(map[string]interface{}{
-		"Name": testEvent1.Name,
+		gotEvents, gotErr := eventsRepository.Find(map[string]interface{}{
+			"Name": testEvent1.Name,
+		}, 0, 2)
+
+		if gotErr != nil {
+			t.Error(gotErr)
+		}
+
+		if len(gotEvents) != 2 {
+			t.Error("Expected length of events got to be 2, instead got", len(gotEvents))
+		}
+
+		if gotEvents[0].Name != gotEvents[1].Name {
+			t.Error("Expected ID to equal to each other, instead got",
+				gotEvents[0].Name,
+				gotEvents[1].Name)
+		}
 	})
 
-	if gotErr != nil {
-		t.Error(gotErr)
-	}
+	t.Run("Should limit the batch to 2 events", func(t *testing.T) {
+		testUtils.SetupData(db, "events", testEvent1, testEvent2, testEvent3)
 
-	if len(gotEvents) != 2 {
-		t.Error("Expected len(events) to be 2, instead got", len(gotEvents))
-	}
+		gotEvents, gotErr := eventsRepository.Find(map[string]interface{}{}, 0, 2)
 
-	if gotEvents[0].Name != gotEvents[1].Name {
-		t.Error("Expected name to equal to each other, instead got",
-			gotEvents[0].Name,
-			gotEvents[1].Name)
-	}
+		if gotErr != nil {
+			t.Error(gotErr)
+			t.SkipNow()
+		}
+
+		if len(gotEvents) != 2 {
+			t.Error("Expected length of 2 but got", len(gotEvents))
+		}
+
+	})
 }
 
 func TestFindOne(t *testing.T) {

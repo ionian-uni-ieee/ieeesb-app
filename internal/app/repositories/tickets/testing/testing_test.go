@@ -106,28 +106,46 @@ func TestDeleteByID(t *testing.T) {
 }
 
 func TestFind(t *testing.T) {
+	// Setup
 	db, ticketsRepository := makeRepository()
 
-	// Regular example
-	testUtils.SetupData(db, "tickets", testTicket1, testTicket1)
+	t.Run("Should return 2 tickets", func(t *testing.T) {
+		testUtils.SetupData(db, "tickets", testTicket1, testTicket1)
 
-	gotTickets, gotErr := ticketsRepository.Find(map[string]interface{}{
-		"Email": testTicket1.Email,
+		gotTickets, gotErr := ticketsRepository.Find(map[string]interface{}{
+			"Email": testTicket1.Email,
+		}, 0, 2)
+
+		if gotErr != nil {
+			t.Error(gotErr)
+		}
+
+		if len(gotTickets) != 2 {
+			t.Error("Expected length of tickets got to be 2, instead got", len(gotTickets))
+		}
+
+		if gotTickets[0].Email != gotTickets[1].Email {
+			t.Error("Expected Emails to equal to each other, instead got",
+				gotTickets[0].Email,
+				gotTickets[1].Email)
+		}
 	})
 
-	if gotErr != nil {
-		t.Error(gotErr)
-	}
+	t.Run("Should limit the batch to 2 tickets", func(t *testing.T) {
+		testUtils.SetupData(db, "tickets", testTicket1, testTicket2, testTicket3)
 
-	if len(gotTickets) != 2 {
-		t.Error("Expected len(tickets) to be 2, instead got", len(gotTickets))
-	}
+		gotTickets, gotErr := ticketsRepository.Find(map[string]interface{}{}, 0, 2)
 
-	if gotTickets[0].Email != gotTickets[1].Email {
-		t.Error("Expected Email to equal to each other, instead got",
-			gotTickets[0].Email,
-			gotTickets[1].Email)
-	}
+		if gotErr != nil {
+			t.Error(gotErr)
+			t.SkipNow()
+		}
+
+		if len(gotTickets) != 2 {
+			t.Error("Expected length of 2 but got", len(gotTickets))
+		}
+
+	})
 }
 
 func TestFindOne(t *testing.T) {
@@ -182,7 +200,7 @@ func TestInsertOne(t *testing.T) {
 	).(models.Ticket)
 
 	if storedTicket.ID.Hex() != gotInsertedID {
-		t.Error("Expected stored user's ID to equal gotInsertedID")
+		t.Error("Expected stored ticket's ID to equal gotInsertedID")
 	}
 }
 

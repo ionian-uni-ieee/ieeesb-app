@@ -133,25 +133,47 @@ func (r *Repository) DeleteByID(eventID string) error {
 }
 
 // Find finds all the events that match the filter
-func (r *Repository) Find(filter interface{}) ([]models.Event, error) {
-	modelsFound := []models.Event{}
+func (r *Repository) Find(filter interface{}, skip int64, limit int64) ([]models.Event, error) {
+
+	totalItems := int64(len(r.Collection.Columns["ID"]))
+	if totalItems < skip {
+		skip = totalItems
+	}
+	if totalItems < limit+skip {
+		limit = 0
+	}
+
+	modelsFound := make([]models.Event, limit)
 
 	// Iterating on the filter
 	if filterMap, ok := filter.(map[string]interface{}); ok {
 		for key, value := range filterMap {
 			// Iterating on all the filtered's column's cell
-			for rowIndex, cell := range r.Collection.Columns[key] {
+			for rowIndex, cell := range r.Collection.Columns[key][skip : skip+limit] {
 				if cell == value {
-					// Create an event from this row's data
-					newEvent := models.Event{}
+					// Create an user from this row's data
 					for fieldName, column := range r.Collection.Columns {
 						value := column[rowIndex]
-						err := reflections.SetFieldValue(&newEvent, fieldName, value)
+						err := reflections.SetFieldValue(
+							&modelsFound[rowIndex],
+							fieldName,
+							value,
+						)
 						if err != nil {
 							return nil, err
 						}
 					}
-					modelsFound = append(modelsFound, newEvent)
+				}
+			}
+		}
+	} else if filter == nil {
+		for fieldName, column := range r.Collection.Columns {
+			for rowIndex := range column[skip : skip+limit] {
+				// Create an user from this row's data
+				value := column[rowIndex]
+				err := reflections.SetFieldValue(&modelsFound[rowIndex], fieldName, value)
+				if err != nil {
+					return nil, err
 				}
 			}
 		}
