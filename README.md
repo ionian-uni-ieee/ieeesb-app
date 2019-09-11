@@ -19,26 +19,33 @@ Its more important aspect is the fact that the student branch can advertise the 
 
 ### APP
 - [x] Manager Users
-  -  [x] Register
-  -  [x] Login
-  -  [x] Logout
-  -  [x] Edit
-  -  [x] Get Profile
+  - [x] Delete
+  - [x] Edit
+  - [x] Get Users
+
+  [x] Authorization
+  - [x] Get Profile
+  - [x] Login
+  - [x] Logout
+  - [x] Register
 
 - [ ] Contact Tickets
   - [x] Contact
-  - [ ] Manager Respond
   - [x] Close Ticket
+  - [x] Get Tickets
+  - [ ] Manager Respond
 
 - [x] Sponsors
   - [x] Add
   - [x] Delete
   - [x] Edit
+  - [x] Get Sponsors
 
 - [ ] Events
   - [ ] Add
   - [ ] Delete
   - [ ] Edit
+  - [x] Get Events
 
 - [ ] Blog (small priority)
   - [ ] Add article
