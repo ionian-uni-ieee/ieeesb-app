@@ -16,6 +16,7 @@ Its more important aspect is the fact that the student branch can advertise the 
 **In short: We spread knowledge, we make new friends and we meet people we haven't met before in a much more easy way.**
 
 ## Planned Features
+After they're all completed, we will pass to an **Pre-Alpha** phase.
 
 ### APP
 - [x] Manager Users
@@ -70,14 +71,18 @@ Its more important aspect is the fact that the student branch can advertise the 
       - [ ] Create
       - [ ] Delete
       - [ ] Edit
+      - [ ] View
     - [ ] Tickets
       - [ ] Respond
       - [ ] Close
+      - [ ] View
     - [ ] Sponsors
       - [ ] Add
       - [ ] Delete
       - [ ] Edit
+      - [ ] View
     - [ ] Managers
       - [ ] Add
       - [ ] Delete
       - [ ] Edit
+      - [ ] View
