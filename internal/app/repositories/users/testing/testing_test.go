@@ -49,7 +49,7 @@ var testUser3 = models.User{
 func TestFindByID(t *testing.T) {
 	db, usersRepository := makeRepository()
 
-	t.Run("Finds user", func(t *testing.T) {
+	t.Run("Should return a user", func(t *testing.T) {
 		testUtils.SetupData(db, "users", testUser1)
 
 		gotUser, err := usersRepository.FindByID(testUser1.ID.Hex())
@@ -71,7 +71,7 @@ func TestFindByID(t *testing.T) {
 func TestUpdateByID(t *testing.T) {
 	db, usersRepository := makeRepository()
 
-	t.Run("Updates user", func(t *testing.T) {
+	t.Run("Should update a stored user's data", func(t *testing.T) {
 		testUtils.SetupData(db, "users", testUser1)
 
 		newUsername := "newusername"
@@ -96,7 +96,7 @@ func TestUpdateByID(t *testing.T) {
 func TestDeleteByID(t *testing.T) {
 	db, usersRepository := makeRepository()
 
-	t.Run("Deletes user", func(t *testing.T) {
+	t.Run("Should delete a user from the database", func(t *testing.T) {
 		testUtils.SetupData(db, "users", testUser1)
 
 		gotErr := usersRepository.DeleteByID(testUser1.ID.Hex())
@@ -116,7 +116,7 @@ func TestDeleteByID(t *testing.T) {
 func TestFind(t *testing.T) {
 	db, usersRepository := makeRepository()
 
-	t.Run("Finds users", func(t *testing.T) {
+	t.Run("Should return 2 users", func(t *testing.T) {
 		testUtils.SetupData(db, "users", testUser1, testUser1)
 
 		gotUsers, gotErr := usersRepository.Find(map[string]interface{}{
@@ -158,7 +158,7 @@ func TestFind(t *testing.T) {
 func TestFindOne(t *testing.T) {
 	db, usersRepository := makeRepository()
 
-	t.Run("Find a user", func(t *testing.T) {
+	t.Run("Should return a user with same username as the stored one", func(t *testing.T) {
 		testUtils.SetupData(db, "users", testUser1, testUser2)
 
 		gotUser, gotErr := usersRepository.FindOne(map[string]interface{}{
@@ -187,7 +187,7 @@ func TestInsertOne(t *testing.T) {
 
 	db, usersRepository := makeRepository()
 
-	t.Run("Inserts a user", func(t *testing.T) {
+	t.Run("Should insert a new user into database", func(t *testing.T) {
 		testUtils.ResetCollection(db, "users")
 
 		gotInsertedID, gotErr := usersRepository.InsertOne(testUser1)
@@ -216,7 +216,7 @@ func TestInsertOne(t *testing.T) {
 func TestInsertMany(t *testing.T) {
 	db, usersRepository := makeRepository()
 
-	t.Run("Inserts many users", func(t *testing.T) {
+	t.Run("Should store many users into database", func(t *testing.T) {
 		testUtils.ResetCollection(db, "users")
 
 		users := []models.User{
@@ -241,7 +241,7 @@ func TestInsertMany(t *testing.T) {
 func TestIsDuplicate(t *testing.T) {
 	db, usersRepository := makeRepository()
 
-	t.Run("Is duplicate user", func(t *testing.T) {
+	t.Run("Should return that user is duplicate", func(t *testing.T) {
 		testUtils.SetupData(db, "users", testUser1)
 
 		gotIsDuplicate := usersRepository.IsDuplicate(testUser1.Email, testUser1.Username, testUser1.Fullname)
@@ -251,7 +251,7 @@ func TestIsDuplicate(t *testing.T) {
 		}
 	})
 
-	t.Run("Is not a duplicate user", func(t *testing.T) {
+	t.Run("Should return that user is not duplicate", func(t *testing.T) {
 		testUtils.ResetCollection(db, "users")
 
 		gotIsDuplicate := usersRepository.IsDuplicate(testUser1.Email, testUser1.Username, testUser1.Fullname)
