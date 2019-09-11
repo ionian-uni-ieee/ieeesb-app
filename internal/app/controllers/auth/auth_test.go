@@ -1,9 +1,9 @@
-package users_test
+package auth_test
 
 import (
 	"time"
 
-	"github.com/ionian-uni-ieee/ieeesb-app/internal/app/controllers/users"
+	"github.com/ionian-uni-ieee/ieeesb-app/internal/app/controllers/auth"
 	testingDatabase "github.com/ionian-uni-ieee/ieeesb-app/internal/app/drivers/database/testing"
 	"github.com/ionian-uni-ieee/ieeesb-app/internal/app/models"
 	"github.com/ionian-uni-ieee/ieeesb-app/internal/app/repositories"
@@ -34,31 +34,34 @@ var mockUser = models.User{
 		Sponsors: false,
 	},
 }
-var mockUser2 = models.User{
-	ID:       primitive.NewObjectID(),
-	Username: "johndoe",
-	Password: string(mockUserHash2),
-	Email:    "johndoe@mail.com",
-	Fullname: "John Doe",
-	Permissions: models.Permissions{
-		Users:    false,
-		Events:   false,
-		Tickets:  false,
-		Sponsors: true,
-	},
-}
 
-var mockUser3 = models.User{
-	ID:       primitive.NewObjectID(),
-	Username: "nick",
-	Password: string(mockUserHash3),
-	Email:    "nick@mail.com",
-	Fullname: "Nick Brian",
-	Permissions: models.Permissions{
-		Users:    false,
-		Events:   true,
-		Tickets:  false,
-		Sponsors: false,
+var mockUsers = []models.User{
+	mockUser,
+	models.User{
+		ID:       primitive.NewObjectID(),
+		Username: "johndoe",
+		Password: string(mockUserHash2),
+		Email:    "johndoe@mail.com",
+		Fullname: "John Doe",
+		Permissions: models.Permissions{
+			Users:    false,
+			Events:   false,
+			Tickets:  false,
+			Sponsors: true,
+		},
+	},
+	models.User{
+		ID:       primitive.NewObjectID(),
+		Username: "nick",
+		Password: string(mockUserHash3),
+		Email:    "nick@mail.com",
+		Fullname: "Nick Brian",
+		Permissions: models.Permissions{
+			Users:    false,
+			Events:   true,
+			Tickets:  false,
+			Sponsors: false,
+		},
 	},
 }
 
@@ -69,11 +72,11 @@ var mockSession = models.Session{
 	Expires:  time.Now().Unix() + 30*60*1000,
 }
 
-func makeController() (*testingDatabase.DatabaseSession, *users.Controller) {
+func makeController() (*testingDatabase.DatabaseSession, *auth.Controller) {
 	// Setup
 	database := testingDatabase.MakeDatabaseDriver()
 	reps := repositories.MakeRepositories(database)
-	controller := users.MakeController(reps)
+	controller := auth.MakeController(reps)
 
 	return database, controller
 }
