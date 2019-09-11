@@ -23,7 +23,7 @@ Its more important aspect is the fact that the student branch can advertise the 
   - [x] Edit
   - [x] Get Users
 
-  [x] Authorization
+- [x] Authorization
   - [x] Get Profile
   - [x] Login
   - [x] Logout
