@@ -5,6 +5,7 @@ info:
   title: IEEE SB Application
   description: >-
     A great way to manage your branch and advertise your content
+  baseUrl: /v1
 
 security:
   - application:
@@ -14,47 +15,47 @@ security:
 paths:
   # Utilities
   /ping:
-    $include: "./routes/utilities/ping.yaml"
+    $include: "./routes/utils/ping.yaml"
 
   # Users
   /users:
-    $include: "./routes/users/users.yaml"
+    $include: "./routes/v1/users/users.yaml"
   /user/{user_id}:
-    $include: "./routes/users/users.yaml"
+    $include: "./routes/v1/users/users_id.yaml"
 
   # Authorization
   /login:
-    $include: "./routes/auth/users.yaml"
+    $include: "./routes/v1/auth/login.yaml"
   /logout:
-    $include: "./routes/auth/users.yaml"
+    $include: "./routes/v1/auth/logout.yaml"
   /profile:
-    $include: "./routes/auth/users.yaml"
+    $include: "./routes/v1/auth/profile.yaml"
 
   # Events
   /events:
-    $include: "./routes/events/users.yaml"
+    $include: "./routes/v1/events/events.yaml"
   /events/{event_id}:
-    $include: "./routes/events/users.yaml"
+    $include: "./routes/v1/events/events_id.yaml"
 
   # Sponsors
   /sponsors:
-    $include: "./routes/sponsors/users.yaml"
+    $include: "./routes/v1/sponsors/sponsors.yaml"
   /sponsors/{sponsor_id}:
-    $include: "./routes/sponsors/users.yaml"
+    $include: "./routes/v1/sponsors/sponsors_id.yaml"
 
   # Tickets
   /tickets:
-    $include: "./routes/tickets/users.yaml"
+    $include: "./routes/v1/tickets/tickets.yaml"
   /ticket/{sponsor_id}:
-    $include: "./routes/tickets/users.yaml"
+    $include: "./routes/v1/tickets/tickets_id.yaml"
   /tickets/contact:
-    $include: "./routes/tickets/users.yaml"
+    $include: "./routes/v1/tickets/tickets_contact.yaml"
 
   # Media
   /media/upload:
-    $include: "./routes/media/users.yaml"
+    $include: "./routes/v1/media/media_upload.yaml"
   /media/download/{media_id}:
-    $include: "./routes/media/users.yaml"
+    $include: "./routes/v1/media/media_download_id.yaml"
 
 components:
   schemas:
