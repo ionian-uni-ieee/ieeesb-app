@@ -17,7 +17,7 @@ func IsInterfaceEqualToCollectionRow(db *testingDatabase.DatabaseSession, collec
 		panic(err)
 	}
 
-	users := db.GetCollection(collectionName).(*testingDatabase.Collection)
+	collection := db.GetCollection(collectionName).(*testingDatabase.Collection)
 
 	for _, fieldName := range fieldNames {
 		field, err := reflections.GetFieldValue(d, fieldName)
@@ -26,7 +26,7 @@ func IsInterfaceEqualToCollectionRow(db *testingDatabase.DatabaseSession, collec
 			panic(err)
 		}
 
-		if !reflect.DeepEqual(users.Columns[fieldName][row], field) {
+		if !reflect.DeepEqual(collection.Columns[fieldName][row], field) {
 			return false
 		}
 	}
@@ -36,7 +36,7 @@ func IsInterfaceEqualToCollectionRow(db *testingDatabase.DatabaseSession, collec
 
 // GetInterfaceAtCollectionRow returns the interface that is located in a collection's row
 func GetInterfaceAtCollectionRow(db *testingDatabase.DatabaseSession, collectionName string, structType reflect.Type, row int) interface{} {
-	users := db.GetCollection(collectionName).(*testingDatabase.Collection)
+	collection := db.GetCollection(collectionName).(*testingDatabase.Collection)
 
 	if IsCollectionEmpty(db, collectionName) {
 		return reflections.CreateEmptyInstance(structType)
@@ -51,7 +51,7 @@ func GetInterfaceAtCollectionRow(db *testingDatabase.DatabaseSession, collection
 	val := reflect.New(structType).Elem()
 
 	for _, fieldName := range fieldNames {
-		fieldValue := users.Columns[fieldName][row]
+		fieldValue := collection.Columns[fieldName][row]
 		field := val.FieldByName(fieldName)
 		field.Set(reflect.ValueOf(fieldValue))
 	}
@@ -64,15 +64,15 @@ func GetInterfaceAtCollectionRow(db *testingDatabase.DatabaseSession, collection
 // otherwise if no columns are filled
 // or the collection or columns point to an nil pointer, it returns true
 func IsCollectionEmpty(db *testingDatabase.DatabaseSession, collectionName string) bool {
-	users := db.GetCollection(collectionName).(*testingDatabase.Collection)
+	collection := db.GetCollection(collectionName).(*testingDatabase.Collection)
 
-	if users == nil ||
-		users.Columns == nil ||
-		len(users.Columns) == 0 {
+	if collection == nil ||
+		collection.Columns == nil ||
+		len(collection.Columns) == 0 {
 		return true
 	}
 
-	for _, column := range users.Columns {
+	for _, column := range collection.Columns {
 		if len(column) != 0 {
 			return false
 		}
@@ -85,19 +85,19 @@ func IsCollectionEmpty(db *testingDatabase.DatabaseSession, collectionName strin
 // Not safe if columns might have different lengths in an irregular (probably buggy) circumstance
 func GetCollectionLength(db *testingDatabase.DatabaseSession, collectionName string) (length int) {
 
-	users := db.GetCollection(collectionName).(*testingDatabase.Collection)
+	collection := db.GetCollection(collectionName).(*testingDatabase.Collection)
 
-	if users == nil {
+	if collection == nil {
 		panic("Collection points to nil")
 	}
-	if users.Columns == nil {
+	if collection.Columns == nil {
 		panic("Columns point to nil")
 	}
-	if len(users.Columns) == 0 {
+	if len(collection.Columns) == 0 {
 		panic("Columns have zero length when they should be filled with field names from the testing driver")
 	}
 
-	for _, column := range users.Columns {
+	for _, column := range collection.Columns {
 		length = len(column)
 		break
 	}
