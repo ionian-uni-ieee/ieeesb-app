@@ -1,4 +1,4 @@
-package users_test
+package auth_test
 
 import (
 	"reflect"

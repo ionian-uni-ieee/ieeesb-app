@@ -133,31 +133,53 @@ func (r *Repository) DeleteByID(ticketID string) error {
 }
 
 // Find finds all the tickets that match the filter
-func (r *Repository) Find(filter interface{}) ([]models.Ticket, error) {
-	modelsFound := []models.Ticket{}
+func (r *Repository) Find(filter interface{}, skip int64, limit int64) ([]models.Ticket, error) {
+	totalItems := int64(len(r.Collection.Columns["ID"]))
+	if totalItems < skip {
+		skip = totalItems
+	}
+	if totalItems < limit+skip {
+		limit = 0
+	}
+
+	modelsFound := make([]models.Ticket, limit)
 
 	// Iterating on the filter
 	if filterMap, ok := filter.(map[string]interface{}); ok {
 		for key, value := range filterMap {
 			// Iterating on all the filtered's column's cell
-			for rowIndex, cell := range r.Collection.Columns[key] {
+			for rowIndex, cell := range r.Collection.Columns[key][skip : skip+limit] {
 				if cell == value {
-					// Create an ticket from this row's data
-					newTicket := models.Ticket{}
+					// Create an user from this row's data
 					for fieldName, column := range r.Collection.Columns {
 						value := column[rowIndex]
-						err := reflections.SetFieldValue(&newTicket, fieldName, value)
+						err := reflections.SetFieldValue(
+							&modelsFound[rowIndex],
+							fieldName,
+							value,
+						)
 						if err != nil {
 							return nil, err
 						}
 					}
-					modelsFound = append(modelsFound, newTicket)
+				}
+			}
+		}
+	} else if filter == nil {
+		for fieldName, column := range r.Collection.Columns {
+			for rowIndex := range column[skip : skip+limit] {
+				// Create an user from this row's data
+				value := column[rowIndex]
+				err := reflections.SetFieldValue(&modelsFound[rowIndex], fieldName, value)
+				if err != nil {
+					return nil, err
 				}
 			}
 		}
 	} else {
 		return nil, errors.New("Filter interface is not a string map of interfaces")
 	}
+
 	return modelsFound, nil
 }
 

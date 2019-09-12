@@ -34,34 +34,31 @@ var mockUser = models.User{
 		Sponsors: false,
 	},
 }
-
-var mockUsers = []models.User{
-	mockUser,
-	models.User{
-		ID:       primitive.NewObjectID(),
-		Username: "johndoe",
-		Password: string(mockUserHash2),
-		Email:    "johndoe@mail.com",
-		Fullname: "John Doe",
-		Permissions: models.Permissions{
-			Users:    false,
-			Events:   false,
-			Tickets:  false,
-			Sponsors: true,
-		},
+var mockUser2 = models.User{
+	ID:       primitive.NewObjectID(),
+	Username: "johndoe",
+	Password: string(mockUserHash2),
+	Email:    "johndoe@mail.com",
+	Fullname: "John Doe",
+	Permissions: models.Permissions{
+		Users:    false,
+		Events:   false,
+		Tickets:  false,
+		Sponsors: true,
 	},
-	models.User{
-		ID:       primitive.NewObjectID(),
-		Username: "nick",
-		Password: string(mockUserHash3),
-		Email:    "nick@mail.com",
-		Fullname: "Nick Brian",
-		Permissions: models.Permissions{
-			Users:    false,
-			Events:   true,
-			Tickets:  false,
-			Sponsors: false,
-		},
+}
+
+var mockUser3 = models.User{
+	ID:       primitive.NewObjectID(),
+	Username: "nick",
+	Password: string(mockUserHash3),
+	Email:    "nick@mail.com",
+	Fullname: "Nick Brian",
+	Permissions: models.Permissions{
+		Users:    false,
+		Events:   true,
+		Tickets:  false,
+		Sponsors: false,
 	},
 }
 

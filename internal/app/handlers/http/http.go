@@ -5,6 +5,7 @@ import (
 	"net/http"
 
 	"github.com/gorilla/securecookie"
+	"github.com/ionian-uni-ieee/ieeesb-app/internal/app/controllers/auth"
 	"github.com/ionian-uni-ieee/ieeesb-app/internal/app/controllers/events"
 	"github.com/ionian-uni-ieee/ieeesb-app/internal/app/controllers/media"
 	"github.com/ionian-uni-ieee/ieeesb-app/internal/app/controllers/sponsors"
@@ -32,6 +33,7 @@ type errorResponse struct {
 }
 
 type Handler struct {
+	authController     *auth.Controller
 	usersController    *users.Controller
 	eventsController   *events.Controller
 	ticketsController  *tickets.Controller
@@ -41,11 +43,12 @@ type Handler struct {
 
 func MakeHandler(repositories *repositories.Repositories) *Handler {
 	return &Handler{
-		users.MakeController(repositories),
-		events.MakeController(repositories),
-		tickets.MakeController(repositories),
-		sponsors.MakeController(repositories),
-		media.MakeController(repositories),
+		authController:     auth.MakeController(repositories),
+		usersController:    users.MakeController(repositories),
+		eventsController:   events.MakeController(repositories),
+		ticketsController:  tickets.MakeController(repositories),
+		sponsorsController: sponsors.MakeController(repositories),
+		mediaController:    media.MakeController(repositories),
 	}
 }
 

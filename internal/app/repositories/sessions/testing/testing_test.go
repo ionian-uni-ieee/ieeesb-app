@@ -102,26 +102,43 @@ func TestDeleteByID(t *testing.T) {
 func TestFind(t *testing.T) {
 	db, sessionsRepository := makeRepository()
 
-	// Regular example
-	testUtils.SetupData(db, "sessions", testSession1, testSession1)
+	t.Run("Should return 2 sessions", func(t *testing.T) {
+		testUtils.SetupData(db, "sessions", testSession1, testSession1)
 
-	gotSessions, gotErr := sessionsRepository.Find(map[string]interface{}{
-		"Username": testSession1.Username,
+		gotSessions, gotErr := sessionsRepository.Find(map[string]interface{}{
+			"Username": testSession1.Username,
+		}, 0, 2)
+
+		if gotErr != nil {
+			t.Error(gotErr)
+		}
+
+		if len(gotSessions) != 2 {
+			t.Error("Expected length of sessions got to be 2, instead got", len(gotSessions))
+		}
+
+		if gotSessions[0].Username != gotSessions[1].Username {
+			t.Error("Expected username to equal to each other, instead got",
+				gotSessions[0].Username,
+				gotSessions[1].Username)
+		}
 	})
 
-	if gotErr != nil {
-		t.Error(gotErr)
-	}
+	t.Run("Should limit the batch to 2 sessions", func(t *testing.T) {
+		testUtils.SetupData(db, "sessions", testSession1, testSession2, testSession3)
 
-	if len(gotSessions) != 2 {
-		t.Error("Expected len(sessions) to be 2, instead got", len(gotSessions))
-	}
+		gotSessions, gotErr := sessionsRepository.Find(map[string]interface{}{}, 0, 2)
 
-	if gotSessions[0].Username != gotSessions[1].Username {
-		t.Error("Expected sessionname to equal to each other, instead got",
-			gotSessions[0].Username,
-			gotSessions[1].Username)
-	}
+		if gotErr != nil {
+			t.Error(gotErr)
+			t.SkipNow()
+		}
+
+		if len(gotSessions) != 2 {
+			t.Error("Expected length of 2 but got", len(gotSessions))
+		}
+
+	})
 }
 
 func TestFindOne(t *testing.T) {
