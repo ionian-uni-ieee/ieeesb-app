@@ -3,12 +3,12 @@ version: "3.3"
 services:
   web:
     build:
-      context: ../web
-      dockerfile: ../build/web.Dockerfile
+      context: ./web
+      dockerfile: ./build/web.Dockerfile
 
   app:
     build:
-      context: ../
+      context: ./
       dockerfile: ./build/app.Dockerfile
 
 secrets:
