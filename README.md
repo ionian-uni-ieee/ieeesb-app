@@ -29,10 +29,10 @@ Docker setups everything **automatically** without you having to install any add
 2. Install docker-compose https://docs.docker.com/compose/install/
 3. Run
     ```bash
-    # Get composer files
-    wget https://raw.githubusercontent.com/ionian-uni-ieee/ieeesb-app/dev/build/docker/docker-compose.yml https://raw.githubusercontent.com/ionian-uni-ieee/ieeesb-app/dev/build/docker/docker-compose.prod.ym
+    # Install docker & get compose files
+    wget https://raw.githubusercontent.com/ionian-uni-ieee/ieeesb-app/dev/build/install.sh
     
-    # Deploy swarm
+    # Initialize a swarm & deploy stack
     docker swarm init
     docker stack deploy -c docker-compose.yml -c docker-compose.prod.yml ieeesb-app
     ```
