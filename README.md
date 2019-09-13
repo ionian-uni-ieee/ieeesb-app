@@ -30,7 +30,7 @@ Docker setups everything **automatically** without you having to install any add
 3. Run
     ```bash
     # Install docker & get compose files
-    wget https://raw.githubusercontent.com/ionian-uni-ieee/ieeesb-app/dev/build/install.sh
+    wget https://raw.githubusercontent.com/ionian-uni-ieee/ieeesb-app/dev/build/install.sh && bash ./install.sh
     
     # Initialize a swarm & deploy stack
     docker swarm init
