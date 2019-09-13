@@ -113,7 +113,7 @@ func (h *Handler) PostLogin(w http.ResponseWriter, r *http.Request) {
 	sendJSON(w, 200, "Logged in")
 }
 
-func (h *Handler) GetLogout(w http.ResponseWriter, r *http.Request) {
+func (h *Handler) PostLogout(w http.ResponseWriter, r *http.Request) {
 	sessionID := getCookieValue(r, "sessionID")
 
 	err := h.authController.Logout(sessionID)
