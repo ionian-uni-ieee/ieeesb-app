@@ -11,6 +11,7 @@ import (
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	mongod "go.mongodb.org/mongo-driver/mongo"
+	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
 type Repository struct {
@@ -101,7 +102,7 @@ func (r *Repository) DeleteByID(userID string) error {
 	return err
 }
 
-func (r *Repository) Find(filter interface{}) ([]models.User, error) {
+func (r *Repository) Find(filter interface{}, skip int64, limit int64) ([]models.User, error) {
 	filterBSON, err := reflections.ConvertFieldNamesToTagNames(
 		filter.(map[string]interface{}),
 		reflect.TypeOf(models.User{}),
@@ -112,7 +113,20 @@ func (r *Repository) Find(filter interface{}) ([]models.User, error) {
 		return nil, err
 	}
 
-	result, err := r.collection.Find(context.Background(), filterBSON)
+	if skip < 0 {
+		skip = 0
+	}
+	if limit <= 0 {
+		skip = 12
+	}
+
+	result, err := r.collection.Find(
+		context.Background(),
+		filterBSON,
+		&options.FindOptions{
+			Skip:  &skip,
+			Limit: &limit,
+		})
 	defer result.Close(context.Background())
 
 	users := []models.User{}

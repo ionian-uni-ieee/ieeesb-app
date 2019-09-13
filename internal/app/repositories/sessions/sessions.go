@@ -6,7 +6,7 @@ type Repository interface {
 	FindByID(sessionID string) (*models.Session, error)
 	UpdateByID(sessionID string, update interface{}) error
 	DeleteByID(sessionID string) error
-	Find(filter interface{}) ([]models.Session, error)
+	Find(filter interface{}, skip int64, limit int64) ([]models.Session, error)
 	FindOne(filter interface{}) (*models.Session, error)
 	UpdateMany(filter interface{}, update interface{}) ([]string, error)
 	DeleteMany(filter interface{}) (int64, error)

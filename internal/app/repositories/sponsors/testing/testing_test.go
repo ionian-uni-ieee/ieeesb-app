@@ -106,28 +106,46 @@ func TestDeleteByID(t *testing.T) {
 }
 
 func TestFind(t *testing.T) {
+	// Setup
 	db, sponsorsRepository := makeRepository()
 
-	// Regular example
-	testUtils.SetupData(db, "sponsors", testSponsor1, testSponsor1)
+	t.Run("Should return 2 sponsors", func(t *testing.T) {
+		testUtils.SetupData(db, "sponsors", testSponsor1, testSponsor1)
 
-	gotSponsors, gotErr := sponsorsRepository.Find(map[string]interface{}{
-		"Name": testSponsor1.Name,
+		gotSponsors, gotErr := sponsorsRepository.Find(map[string]interface{}{
+			"Name": testSponsor1.Name,
+		}, 0, 2)
+
+		if gotErr != nil {
+			t.Error(gotErr)
+		}
+
+		if len(gotSponsors) != 2 {
+			t.Error("Expected length of sponsors got to be 2, instead got", len(gotSponsors))
+		}
+
+		if gotSponsors[0].Name != gotSponsors[1].Name {
+			t.Error("Expected ID to equal to each other, instead got",
+				gotSponsors[0].Name,
+				gotSponsors[1].Name)
+		}
 	})
 
-	if gotErr != nil {
-		t.Error(gotErr)
-	}
+	t.Run("Should limit the batch to 2 sponsors", func(t *testing.T) {
+		testUtils.SetupData(db, "sponsors", testSponsor1, testSponsor2, testSponsor3)
 
-	if len(gotSponsors) != 2 {
-		t.Error("Expected len(sponsors) to be 2, instead got", len(gotSponsors))
-	}
+		gotSponsors, gotErr := sponsorsRepository.Find(map[string]interface{}{}, 0, 2)
 
-	if gotSponsors[0].Name != gotSponsors[1].Name {
-		t.Error("Expected sponsorname to equal to each other, instead got",
-			gotSponsors[0].Name,
-			gotSponsors[1].Name)
-	}
+		if gotErr != nil {
+			t.Error(gotErr)
+			t.SkipNow()
+		}
+
+		if len(gotSponsors) != 2 {
+			t.Error("Expected length of 2 but got", len(gotSponsors))
+		}
+
+	})
 }
 
 func TestFindOne(t *testing.T) {
