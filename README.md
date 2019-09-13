@@ -23,7 +23,7 @@ Its more important aspect is the fact that the student branch can advertise the 
 
 ### Docker
 
-Docker does everything **automatically** without you having to install any additional tools that are required or maintain the local instance.
+Docker setups everything **automatically** without you having to install any additional tools that are required or maintain the local instance. Docker also happens to be multiplatform.
 
 1. Install docker https://docs.docker.com/install/
 2. Install docker-compose https://docs.docker.com/compose/install/
@@ -33,6 +33,8 @@ Docker does everything **automatically** without you having to install any addit
     ```
 
 ### Manually
+
+In this case, we don't provide further support for other platforms than Linux, and you have to figure out the setup on your own.
 
 1. Install **golang** (>= v1.10)
 2. Install **nodejs**,**npm** & **yarn**
@@ -44,7 +46,7 @@ Docker does everything **automatically** without you having to install any addit
    ```
 5. For **frontend**-server run 
    ```bash
-   yarn && yarn start
+   cd ./web && yarn && yarn start
    ```
 
 ## Environment Variables
