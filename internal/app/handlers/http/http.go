@@ -52,10 +52,6 @@ func MakeHandler(repositories *repositories.Repositories) *Handler {
 	}
 }
 
-func (h *Handler) GetPing(w http.ResponseWriter, r *http.Request) {
-	sendJSON(w, 200, "Pong")
-}
-
 func sendJSON(w http.ResponseWriter, statusCode int, data interface{}) {
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(statusCode)
