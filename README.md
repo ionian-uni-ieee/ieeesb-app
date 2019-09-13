@@ -29,7 +29,12 @@ Docker setups everything **automatically** without you having to install any add
 2. Install docker-compose https://docs.docker.com/compose/install/
 3. Run
     ```bash
-    cd ./build/docker && docker-compose up
+    # Get composer files
+    wget https://raw.githubusercontent.com/ionian-uni-ieee/ieeesb-app/dev/build/docker/docker-compose.yml https://raw.githubusercontent.com/ionian-uni-ieee/ieeesb-app/dev/build/docker/docker-compose.prod.ym
+    
+    # Deploy swarm
+    docker swarm init
+    docker stack deploy -c docker-compose.yml -c docker-compose.prod.yml ieeesb-app
     ```
 
 ### Manually
@@ -39,12 +44,16 @@ In this case, we don't provide further support for other platforms than Linux, a
 1. Install **golang** (>= v1.10)
 2. Install **nodejs**,**npm** & **yarn**
 3. Install **mongodb**
-4. For **backend**-server run 
+4. Clone repository
+    ```bash
+    git clone https://github.com/ionian-uni-ieee/ieeesb-app
+    ```
+5. For **backend**-server run 
    ```bash
    sudo systemctl start mongod
    go run main.go
    ```
-5. For **frontend**-server run 
+6. For **frontend**-server run 
    ```bash
    cd ./web && yarn && yarn start
    ```
