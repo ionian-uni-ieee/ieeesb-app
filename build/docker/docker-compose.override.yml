@@ -3,7 +3,7 @@ version: "3.3"
 services:
   web:
     build:
-      dockerfile: ../build/docker/web.Dockerfile
+      dockerfile: ./build/docker/web.Dockerfile
 
   app:
     build:
