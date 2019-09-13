@@ -25,17 +25,14 @@ Its more important aspect is the fact that the student branch can advertise the 
 
 Docker setups everything **automatically** without you having to install any additional tools that are required or maintain the local instance. Docker also happens to be multiplatform.
 
-1. Install docker https://docs.docker.com/install/
-2. Install docker-compose https://docs.docker.com/compose/install/
-3. Run
-    ```bash
-    # Install docker & get compose files
-    wget https://raw.githubusercontent.com/ionian-uni-ieee/ieeesb-app/dev/build/install.sh && sh ./install.sh
-    
-    # Initialize a swarm & deploy stack
-    docker swarm init
-    docker stack deploy -c docker-compose.yml -c docker-compose.prod.yml ieeesb-app
-    ```
+```bash
+# Install docker & get compose files
+wget https://raw.githubusercontent.com/ionian-uni-ieee/ieeesb-app/dev/build/install.sh && sh ./install.sh
+
+# Initialize a swarm & deploy stack
+docker swarm init
+docker stack deploy -c docker-compose.yml -c docker-compose.prod.yml ieeesb-app
+```
 
 ### Manually
 
