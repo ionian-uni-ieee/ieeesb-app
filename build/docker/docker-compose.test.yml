@@ -4,12 +4,12 @@ services:
   web:
     build:
       context: ./web
-      dockerfile: ./build/web.Dockerfile
+      dockerfile: ./build/docker/web.Dockerfile
 
   app:
     build:
       context: ./
-      dockerfile: ./build/app.Dockerfile
+      dockerfile: ./build/docker/app.Dockerfile
 
 secrets:
   mongo-user:
