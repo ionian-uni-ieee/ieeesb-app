@@ -30,6 +30,7 @@ func NewUser(
 	}
 	permissions := NewPermissions(false, false, false, false)
 	return &User{
+		ID:          primitive.NewObjectID(),
 		Username:    username,
 		Password:    string(hashedPassword),
 		Email:       email,
