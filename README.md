@@ -1,5 +1,9 @@
 - [IEEE Web application](#ieee-web-application)
   - [Why](#why)
+  - [How to start](#how-to-start)
+    - [Docker](#docker)
+    - [Manually](#manually)
+  - [Environment Variables](#environment-variables)
   - [Planned Features](#planned-features)
     - [APP](#app)
     - [WEB](#web)
@@ -14,6 +18,58 @@ Members and the community of IEEE Student Branches will be able to advertise and
 Its more important aspect is the fact that the student branch can advertise the SB's events. This means that the community will be more self-aware, more people will know about the SB's events and advertisment will be easier and more effortless.
 
 **In short: We spread knowledge, we make new friends and we meet people we haven't met before in a much more easy way.**
+
+## How to start
+
+### Docker
+
+Docker setups everything **automatically** without you having to install any additional tools that are required or maintain the local instance. Docker also happens to be multiplatform.
+
+```bash
+# Install docker & get compose files
+wget https://raw.githubusercontent.com/ionian-uni-ieee/ieeesb-app/master/scripts/install.sh && sh ./install.sh
+
+# Initialize a swarm & deploy stack
+docker swarm init
+docker stack deploy -c docker-compose.yml -c docker-compose.prod.yml ieeesb-app
+```
+
+### Manually
+
+In this case, we don't provide further support for other platforms than Linux, and you have to figure out the setup on your own.
+
+1. Install **golang** (>= v1.10)
+2. Install **nodejs**,**npm** & **yarn**
+3. Install **mongodb**
+4. Clone repository
+    ```bash
+    git clone https://github.com/ionian-uni-ieee/ieeesb-app
+    ```
+5. For **backend**-server run 
+   ```bash
+   sudo systemctl start mongod
+   go run main.go
+   ```
+6. For **frontend**-server run 
+   ```bash
+   cd ./web && yarn && yarn start
+   ```
+
+## Environment Variables
+
+**Docker** sets all of them up for you. 
+
+But it's **necessary** to setup a `API_DATABASE_USERNAME` and a `API_DATABASE_PASSWORD`.
+
+| Name                      | Description                    |
+| ------------------------- | ------------------------------ |
+| API_HOST                  | Server host                    |
+| API_PORT                  | Server port                    |
+| API_DATABASE_HOST         | Database host                  |
+| API_DATABASE_PORT         | Database port                  |
+| API_DATABASE_NAME         | Database collection/table name |
+| **API_DATABASE_USERNAME** | Database username credential   |
+| **API_DATABASE_PASSWORD** | Database password credential   |
 
 ## Planned Features
 After they're all completed, we will pass to an **Pre-Alpha** phase.

@@ -97,3 +97,7 @@ func (h *Handler) PutUserPassword(w http.ResponseWriter, r *http.Request) {
 
 	sendJSON(w, 200, "Password changed")
 }
+
+func (h *Handler) PutUser(w http.ResponseWriter, r *http.Request) {
+
+}
