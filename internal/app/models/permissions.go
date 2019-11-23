@@ -19,42 +19,42 @@ func NewPermissions(users bool, events bool, tickets bool, sponsors bool) *Permi
 	}
 }
 
-// GetUsers returns moderator's permissions for users
-func (p *Permissions) GetUsers() bool {
+// hasUserPermissions returns moderator's permissions for users
+func (p *Permissions) hasUserPermissions() bool {
 	return p.Users
 }
 
-// SetUsers changes moderator's permissions for users
-func (p *Permissions) SetUsers(users bool) {
+// SetUserPermissions changes moderator's permissions for users
+func (p *Permissions) SetUserPermissions(users bool) {
 	p.Users = users
 }
 
-// GetEvents returns moderator's permissions for events
-func (p *Permissions) GetEvents() bool {
+// hasEventPermissions returns moderator's permissions for events
+func (p *Permissions) hasEventPermissions() bool {
 	return p.Events
 }
 
-// SetEvents changes moderator's permissions for events
-func (p *Permissions) SetEvents(events bool) {
+// SetEventPermissions changes moderator's permissions for events
+func (p *Permissions) SetEventPermissions(events bool) {
 	p.Events = events
 }
 
-// GetTickets returns moderator's permission for tickets
-func (p *Permissions) GetTickets() bool {
+// hasTicketPermissions returns moderator's permission for tickets
+func (p *Permissions) hasTicketPermissions() bool {
 	return p.Tickets
 }
 
-// SetTickets changes moderator's permissions for tickets
-func (p *Permissions) SetTickets(tickets bool) {
+// SetTicketPermisiions changes moderator's permissions for tickets
+func (p *Permissions) SetTicketPermisiions(tickets bool) {
 	p.Tickets = tickets
 }
 
-// GetSponsors returns moderator's permissions for sponsors
-func (p *Permissions) GetSponsors() bool {
+// hasSponsorPermissions returns moderator's permissions for sponsors
+func (p *Permissions) hasSponsorPermissions() bool {
 	return p.Sponsors
 }
 
-// SetSponsors changes moderator's permissions for sponsors
-func (p *Permissions) SetSponsors(sponsors bool) {
+// SetSponsorPermissions changes moderator's permissions for sponsors
+func (p *Permissions) SetSponsorPermissions(sponsors bool) {
 	p.Sponsors = sponsors
 }
