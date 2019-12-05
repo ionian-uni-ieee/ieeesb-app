@@ -18,14 +18,22 @@ func NewSponsor(
 	emails []string,
 	phones []string,
 	logo MediaMeta,
-) (*Sponsor) {
-	return &Sponsor{
-		ID:			primitive.NewObjectID(),
-		Name:		name,
-		Emails:		emails,
-		Phones:		phones,
-		Logo:		logo,
+) (*Sponsor, error) {
+	if name == "" {
+		return nil, errors.New("Sponsor's name can't be empty")
 	}
+	return &Sponsor{
+		ID:	primitive.NewObjectID(),
+		Name:   name,
+		Emails: emails,
+		Phones: phones,
+		Logo:   logo,
+	}, nil
+}
+
+// GetID returns the hex of the sponsor's id
+func (s *Sponsor) GetID() string {
+	return s.ID.Hex()
 }
 
 // GetObjectID returns the object id of the sponsor
@@ -68,19 +76,19 @@ func (s *Sponsor) AddEmail(newEmail string) error {
 	if newEmail == "" {
 		return errors.New("Sponsor's email can't be empty")
 	}
-	s.Emails = append(s.Emails,newEmail)
+	s.Emails = append(s.Emails, newEmail)
 	return nil
 }
 
 // RemoveEmail removes an email (by the name)
-func (s *Sponsor) RemoveEmail(oddEmail string) error {
+func (s *Sponsor) RemoveEmail(email string) error {
 	for i, existingEmail := range s.Emails {
-		if existingEmail == oddEmail {
+			if existingEmail == email {
 			s.Emails = append(s.Emails[:i], s.Emails[i+1:]...)
 			return nil
 		}
 	}
-	return errors.New("Sponsor's email was not found. Email couldn't be deleted")
+	return errors.New("Sponsor's email was not found.")
 }
 
 // GetPhones returns the sponsor's phones
@@ -104,19 +112,19 @@ func (s *Sponsor) AddPhone(newPhone string) error {
 	if newPhone == "" {
 		return errors.New("Sponsor's phone can't be empty")
 	}
-	s.Phones = append(s.Phones,newPhone)
+	s.Phones = append(s.Phones, newPhone)
 	return nil
 }
 
 // RemovePhone removes an phone (by the name)
-func (s *Sponsor) RemovePhone(oddPhone string) error {
+func (s *Sponsor) RemovePhone(phone string) error {
 	for i, existingPhone := range s.Phones {
-		if existingPhone == oddPhone {
+		if existingPhone == phone {
 			s.Phones = append(s.Phones[:i], s.Phones[i+1:]...)
 			return nil
 		}
 	}
-	return errors.New("Sponsor's phone was not found. Phone couldn't be deleted")
+	return errors.New("Sponsor's phone was not found.")
 }
 
 // GetLogo returns the sponsor's logo
@@ -126,7 +134,7 @@ func (s *Sponsor) GetLogo() MediaMeta {
 
 // SetLogo changes the sponsor's logo
 func (s *Sponsor) SetLogo(newLogo MediaMeta) error {
-	if newLogo.isEmpty == true {
+	if newLogo.isEmpty() == true {
 		return errors.New("Sponsor's logo can't be empty")
 	}
 	s.Logo = newLogo
