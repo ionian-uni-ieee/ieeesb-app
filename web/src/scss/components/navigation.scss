@@ -1,0 +1,32 @@
+.ui.navigation {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+
+  position: sticky;
+  top: 0;
+  width: 100%;
+  height: 64px;
+
+  &__button {
+    width: 415px;
+
+    text-decoration: none;
+    color: #055BA6;
+    font-family: 'Roboto', sans-serif;
+    font-weight: 300;
+    font-size: 24px;
+    line-height: 28px;
+    letter-spacing: 0.32em;
+    text-transform: uppercase;
+
+    transition: 0.2s ease;
+
+    &:hover {
+      color: #F25C78;
+
+      transition: 0.2s ease;
+    }
+  }
+}
