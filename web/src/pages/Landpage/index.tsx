@@ -20,4 +20,4 @@ const Landpage = () => {
 }
 
 
-export default Landpage 
+export default Landpage
