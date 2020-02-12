@@ -27,7 +27,7 @@ Docker setups everything **automatically** without you having to install any add
 
 ```bash
 # Install docker & get compose files
-wget https://raw.githubusercontent.com/ionian-uni-ieee/ieeesb-app/dev/build/install.sh && sh ./install.sh
+wget https://raw.githubusercontent.com/ionian-uni-ieee/ieeesb-app/master/scripts/install.sh && sh ./install.sh
 
 # Initialize a swarm & deploy stack
 docker swarm init

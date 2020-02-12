@@ -3,7 +3,7 @@
 //
 //////////////////////////
 
-@import "./base/settings";
+//@import "./base/settings";
 @import "./base/colors";
 
 //////////////////////////
@@ -20,6 +20,16 @@
 @import "./base/typography.scss";
 
 //////////////////////////
+// P A G E S
+//
+//////////////////////////
+
+@import "./pages/landpage.scss";
+
+
+//////////////////////////
 // C O M P O N E N T S
 //
 //////////////////////////
+
+@import "./components/navigation.scss";
