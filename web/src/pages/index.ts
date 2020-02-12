@@ -1,3 +1,3 @@
 import Landpage from './Landpage'
 
-export {Landpage}
+export { Landpage }
