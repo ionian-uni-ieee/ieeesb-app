@@ -2,6 +2,7 @@
   "name": "web",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://ionio.gr/ieee",
   "dependencies": {
     "@types/debounce-promise": "^3.1.1",
     "@types/node": "^12.7.5",
