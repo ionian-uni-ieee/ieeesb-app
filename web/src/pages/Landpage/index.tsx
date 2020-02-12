@@ -9,11 +9,11 @@ const Landpage = () => {
             <Navigation>
               <Navigation.Button
                 label='Events'
-                href='#events'
+                href='https://www.facebook.com/ieeeIonianUni/events/'
               />
               <Navigation.Button
                 label='About us'
-                href='#aboutus'
+                href='https://www.facebook.com/pg/ieeeIonianUni/about/?ref=page_internal'
               />
             </Navigation>
             <Logo
