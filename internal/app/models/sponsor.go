@@ -23,7 +23,7 @@ func NewSponsor(
 		return nil, errors.New("Sponsor's name can't be empty")
 	}
 	return &Sponsor{
-		ID:	primitive.NewObjectID(),
+		ID:     primitive.NewObjectID(),
 		Name:   name,
 		Emails: emails,
 		Phones: phones,
@@ -56,15 +56,20 @@ func (s *Sponsor) SetName(newName string) error {
 }
 
 // GetEmails returns the sponsor's emails
-func (s *Sponsor) GetEmail() []string {
+func (s *Sponsor) GetEmails() []string {
 	return s.Emails
 }
 
 // SetEmails changes the sponsor's emails
 func (s *Sponsor) SetEmails(newEmails []string) error {
-	for _, email := range newEmails {
+	for emailIndex, email := range newEmails {
 		if email == "" {
 			return errors.New("Sponsor's email can't be empty")
+		}
+		for tmpIndex, tmpEmail := range newEmails {
+			if email == tmpEmail && emailIndex != tmpIndex {
+				return errors.New("Duplicate emails")
+			}
 		}
 	}
 	s.Emails = newEmails
@@ -83,7 +88,7 @@ func (s *Sponsor) AddEmail(newEmail string) error {
 // RemoveEmail removes an email (by the name)
 func (s *Sponsor) RemoveEmail(email string) error {
 	for i, existingEmail := range s.Emails {
-			if existingEmail == email {
+		if existingEmail == email {
 			s.Emails = append(s.Emails[:i], s.Emails[i+1:]...)
 			return nil
 		}
@@ -133,10 +138,6 @@ func (s *Sponsor) GetLogo() MediaMeta {
 }
 
 // SetLogo changes the sponsor's logo
-func (s *Sponsor) SetLogo(newLogo MediaMeta) error {
-	if newLogo.isEmpty() == true {
-		return errors.New("Sponsor's logo can't be empty")
-	}
+func (s *Sponsor) SetLogo(newLogo MediaMeta) {
 	s.Logo = newLogo
-	return nil
 }
