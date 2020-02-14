@@ -140,7 +140,7 @@ func (e *Event) GetSponsors() []Sponsor {
 // SetSponsors changes the event's sponsors
 func (e *Event) SetSponsors(NewSponsors []Sponsor) error {
 	for sponsorIndex, sponsor := range NewSponsors {
-		if sponsor.isEmpty() == true {
+		if sponsor.isEmpty() {
 			return errors.New("Event's sponsor can't be empty")
 		}
 		for tmpIndex, tmpSponsor := range NewSponsors {
@@ -155,7 +155,7 @@ func (e *Event) SetSponsors(NewSponsors []Sponsor) error {
 
 // AddSponsor adds a sponsor at the bottom of the event's sponsors
 func (e *Event) AddSponsor(newSponsor Sponsor) error {
-	if newSponsor.isEmpty() == true {
+	if newSponsor.isEmpty() {
 		return errors.New("Event's sponsor can't be empty")
 	}
 	for _, sponsor := range e.Sponsors {
@@ -170,7 +170,7 @@ func (e *Event) AddSponsor(newSponsor Sponsor) error {
 // RemoveSponsor removes a sponsor (by the name)
 func (e *Event) RemoveSponsor(sponsor Sponsor) error {
 	for i, existingSponsor := range e.Sponsors {
-		if existingSponsor.isEqual(sponsor) == true {
+		if existingSponsor.isEqual(sponsor) {
 			e.Sponsors = append(e.Sponsors[:i], e.Sponsors[i+1:]...)
 			return nil
 		}
