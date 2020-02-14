@@ -3,10 +3,20 @@ version: "3.3"
 services:
   web:
     build:
+      context: ../..
       dockerfile: ./build/docker/web.Dockerfile
+    restart: always
+    volumes:
+      - ../../web:/react-app
+      - ../../web/node_modules:/react-app/node_modules
+    ports:
+      - 3000:3000
+    networks:
+      - frontend
 
   app:
     build:
+      context: ../..
       dockerfile: ./build/docker/app.Dockerfile
     ports:
       - 5000:5000
@@ -22,3 +32,11 @@ services:
     #   MONGO_INITDB_ROOT_PASSWORD_FILE: /run/secrets/mongo-pass
     # TODO: To remove when db auth update is provided
     command: [--noauth]
+
+networks:
+  backend: {}
+  frontend: {}
+
+volumes:
+  db-data: {}
+  node_modules: {}
