@@ -59,8 +59,8 @@ func (m *MediaMeta) isEmpty() bool {
 }
 
 // isEqual returns true if the mediameta is equal to another mediameta
-func (firstMediameta *MediaMeta) isEqual(secondMediameta MediaMeta) bool {
-	if firstMediameta.ID == secondMediameta.GetID() && firstMediameta.MIME == secondMediameta.GetMime() {
+func (m *MediaMeta) isEqual(other MediaMeta) bool {
+	if m.ID == other.GetID() && m.MIME == other.GetMime() {
 		return true
 	}
 	return false
