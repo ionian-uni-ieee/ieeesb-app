@@ -17,31 +17,28 @@ type Event struct {
 }
 
 // NewEvent is an event factory that generates an event
-func NewEvent (
+func NewEvent(
 	name string,
 	description string,
 	tags []string,
 	category string,
-	sponsors  []Sponsor,
+	sponsors []Sponsor,
 	logo MediaMeta,
 	media []MediaMeta,
 ) (*Event, error) {
-		if name == "" {
-			return nil,  errors.New("Name can't be empty")
-		}
-		if description == "" {
-			return nil, errors.New("Description can't be empty")
-		}
-		return &Event{
-			ID:				primitive.NewObjectID(),
-			Name:			name,
-			Description:	description,
-			Tags:			tags,
-			Type:			category,
-			Sponsors:		sponsors,
-			Logo:			logo,
-			Media:			media,
-		}, nil
+	if name == "" {
+		return nil, errors.New("Name can't be empty")
+	}
+	return &Event{
+		ID:          primitive.NewObjectID(),
+		Name:        name,
+		Description: description,
+		Tags:        tags,
+		Type:        category,
+		Sponsors:    sponsors,
+		Logo:        logo,
+		Media:       media,
+	}, nil
 }
 
 // GetID returns the hex of the event's id
@@ -75,9 +72,6 @@ func (e *Event) GetDescription() string {
 
 // SetDescriotion changes the event's description
 func (e *Event) SetDescription(newDescription string) error {
-	if newDescription == "" {
-		return errors.New("Event's description can't be empty")
-	}
 	e.Description = newDescription
 	return nil
 }
@@ -89,9 +83,14 @@ func (e *Event) GetTags() []string {
 
 // SetTags changes the event's tags
 func (e *Event) SetTags(newTags []string) error {
-	for _, tag := range e.Tags {
+	for tagIndex, tag := range e.Tags {
 		if tag == "" {
 			return errors.New("Event's tag can't be empty")
+		}
+		for tmpIndex, tmpTag := range e.Tags {
+			if tag == tmpTag && tagIndex != tmpIndex {
+				return errors.New("Duplicate tags")
+			}
 		}
 	}
 	e.Tags = newTags
@@ -103,17 +102,19 @@ func (e *Event) AddTag(newTag string) error {
 	if newTag == "" {
 		return errors.New("Event's tag can't be empty")
 	}
+	for _, tag := range e.Tags {
+		if tag == newTag {
+			return errors.New("Event's tag already exist")
+		}
+	}
 	e.Tags = append(e.Tags, newTag)
 	return nil
 }
 
 // RemoveTag removes a tag (by the name)
-func (e *Event) RemoveTag(oddTag string) error {
-	if oddTag == "" {
-		return errors.New("Event's tag can't be empty")
-	}
+func (e *Event) RemoveTag(tag string) error {
 	for i, existingTag := range e.Tags {
-		if existingTag == oddTag {
+		if existingTag == tag {
 			e.Sponsors = append(e.Sponsors[:i], e.Sponsors[i+1:]...)
 		}
 	}
@@ -121,15 +122,12 @@ func (e *Event) RemoveTag(oddTag string) error {
 }
 
 // GetType returns the event's type
-func (e *Event) GetType()string {
+func (e *Event) GetType() string {
 	return e.Type
 }
 
 // SetType changes the event's type
 func (e *Event) SetType(newType string) error {
-	if newType == "" {
-		return errors.New("Event's type can't be empty")
-	}
 	e.Type = newType
 	return nil
 }
@@ -141,36 +139,43 @@ func (e *Event) GetSponsors() []Sponsor {
 
 // SetSponsors changes the event's sponsors
 func (e *Event) SetSponsors(NewSponsors []Sponsor) error {
-	for _, sponsor := range NewSponsors {
+	for sponsorIndex, sponsor := range NewSponsors {
 		if sponsor.isEmpty() == true {
 			return errors.New("Event's sponsor can't be empty")
+		}
+		for tmpIndex, tmpSponsor := range NewSponsors {
+			if sponsor.isEqual(tmpSponsor) && sponsorIndex != tmpIndex {
+				return errors.New("Duplicate Sponsor")
+			}
 		}
 	}
 	e.Sponsors = NewSponsors
 	return nil
 }
 
-// AddSponsor adds a sponsor at the bottom of the event's sponsors 
+// AddSponsor adds a sponsor at the bottom of the event's sponsors
 func (e *Event) AddSponsor(newSponsor Sponsor) error {
 	if newSponsor.isEmpty() == true {
 		return errors.New("Event's sponsor can't be empty")
+	}
+	for _, sponsor := range e.Sponsors {
+		if sponsor.isEqual(newSponsor) {
+			return errors.New("Event's sponsor already exist")
+		}
 	}
 	e.Sponsors = append(e.Sponsors, newSponsor)
 	return nil
 }
 
 // RemoveSponsor removes a sponsor (by the name)
-func (e *Event) RemoveSponsor(oddSponsor Sponsor) error {
-	if oddSponsor.isEmpty() == true {
-		return errors.New("Event's sponsor can't be empty")
-	}
+func (e *Event) RemoveSponsor(sponsor Sponsor) error {
 	for i, existingSponsor := range e.Sponsors {
-		if existingSponsor.areEqual(oddSponsor) == true {
+		if existingSponsor.isEqual(sponsor) == true {
 			e.Sponsors = append(e.Sponsors[:i], e.Sponsors[i+1:]...)
 			return nil
 		}
 	}
-	return errors.New( "Event's sponsor was not found. Sponsor couldn't be deleted")
+	return errors.New("Event's sponsor was not found.")
 }
 
 // GetLogo returns event's logo
@@ -180,9 +185,6 @@ func (e *Event) GetLogo() MediaMeta {
 
 // SetLogo changes the event's logo
 func (e *Event) SetLogo(newLogo MediaMeta) error {
-	if newLogo.isEmpty() == true {
-		return errors.New("Event's logo can't be empty")
-	}
 	e.Logo = newLogo
 	return nil
 }
@@ -194,34 +196,41 @@ func (e *Event) GetMedia() []MediaMeta {
 
 // SetMedia changes the event's media
 func (e *Event) SetMedia(newMedia []MediaMeta) error {
-	for _, medium := range newMedia {
-		if medium.isEmpty() == true {
-			return errors.New("Event's medium can't be empty")
+	for mediaIndex, media := range newMedia {
+		if media.isEmpty() {
+			return errors.New("Event's media can't be empty")
+		}
+		for tmpIndex, tmpMedia := range newMedia {
+			if media.isEqual(tmpMedia) && mediaIndex != tmpIndex {
+				return errors.New("Duplicate media")
+			}
 		}
 	}
 	e.Media = newMedia
 	return nil
 }
 
-// AddMedium adds a medium at the bottom of the event's media
-func (e *Event) AddMedium(newMedium MediaMeta) error {
-	if newMedium.isEmpty() == true {
-		return errors.New("Event's medium cant't be empty")
+// AddMedia adds a media at the bottom of the event's media
+func (e *Event) AddMedia(media MediaMeta) error {
+	if media.isEmpty() {
+		return errors.New("Event's media cant't be empty")
 	}
-	e.Media = append(e.Media, newMedium)
+	for _, existingMedia := range e.Media {
+		if existingMedia.isEqual(media) {
+			return errors.New("Event's media already exist")
+		}
+	}
+	e.Media = append(e.Media, media)
 	return nil
 }
 
-// RemoveMedium removes a medium (by the name)
-func (e *Event) RemoveMedium(oddMeidum MediaMeta) error {
-	if oddMeidum.isEmpty() == true {
-		return errors.New("Event's medium can't be empty")
-	}
-	for i, existingMedium := range e.Media {
-		if existingMedium.areEqual(oddMeidum) == true {
+// RemoveMedia removes a media (by the name)
+func (e *Event) RemoveMedia(Media MediaMeta) error {
+	for i, existingMedia := range e.Media {
+		if existingMedia.isEqual(Media) {
 			e.Media = append(e.Media[:i], e.Media[i+1:]...)
 			return nil
 		}
 	}
-	return errors.New("Event's medium was not found. Medium couldn't be deleted ")
+	return errors.New("Event's media was not found")
 }

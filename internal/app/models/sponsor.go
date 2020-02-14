@@ -141,3 +141,19 @@ func (s *Sponsor) GetLogo() MediaMeta {
 func (s *Sponsor) SetLogo(newLogo MediaMeta) {
 	s.Logo = newLogo
 }
+
+// isEmpty returns true if the sponsor is empty
+func (s *Sponsor) isEmpty() bool {
+	if s.Name == "" {
+		return true
+	}
+	return false
+}
+
+// isEqual returns true if two sponsors  are equal
+func (s *Sponsor) isEqual(other Sponsor) bool {
+	if s.ID.Hex() == other.GetID() {
+		return true
+	}
+	return false
+}
