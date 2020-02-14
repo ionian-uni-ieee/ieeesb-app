@@ -10,25 +10,3 @@ type Sponsor struct {
 	Phones []string           `bson:"phones" json:"phones"`
 	Logo   MediaMeta          `bson:"logo" json:"logo"`
 }
-
-// GetID returns the hex of the sponsor's id
-func (s *Sponsor) GetID() string {
-	return s.ID.Hex()
-}
-
-// isEmpty returns true if the name is empty
-func (s *Sponsor) isEmpty() bool {
-	if s.Name == "" {
-		return true
-	}
-	return false
-}
-
-// areEqual returns true if two sponsors are equal
-// two sponsors are equals if their IDs are equal
-func (firstSponsor *Sponsor) areEqual(secondSponsor Sponsor) bool {
-	if firstSponsor.ID.Hex() == secondSponsor.GetID() {
-		return true
-	}
-	return false
-}
