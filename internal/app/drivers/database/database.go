@@ -2,10 +2,11 @@ package database
 
 // Driver decribes what a database driver should look and behave like
 type Driver interface {
-	Connect(host string, port string, uname string, pass string, dbname string) error
+	Connect(origin string, uname string, pass string, dbname string) error
 	Disconnect()
-	GetDatabaseType() string
+	StartSession() (interface{}, error)
 	GetClient() interface{}
-	GetDatabase() interface{}
 	GetCollection(collectionName string) interface{}
+	GetDatabase() interface{}
+	GetDatabaseType() string
 }

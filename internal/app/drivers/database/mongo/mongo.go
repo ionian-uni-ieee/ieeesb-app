@@ -3,6 +3,7 @@ package mongo
 import (
 	"context"
 	"errors"
+	"log"
 	"time"
 
 	"go.mongodb.org/mongo-driver/bson"
@@ -15,8 +16,7 @@ import (
 type DatabaseSession struct {
 	client   *mongo.Client
 	database *mongo.Database
-	host     string
-	port     string
+	origin   string
 	uname    string
 	pass     string
 	dbname   string
@@ -39,11 +39,6 @@ func (d *DatabaseSession) GetClient() interface{} {
 	return d.client
 }
 
-// GetDatabase returns an instance of a database
-func (d *DatabaseSession) GetDatabase() interface{} {
-	return d.database
-}
-
 // GetCollection returns a database's collection
 func (d *DatabaseSession) GetCollection(collectionName string) interface{} {
 	db := d.GetDatabase().(*mongo.Database)
@@ -51,11 +46,20 @@ func (d *DatabaseSession) GetCollection(collectionName string) interface{} {
 	return collection
 }
 
+// GetDatabase returns an instance of a database
+func (d *DatabaseSession) GetDatabase() interface{} {
+	return d.database
+}
+
+// StartSession returns the database session
+func (d *DatabaseSession) StartSession() (interface{}, error) {
+	return d.client.StartSession(&options.SessionOptions{})
+}
+
 // Connect connects to the mongodb database
-func (d *DatabaseSession) Connect(host string, port string, uname string, pass string, dbname string) error {
+func (d *DatabaseSession) Connect(origin string, uname string, pass string, dbname string) error {
 	// Assign params to object
-	d.host = host
-	d.port = port
+	d.origin = origin
 	d.uname = uname
 	d.pass = pass
 	d.dbname = dbname
@@ -66,8 +70,14 @@ func (d *DatabaseSession) Connect(host string, port string, uname string, pass s
 	}
 
 	// New Client
-	clientOptions := &options.ClientOptions{}
-	client, err := mongo.NewClient(clientOptions.ApplyURI(d.host + ":" + d.port))
+	clientOptions := options.Client()
+	if uname != "" && pass != "" {
+		clientOptions = clientOptions.SetAuth(options.Credential{
+			Username: uname,
+			Password: pass,
+		})
+	}
+	client, err := mongo.NewClient(clientOptions.ApplyURI(origin))
 	if err != nil {
 		return err
 	}
@@ -86,7 +96,8 @@ func (d *DatabaseSession) Connect(host string, port string, uname string, pass s
 	defer cancel()
 	err = client.Ping(ctx, readpref.Primary())
 	if err != nil {
-		return errors.New("Couldn't ping to the database\nCheck your database service or your URI options (PORT, HOST)")
+		log.Println(err)
+		return errors.New("Couldn't ping to the database\nCheck your database service, credentials or URI")
 	}
 
 	// Checking if database exists
