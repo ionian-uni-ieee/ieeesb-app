@@ -9,6 +9,7 @@ type Event struct {
 	ID          primitive.ObjectID `bson:"_id" json:"id"`
 	Name        string             `bson:"name" json:"name"`
 	Description string             `bson:"description" json:"description"`
+	Date        uint               `bson:"date" json:"date"`
 	Tags        []string           `bson:"tags" json:"tags"`
 	Type        string             `bson:"type" json:"type"`
 	Sponsors    []Sponsor          `bson:"sponsors" json:"sponsors"`
@@ -20,6 +21,7 @@ type Event struct {
 func NewEvent(
 	name string,
 	description string,
+	date uint,
 	tags []string,
 	category string,
 	sponsors []Sponsor,
@@ -33,6 +35,7 @@ func NewEvent(
 		ID:          primitive.NewObjectID(),
 		Name:        name,
 		Description: description,
+		Date:        date,
 		Tags:        tags,
 		Type:        category,
 		Sponsors:    sponsors,
@@ -74,6 +77,16 @@ func (e *Event) GetDescription() string {
 func (e *Event) SetDescription(newDescription string) error {
 	e.Description = newDescription
 	return nil
+}
+
+// GetDate returns the event's date
+func (e *Event) GetDate() uint {
+	return e.Date
+}
+
+// SetDate change the event's date
+func (e *Event) SetDate(newDate uint) {
+	e.Date = newDate
 }
 
 // GetTags returns the event's tags
