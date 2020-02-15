@@ -19,7 +19,7 @@ func NewPermissions(users bool, events bool, tickets bool, sponsors bool) *Permi
 	}
 }
 
-// hasUserPermissions returns moderator's permissions for users
+// HasUserPermissions returns moderator's permissions for users
 func (p *Permissions) hasUserPermissions() bool {
 	return p.Users
 }
@@ -29,7 +29,7 @@ func (p *Permissions) SetUserPermissions(users bool) {
 	p.Users = users
 }
 
-// hasEventPermissions returns moderator's permissions for events
+// HasEventPermissions returns moderator's permissions for events
 func (p *Permissions) hasEventPermissions() bool {
 	return p.Events
 }
@@ -39,7 +39,7 @@ func (p *Permissions) SetEventPermissions(events bool) {
 	p.Events = events
 }
 
-// hasTicketPermissions returns moderator's permission for tickets
+// HasTicketPermissions returns moderator's permission for tickets
 func (p *Permissions) hasTicketPermissions() bool {
 	return p.Tickets
 }
@@ -49,7 +49,7 @@ func (p *Permissions) SetTicketPermisiions(tickets bool) {
 	p.Tickets = tickets
 }
 
-// hasSponsorPermissions returns moderator's permissions for sponsors
+// HasSponsorPermissions returns moderator's permissions for sponsors
 func (p *Permissions) hasSponsorPermissions() bool {
 	return p.Sponsors
 }
