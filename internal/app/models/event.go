@@ -74,9 +74,8 @@ func (e *Event) GetDescription() string {
 }
 
 // SetDescriotion changes the event's description
-func (e *Event) SetDescription(newDescription string) error {
+func (e *Event) SetDescription(newDescription string) {
 	e.Description = newDescription
-	return nil
 }
 
 // GetDate returns the event's date
@@ -129,9 +128,10 @@ func (e *Event) RemoveTag(tag string) error {
 	for i, existingTag := range e.Tags {
 		if existingTag == tag {
 			e.Sponsors = append(e.Sponsors[:i], e.Sponsors[i+1:]...)
+			return nil
 		}
 	}
-	return nil
+	return errors.New("Event's tag was not found")
 }
 
 // GetType returns the event's type
@@ -140,9 +140,8 @@ func (e *Event) GetType() string {
 }
 
 // SetType changes the event's type
-func (e *Event) SetType(newType string) error {
+func (e *Event) SetType(newType string) {
 	e.Type = newType
-	return nil
 }
 
 // GetSponsors returns the event's sponsors
@@ -197,9 +196,8 @@ func (e *Event) GetLogo() MediaMeta {
 }
 
 // SetLogo changes the event's logo
-func (e *Event) SetLogo(newLogo MediaMeta) error {
+func (e *Event) SetLogo(newLogo MediaMeta) {
 	e.Logo = newLogo
-	return nil
 }
 
 // GetMedia returns event's Media
