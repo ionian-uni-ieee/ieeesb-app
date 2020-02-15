@@ -9,7 +9,7 @@ type Sponsor struct {
 	Name   string             `bson:"name" json:"name"`
 	Emails []string           `bson:"emails" json:"emails"`
 	Phones []string           `bson:"phones" json:"phones"`
-	Logo   MediaMeta          `bson:"logo" json:"logo"`
+	Logo   string             `bson:"logo" json:"logo"`
 }
 
 // NewSponsor is a sponsor factory that generates a sponsor
@@ -17,7 +17,7 @@ func NewSponsor(
 	name string,
 	emails []string,
 	phones []string,
-	logo MediaMeta,
+	logo string,
 ) (*Sponsor, error) {
 	if name == "" {
 		return nil, errors.New("Sponsor's name can't be empty")
@@ -133,12 +133,12 @@ func (s *Sponsor) RemovePhone(phone string) error {
 }
 
 // GetLogo returns the sponsor's logo
-func (s *Sponsor) GetLogo() MediaMeta {
+func (s *Sponsor) GetLogo() string {
 	return s.Logo
 }
 
 // SetLogo changes the sponsor's logo
-func (s *Sponsor) SetLogo(newLogo MediaMeta) {
+func (s *Sponsor) SetLogo(newLogo string) {
 	s.Logo = newLogo
 }
 
