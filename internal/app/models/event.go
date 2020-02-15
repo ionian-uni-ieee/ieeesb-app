@@ -9,22 +9,24 @@ type Event struct {
 	ID          primitive.ObjectID `bson:"_id" json:"id"`
 	Name        string             `bson:"name" json:"name"`
 	Description string             `bson:"description" json:"description"`
+	Date        uint               `bson:"date" json:"date"`
 	Tags        []string           `bson:"tags" json:"tags"`
 	Type        string             `bson:"type" json:"type"`
 	Sponsors    []Sponsor          `bson:"sponsors" json:"sponsors"`
-	Logo        MediaMeta          `bson:"logo" json:"logo"`
-	Media       []MediaMeta        `bson:"media" json:"media"`
+	Logo        string             `bson:"logo" json:"logo"`
+	Media       []string           `bson:"media" json:"media"`
 }
 
 // NewEvent is an event factory that generates an event
 func NewEvent(
 	name string,
 	description string,
+	date uint,
 	tags []string,
 	category string,
 	sponsors []Sponsor,
-	logo MediaMeta,
-	media []MediaMeta,
+	logo string,
+	media []string,
 ) (*Event, error) {
 	if name == "" {
 		return nil, errors.New("Name can't be empty")
@@ -33,6 +35,7 @@ func NewEvent(
 		ID:          primitive.NewObjectID(),
 		Name:        name,
 		Description: description,
+		Date:        date,
 		Tags:        tags,
 		Type:        category,
 		Sponsors:    sponsors,
@@ -71,9 +74,18 @@ func (e *Event) GetDescription() string {
 }
 
 // SetDescriotion changes the event's description
-func (e *Event) SetDescription(newDescription string) error {
+func (e *Event) SetDescription(newDescription string) {
 	e.Description = newDescription
-	return nil
+}
+
+// GetDate returns the event's date
+func (e *Event) GetDate() uint {
+	return e.Date
+}
+
+// SetDate change the event's date
+func (e *Event) SetDate(newDate uint) {
+	e.Date = newDate
 }
 
 // GetTags returns the event's tags
@@ -116,9 +128,10 @@ func (e *Event) RemoveTag(tag string) error {
 	for i, existingTag := range e.Tags {
 		if existingTag == tag {
 			e.Sponsors = append(e.Sponsors[:i], e.Sponsors[i+1:]...)
+			return nil
 		}
 	}
-	return nil
+	return errors.New("Event's tag was not found")
 }
 
 // GetType returns the event's type
@@ -127,9 +140,8 @@ func (e *Event) GetType() string {
 }
 
 // SetType changes the event's type
-func (e *Event) SetType(newType string) error {
+func (e *Event) SetType(newType string) {
 	e.Type = newType
-	return nil
 }
 
 // GetSponsors returns the event's sponsors
@@ -179,29 +191,28 @@ func (e *Event) RemoveSponsor(sponsor Sponsor) error {
 }
 
 // GetLogo returns event's logo
-func (e *Event) GetLogo() MediaMeta {
+func (e *Event) GetLogo() string {
 	return e.Logo
 }
 
 // SetLogo changes the event's logo
-func (e *Event) SetLogo(newLogo MediaMeta) error {
+func (e *Event) SetLogo(newLogo string) {
 	e.Logo = newLogo
-	return nil
 }
 
 // GetMedia returns event's Media
-func (e *Event) GetMedia() []MediaMeta {
+func (e *Event) GetMedia() []string {
 	return e.Media
 }
 
 // SetMedia changes the event's media
-func (e *Event) SetMedia(newMedia []MediaMeta) error {
+func (e *Event) SetMedia(newMedia []string) error {
 	for mediaIndex, media := range newMedia {
-		if media.isEmpty() {
+		if media == "" {
 			return errors.New("Event's media can't be empty")
 		}
 		for tmpIndex, tmpMedia := range newMedia {
-			if media.isEqual(tmpMedia) && mediaIndex != tmpIndex {
+			if media == tmpMedia && mediaIndex != tmpIndex {
 				return errors.New("Duplicate media")
 			}
 		}
@@ -211,12 +222,12 @@ func (e *Event) SetMedia(newMedia []MediaMeta) error {
 }
 
 // AddMedia adds a media at the bottom of the event's media
-func (e *Event) AddMedia(media MediaMeta) error {
-	if media.isEmpty() {
+func (e *Event) AddMedia(media string) error {
+	if media == "" {
 		return errors.New("Event's media cant't be empty")
 	}
 	for _, existingMedia := range e.Media {
-		if existingMedia.isEqual(media) {
+		if existingMedia == media {
 			return errors.New("Event's media already exist")
 		}
 	}
@@ -225,9 +236,9 @@ func (e *Event) AddMedia(media MediaMeta) error {
 }
 
 // RemoveMedia removes a media (by the name)
-func (e *Event) RemoveMedia(Media MediaMeta) error {
+func (e *Event) RemoveMedia(Media string) error {
 	for i, existingMedia := range e.Media {
-		if existingMedia.isEqual(Media) {
+		if existingMedia == Media {
 			e.Media = append(e.Media[:i], e.Media[i+1:]...)
 			return nil
 		}
