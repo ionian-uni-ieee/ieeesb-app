@@ -4,25 +4,14 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"strings"
 
-	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
 	"github.com/ionian-uni-ieee/ieeesb-app/internal/app/drivers/database"
-	httpHandler "github.com/ionian-uni-ieee/ieeesb-app/internal/app/handlers/rest"
+	"github.com/ionian-uni-ieee/ieeesb-app/internal/app/handlers/rest"
 	"github.com/ionian-uni-ieee/ieeesb-app/internal/app/repositories"
 	"github.com/joho/godotenv"
 )
-
-// Application holds and initiates the software structure
-type Application struct {
-	host             string
-	port             string
-	databaseHost     string
-	databasePort     string
-	databaseName     string
-	databaseUsername string
-	databasePass     string
-}
 
 // Default values
 const defaultHost string = "localhost"
@@ -33,69 +22,76 @@ const defaultDatabaseName string = "test"
 
 // Initialize initiates the application's server and communication channels
 // A webserver and a database server are configured and set in cooperation
-func (a *Application) Initialize(databaseDriver database.Driver) {
-	a.initializeVariables()
+func Initialize(databaseDriver database.Driver) {
+	initializeVariables()
 
 	// Get database starting
-	err := databaseDriver.Connect(a.databaseHost, a.databasePort, a.databaseUsername, a.databasePass, a.databaseName)
+	err := databaseDriver.Connect(
+		os.Getenv("API_DATABASE_HOST"),
+		os.Getenv("API_DATABASE_UNAME"),
+		os.Getenv("API_DATABASE_PASS"),
+		os.Getenv("API_DATABASE_NAME"),
+	)
+
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Println("✔ Database server running at " + a.databaseHost + ":" + a.databasePort + "/" + a.databaseName)
+	log.Println(
+		"✔ " +
+			strings.Title(databaseDriver.GetDatabaseType()) +
+			" Database server running at " +
+			os.Getenv("DATABASE_ORIGIN") +
+			"/" +
+			os.Getenv("DATABASE_NAME"),
+	)
 
-	// HTTP Server IO
+	/*
+	 * HTTP ROUTER
+	 *
+	 */
 	r := mux.NewRouter()
 	// Trims trailing slash
 	r.StrictSlash(true)
 
-	reps := repositories.MakeRepositories(databaseDriver)
-	h := httpHandler.MakeHandler(reps)
+	rep := repositories.MakeRepositories(databaseDriver)
+	rest.MakeHandler(r, rep)
 
-	// UTILITIES
-	r.HandleFunc("/ping", h.GetPing).Methods("GET")
-	// AUTH
-	r.HandleFunc("/v1/register", h.PostRegister).Methods("POST")
-	r.HandleFunc("/v1/login", h.PostLogin).Methods("POST")
-	r.HandleFunc("/v1/logout", h.PostLogout).Methods("POST")
-	r.HandleFunc("/v1/profile", h.GetProfile).Methods("GET")
-	// USERS
-	r.HandleFunc("/v1/users/{userID}", h.DeleteUser).Methods("DELETE")
-	r.HandleFunc("/v1/users/{userID}", h.PutUser).Methods("PUT")
-	// SPONSORS
-	r.HandleFunc("/v1/sponsors", h.PostSponsor).Methods("POST")
-	r.HandleFunc("/v1/sponsors/{sponsorID}", h.PutSponsor).Methods("PUT")
-	r.HandleFunc("/v1/sponsors/{sponsorID}", h.DeleteSponsor).Methods("DELETE")
-	// TICKETS
-	r.HandleFunc("/v1/tickets", h.GetTickets).Methods("GET")
-	r.HandleFunc("/v1/tickets/contact", h.PostTicketContact).Methods("POST")
-
-	// Logging middleware
-	handler := handlers.LoggingHandler(os.Stdout, r)
-
-	log.Println("✔ API server running at " + a.host + ":" + a.port)
-	log.Fatal(http.ListenAndServe(a.host+":"+a.port, handler))
+	// Run HTTP Server
+	httpOrigin := os.Getenv("API_ORIGIN")
+	log.Println("✔ API server running at " + httpOrigin)
+	log.Fatal(http.ListenAndServe(
+		httpOrigin,
+		r,
+	))
 }
 
 // initializeVariables initiates all the application variables
 // they're taken from the environment variables,
 // which if non-existant are replaced by default values instead
-func (a *Application) initializeVariables() {
+func initializeVariables() {
 	// Load .env file(s) if existant
 	godotenv.Load(".env")
-	initializeVariable(&a.host, "API_HOST", defaultHost)
-	initializeVariable(&a.port, "API_PORT", defaultPort)
-	initializeVariable(&a.databaseHost, "API_DATABASE_HOST", defaultDatabaseHost)
-	initializeVariable(&a.databasePort, "API_DATABASE_PORT", defaultDatabasePort)
-	initializeVariable(&a.databaseName, "API_DATABASE_NAME", defaultDatabaseName)
-	initializeVariable(&a.databaseUsername, "API_DATABASE_NAME", "")
-	initializeVariable(&a.databasePass, "API_DATABASE_PASS", "")
+	initializeVariable("API_HOST", defaultHost)
+	initializeVariable("API_PORT", defaultPort)
+	initializeVariable("API_DATABASE_HOST", defaultDatabaseHost)
+	initializeVariable("API_DATABASE_PORT", defaultDatabasePort)
+	initializeVariable("API_DATABASE_NAME", defaultDatabaseName)
+	initializeVariable("API_DATABASE_UNAME", "")
+	initializeVariable("API_DATABASE_PASS", "")
 }
 
-func initializeVariable(ptr *string, envName string, defaultValue string) {
-	if len(*ptr) == 0 {
-		*ptr = os.Getenv("API_HOST")
-		if len(*ptr) == 0 {
-			*ptr = defaultValue
+func initializeVariable(envName string, defaultValue string) {
+	if os.Getenv(envName) != "" {
+		return
+	}
+	// Load .env file(s) if existant
+	var envVars map[string]string
+	envVars, err := godotenv.Read(".env")
+	if err != nil {
+		if envVars[envName] != "" {
+			os.Setenv(envName, envVars[envName])
+			return
 		}
 	}
+	os.Setenv(envName, defaultValue)
 }

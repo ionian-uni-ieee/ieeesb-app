@@ -6,9 +6,6 @@ import (
 )
 
 func main() {
-	app := &app.Application{}
-
 	database := mongo.MakeDatabaseDriver()
-
 	app.Initialize(database)
 }
