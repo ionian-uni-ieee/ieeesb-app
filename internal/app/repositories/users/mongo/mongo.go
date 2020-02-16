@@ -233,7 +233,7 @@ func (r *Repository) InsertMany(documents []models.User) ([]string, error) {
 	return insertedIDs, err
 }
 
-func (r *Repository) IsDuplicate(email string, username string, fullname string) bool {
+func (r *Repository) Exists(email string, username string, fullname string) bool {
 	sameKeysFilter := &bson.M{
 		"$or": bson.A{
 			bson.M{"email": email},
