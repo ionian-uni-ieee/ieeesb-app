@@ -92,12 +92,25 @@ func (u *User) SetPermissions(users bool, tickets bool, events bool, sponsors bo
 	u.Permissions.Sponsors = sponsors
 }
 
-// ChangePassword sets a new encrypted password for the user
-func (u *User) ChangePassword(newPassword string) error {
-	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(newPassword), bcrypt.DefaultCost)
+// SetPassword hashes the new password and sets it as a new password
+func (u *User) SetPassword(password string) error {
+	hashedPassword, err := HashPassword(password)
 	if err != nil {
 		return err
 	}
 	u.Password = string(hashedPassword)
+
 	return nil
+}
+
+// AuthorizePassword returns if an unhashed password is equal to the hashed password of the user
+func (u *User) AuthorizePassword(password string) (bool, error) {
+	err := bcrypt.CompareHashAndPassword([]byte(u.Password), []byte(password))
+	return err == nil, err
+}
+
+// HashPassword hashes a string to a bcrypt hash
+func HashPassword(password string) (string, error) {
+	passwordBytes, err := bcrypt.GenerateFromPassword([]byte(password), 10)
+	return string(passwordBytes), err
 }

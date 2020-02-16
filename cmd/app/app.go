@@ -6,10 +6,13 @@ import (
 	"os"
 	"strings"
 
+	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
 	"github.com/ionian-uni-ieee/ieeesb-app/internal/app/drivers/database"
+	"github.com/ionian-uni-ieee/ieeesb-app/internal/app/drivers/oauth"
 	"github.com/ionian-uni-ieee/ieeesb-app/internal/app/handlers/rest"
 	"github.com/ionian-uni-ieee/ieeesb-app/internal/app/repositories"
+	"github.com/ionian-uni-ieee/ieeesb-app/internal/app/services/users"
 	"github.com/joho/godotenv"
 )
 
@@ -27,10 +30,10 @@ func Initialize(databaseDriver database.Driver) {
 
 	// Get database starting
 	err := databaseDriver.Connect(
-		os.Getenv("API_DATABASE_HOST"),
-		os.Getenv("API_DATABASE_UNAME"),
-		os.Getenv("API_DATABASE_PASS"),
-		os.Getenv("API_DATABASE_NAME"),
+		os.Getenv("DATABASE_HOST"),
+		os.Getenv("DATABASE_UNAME"),
+		os.Getenv("DATABASE_PASS"),
+		os.Getenv("DATABASE_NAME"),
 	)
 
 	if err != nil {
@@ -40,7 +43,7 @@ func Initialize(databaseDriver database.Driver) {
 		"✔ " +
 			strings.Title(databaseDriver.GetDatabaseType()) +
 			" Database server running at " +
-			os.Getenv("DATABASE_ORIGIN") +
+			os.Getenv("DATABASE_HOST") +
 			"/" +
 			os.Getenv("DATABASE_NAME"),
 	)
@@ -56,12 +59,35 @@ func Initialize(databaseDriver database.Driver) {
 	rep := repositories.MakeRepositories(databaseDriver)
 	rest.MakeHandler(r, rep)
 
+	/*
+	 * OAUTH SERVER
+	 *
+	 */
+	userService := users.MakeService(rep)
+	oauthServer := oauth.RunOAuthServer(
+		oauth.DatabaseConnectionInfo{
+			Origin: os.Getenv("DATABASE_ORIGIN"),
+			Name:   os.Getenv("DATABASE_NAME"),
+		},
+		userService.AuthorizeCredentials,
+		r,
+	)
+
+	/*
+	 * MIDDLEWARES
+	 *
+	 */
+	handler := handlers.LoggingHandler(
+		os.Stdout,
+		oauthServer.HTTPMiddleware(r),
+	)
+
 	// Run HTTP Server
 	httpOrigin := os.Getenv("API_ORIGIN")
 	log.Println("✔ API server running at " + httpOrigin)
 	log.Fatal(http.ListenAndServe(
 		httpOrigin,
-		r,
+		handler,
 	))
 }
 
@@ -73,11 +99,11 @@ func initializeVariables() {
 	godotenv.Load(".env")
 	initializeVariable("API_HOST", defaultHost)
 	initializeVariable("API_PORT", defaultPort)
-	initializeVariable("API_DATABASE_HOST", defaultDatabaseHost)
-	initializeVariable("API_DATABASE_PORT", defaultDatabasePort)
-	initializeVariable("API_DATABASE_NAME", defaultDatabaseName)
-	initializeVariable("API_DATABASE_UNAME", "")
-	initializeVariable("API_DATABASE_PASS", "")
+	initializeVariable("DATABASE_HOST", defaultDatabaseHost)
+	initializeVariable("DATABASE_PORT", defaultDatabasePort)
+	initializeVariable("DATABASE_NAME", defaultDatabaseName)
+	initializeVariable("DATABASE_UNAME", "")
+	initializeVariable("DATABASE_PASS", "")
 }
 
 func initializeVariable(envName string, defaultValue string) {
