@@ -29,8 +29,13 @@ func MakeDatabaseDriver() *DatabaseSession {
 }
 
 // Connect is an empty function to fill the Driver interface's requirements
-func (d *DatabaseSession) Connect(host string, port string, uname string, pass string, dbname string) error {
+func (d *DatabaseSession) Connect(origin string, uname string, pass string, dbname string) error {
 	return nil
+}
+
+// StartSession starts a new session
+func (d *DatabaseSession) StartSession() (interface{}, error) {
+	return nil, nil
 }
 
 // Disconnect is an empty function to fill the interface's requirements
