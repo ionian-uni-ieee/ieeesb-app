@@ -328,7 +328,7 @@ func (r *Repository) InsertMany(documents []models.User) ([]string, error) {
 }
 
 // IsDuplicate checks if the primary key values are unique in the repository
-func (r *Repository) IsDuplicate(email string, username string, fullname string) bool {
+func (r *Repository) Exists(email string, username string, fullname string) bool {
 	emailsColumn := r.Collection.Columns["Email"]
 	usernamesColumn := r.Collection.Columns["Username"]
 	fullnamesColumn := r.Collection.Columns["Fullname"]

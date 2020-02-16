@@ -7,8 +7,10 @@ import (
 	"github.com/ionian-uni-ieee/ieeesb-app/pkg/validation"
 )
 
+// Validates that a user object is valid
 func (s *Service) Validate(user models.User) validation.Validation {
 	v := validation.Validation{}
+
 	if user.GetUsername() == "" {
 		v.AddError("username", ErrUsernameEmpty)
 	}
@@ -17,6 +19,11 @@ func (s *Service) Validate(user models.User) validation.Validation {
 	isEmailValid := emailRegex.MatchString(user.GetEmail())
 	if !isEmailValid {
 		v.AddError("email", ErrInvalidEmail)
+	}
+
+	userExists := s.repositories.Users.Exists(user.GetEmail(), user.GetUsername(), user.GetFullname())
+	if userExists {
+		v.AddError("user/email/username", ErrUserExists)
 	}
 
 	return v

@@ -5,6 +5,7 @@ import (
 	"github.com/ionian-uni-ieee/ieeesb-app/pkg/validation"
 )
 
+// Update updates a user with another object
 func (s *Service) Update(updatedUser models.User) validation.Validation {
 	v := s.Validate(updatedUser)
 	if v.HasError() {
