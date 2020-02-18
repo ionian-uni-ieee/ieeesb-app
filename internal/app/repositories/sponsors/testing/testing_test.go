@@ -24,7 +24,7 @@ var testSponsor1 = models.Sponsor{
 	Name:   "Microsoft",
 	Emails: []string{"info@microsoft.com"},
 	Phones: []string{"+1 5412871236421"},
-	Logo:   models.MediaMeta{},
+	Logo:   "",
 }
 
 var testSponsor2 = models.Sponsor{
@@ -32,7 +32,7 @@ var testSponsor2 = models.Sponsor{
 	Name:   "Apple",
 	Emails: []string{"info@apple.com"},
 	Phones: []string{"+1 32462346234523"},
-	Logo:   models.MediaMeta{},
+	Logo:   "",
 }
 
 var testSponsor3 = models.Sponsor{
@@ -40,7 +40,7 @@ var testSponsor3 = models.Sponsor{
 	Name:   "Netflix",
 	Emails: []string{"info@netflix.com"},
 	Phones: []string{"+1 63242312346124"},
-	Logo:   models.MediaMeta{},
+	Logo:   "",
 }
 
 func TestFindByID(t *testing.T) {

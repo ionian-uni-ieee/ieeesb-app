@@ -1,4 +1,4 @@
-package events_test
+package tickets_test
 
 import (
 	testingDb "github.com/ionian-uni-ieee/ieeesb-app/internal/app/drivers/database/testing"
