@@ -6,7 +6,7 @@ import (
 )
 
 // Add adds a new user to the user repository
-func (s *Service) Add(user models.User) (string, validation.Validation) {
+func (s *Service) Add(user models.User) (string, *validation.Validation) {
 	v := s.Validate(user)
 	userID, err := s.repositories.Users.InsertOne(user)
 

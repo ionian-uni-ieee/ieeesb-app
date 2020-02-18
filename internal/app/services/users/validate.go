@@ -8,8 +8,8 @@ import (
 )
 
 // Validates that a user object is valid
-func (s *Service) Validate(user models.User) validation.Validation {
-	v := validation.Validation{}
+func (s *Service) Validate(user models.User) *validation.Validation {
+	v := &validation.Validation{}
 
 	if user.GetUsername() == "" {
 		v.AddError("username", ErrUsernameEmpty)
