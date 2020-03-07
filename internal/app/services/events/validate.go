@@ -10,7 +10,7 @@ func (s *Service) Validate(event models.Event) *validation.Validation {
 	v := &validation.Validation{}
 
 	if event.GetName() == "" {
-		v.AddError("Name", ErrNameEmpty)
+		v.AddError("name", ErrNameEmpty)
 	}
 
 	if event.GetDate() < 946728000 { // 01/01/2000
