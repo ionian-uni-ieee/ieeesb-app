@@ -1,5 +1,8 @@
 FROM golang:1.13.0-alpine3.10
 
+# Installing git
+RUN apk add --no-cache git
+
 # Default environment variables
 ENV API_HOST=app
 ENV API_PORT=5000
