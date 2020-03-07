@@ -1,33 +1,53 @@
-FROM golang:1.13.0-alpine3.10
+FROM golang:1.13.4-alpine3.10 as golang
+
+VOLUME [ "/app" ]
+
+# Environment
+ARG environment=dev
+ENV ENV=${environment}
 
 # Installing git
 RUN apk add --no-cache git
 
-# Default environment variables
-ENV API_HOST=app
-ENV API_PORT=5000
-ENV API_DATABASE_HOST=mongodb://mongo
-ENV API_DATABASE_NAME=local
+# Install watcher for development environment
+RUN if [ ${ENV} = "dev" ] ; then \
+      go get github.com/canthefason/go-watcher && \
+      go install github.com/canthefason/go-watcher/cmd/watcher; \
+      # apk add --update alpine-sdk; \
+    fi
+# Make go test -race work on alpine by building (patched) sanitizer manually
+# as it is not built by default
+# Ref: https://github.com/golang/go/issues/14481#issuecomment-281972886
+# SHA: https://github.com/golang/go/blob/go1.13/src/runtime/race/README
+# COPY ./build/go/0001-hack-to-make-Go-s-race-flag-work-on-Alpine.patch /race.patch;
+# RUN cd / \
+#   && apk add --no-cache --virtual .build-deps g++ git \
+#   && mkdir -p compiler-rt \
+#   && git clone https://llvm.org/git/compiler-rt.git \
+#   && cd compiler-rt \
+#   && git reset --hard fe2c72c59aa7f4afa45e3f65a5d16a374b6cce26 \
+#   && patch -p1 -i /race.patch \
+#   && cd lib/tsan/go \
+#   && ./buildgo.sh 2>/dev/null \
+#   && cp -v race_linux_amd64.syso /usr/local/go/src/runtime/race/ \
+#   && rm -rf /compiler-rt /race.patch \
+#   && apk del .build-deps;
 
-# Create directory for application's sources
-RUN mkdir -p /opt/go-app
-WORKDIR /opt/go-app
+# SERVER HOST
+ENV API_ORIGIN 0.0.0.0:81
+EXPOSE 81
 
-# Get main file
-COPY main.go ./
+# Working directory setup
+WORKDIR /app
 
-# Copy packages
-COPY pkg ./pkg 
+COPY ./main.go ./
+COPY ./cmd ./cmd
+COPY ./internal ./internal
+COPY ./vendor ./vendor
+COPY ./pkg ./pkg
+COPY ./go.mod ./
+COPY ./go.sum ./
+COPY ./.env ./
 
-# Get go module files
-COPY go.mod go.sum ./
-
-# Copy vendors
-COPY vendor ./vendor
-
-# Copy application
-COPY internal/app ./internal/app
-
-EXPOSE 5000
-
-CMD ["go", "run", "./main.go"]
+# Run app
+CMD [ "go", "run", "main.go" ]
