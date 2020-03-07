@@ -47,7 +47,6 @@ COPY ./vendor ./vendor
 COPY ./pkg ./pkg
 COPY ./go.mod ./
 COPY ./go.sum ./
-COPY ./.env ./
 
 # Run app
 CMD [ "go", "run", "main.go" ]
