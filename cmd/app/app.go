@@ -31,8 +31,8 @@ func Initialize(databaseDriver database.Driver) {
 	// Get database starting
 	err := databaseDriver.Connect(
 		os.Getenv("DATABASE_HOST"),
-		os.Getenv("DATABASE_UNAME"),
-		os.Getenv("DATABASE_PASS"),
+		os.Getenv("DATABASE_USERNAME"),
+		os.Getenv("DATABASE_PASSWORD"),
 		os.Getenv("DATABASE_NAME"),
 	)
 
@@ -102,8 +102,8 @@ func initializeVariables() {
 	initializeVariable("DATABASE_HOST", defaultDatabaseHost)
 	initializeVariable("DATABASE_PORT", defaultDatabasePort)
 	initializeVariable("DATABASE_NAME", defaultDatabaseName)
-	initializeVariable("DATABASE_UNAME", "")
-	initializeVariable("DATABASE_PASS", "")
+	initializeVariable("DATABASE_USERNAME", "")
+	initializeVariable("DATABASE_PASSWORD", "")
 }
 
 func initializeVariable(envName string, defaultValue string) {
