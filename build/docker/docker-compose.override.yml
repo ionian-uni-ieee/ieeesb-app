@@ -4,11 +4,11 @@ services:
   web:
     build:
       context: ../..
-      dockerfile: ./build/docker/web.Dockerfile
+      dockerfile: ./build/docker/images/web.Dockerfile
     restart: always
     volumes:
       - ../../web:/react-app
-      - ../../web/node_modules:/react-app/node_modules
+      - /react-app/node_modules
     ports:
       - 3000:3000
     networks:
@@ -17,7 +17,7 @@ services:
   app:
     build:
       context: ../..
-      dockerfile: ./build/docker/app.Dockerfile
+      dockerfile: ./build/docker/images/app.Dockerfile
     ports:
       - 5000:5000
     networks:
@@ -47,4 +47,3 @@ networks:
 
 volumes:
   db-data: {}
-  node_modules: {}
