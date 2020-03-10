@@ -1,0 +1,25 @@
+.page.control-panel-login {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  place-items: center;
+  height: 100%;
+
+  background: linear-gradient(305.42deg, rgba(242, 92, 120, 0.3) 0%,
+    rgba(5, 91, 166, 0.5) 100%);
+  box-shadow: inset 0px 8px 32px rgba(0, 0, 0, 0.25);
+
+  &__form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    width: fit-content;
+    height: fit-content;
+    border: 1px solid #AAAAAA;
+    border-radius: 8px;
+    padding: 60px 60px;
+
+    background-color: $white;
+  }
+}

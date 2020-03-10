@@ -1,3 +1,2 @@
-import Landpage from './Landpage'
-
-export { Landpage }
+export { default as Landpage } from './Landpage'
+export { default as ControlPanelLogin } from './ControlPanelLogin'
