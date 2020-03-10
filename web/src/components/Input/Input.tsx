@@ -3,7 +3,6 @@ import React, { InputHTMLAttributes, useEffect, useRef, useState } from 'react'
 interface IProps extends InputHTMLAttributes<HTMLInputElement> {
   required?: boolean
   primary?: boolean
-  secondary?: boolean
   secret?: boolean
   number?: boolean
 }
@@ -14,7 +13,6 @@ const Input: React.FC<IProps> = (props) => {
     placeholder,
     required,
     primary,
-    secondary,
     secret,
     number,
   } = props
@@ -91,7 +89,6 @@ const Input: React.FC<IProps> = (props) => {
       className={`
         input
         ${isActive ? 'input_active' : ''}
-        ${secondary && !primary ? 'input_secondary' : ''}
       `}
     >
       <input
