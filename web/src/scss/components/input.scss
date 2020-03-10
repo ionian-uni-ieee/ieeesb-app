@@ -1,0 +1,105 @@
+/**
+ *
+ * INPUT
+ * BLOCK: .input
+ *  USE ON:
+ *    <div>
+ *  EXAMPLE:
+ *    <div class='input'><input>
+ */
+
+ $input_margin: 5px;
+ $input_height: 48px;
+ $input_width: 364px;
+ $input_text_margin: 12px;
+ $input_placeholder_color: #888;
+ $input_border_color: #AAAAAA;
+ $input_border_color_active: #0F6CA6;
+ $input_border: 2px solid $input_border_color;
+ $input_border_active: 2px solid $input_border_color_active;
+ 
+ .input {
+   display: flex;
+   position: relative;
+   flex-direction: column;
+   height: $input_height;
+   width: $input_width;
+   border-radius: 8px;
+   margin: $input_margin;
+   
+   background: $white;
+   
+   &__element {
+    height: 100%;
+    width: $input_width - $input_text_margin*2 + 4;
+    padding-top: 12px;
+    padding-left: $input_text_margin;
+    padding-right: $input_text_margin;
+   
+    border: $input_border;
+    border-radius: 8px;
+    outline: none;
+   
+    font-family: 'Roboto', sans-serif;
+    font-size: 24px;
+    font-weight: 400;
+    color: $primary;
+    text-align: center;
+   
+    transition: 200ms ease;
+   
+    &:focus,
+    &:hover,
+    &:active {
+      outline: none;
+      border: $input_border_active;
+    }
+  }
+  &__placeholder {
+    position: absolute;
+    width: 100%;
+    margin-top: 13px;
+    margin-left: 4px;
+    z-index: 1;
+
+    font-family: 'Roboto', sans-serif;
+    font-size: 11px;
+    font-weight: 300;
+    letter-spacing: 0.42em;
+
+    color: $input_placeholder_color;
+
+    transition: 350ms ease-in;
+  }
+
+  &_active &__placeholder,
+  &:hover &__placeholder {
+    margin-top: 4px;
+
+    font-family: 'Roboto', sans-serif;
+    font-size: 11px;
+    font-weight: 300;
+
+    transition: 350ms ease-in;
+  }
+
+  &_active.input_secondary &__placeholder,
+  &:hover.input_secondary &__placeholder {
+    margin-top: 4px;
+    margin-left: $input_text_margin;
+
+    font-size: 14px;
+    transition: 300ms ease;
+  }
+}
+
+.input::after {
+  position: absolute;
+  margin: 16px -32px;
+}
+.input_percent::after {
+  content: '%';
+}
+.input_currency:after {
+  content: '€';
+}
