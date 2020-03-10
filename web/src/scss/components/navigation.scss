@@ -16,7 +16,7 @@
     color: #055BA6;
     font-family: 'Roboto', sans-serif;
     font-weight: 300;
-    font-size: 24px;
+    font-size: 14px;
     line-height: 28px;
     letter-spacing: 0.32em;
     text-transform: uppercase;
@@ -27,6 +27,16 @@
       color: #F25C78;
 
       transition: 0.2s ease;
+    }
+  }
+  @include tablet {
+    &__button {
+      font-size: 22px;
+    }
+  }
+  @include desktop {
+    &__button {
+      font-size: 22px;
     }
   }
 }

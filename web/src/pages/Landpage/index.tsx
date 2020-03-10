@@ -21,8 +21,8 @@ const Landpage = () => {
               width='80%'
               viewBox='0 0 914 231'
               style={{
-                height: '400px',
-                padding: '80px',
+                height: '14vw',
+                padding: '80px 0',
               }}
             />
         </div>
