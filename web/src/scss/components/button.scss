@@ -1,10 +1,10 @@
 $button_height: 48px;
-$button_width: 364px;
+$button_width: 320px;
 
 .button {
   height: $button_height;
   width: $button_width;
-  margin: 4px;
+  margin: 8px;
 
   border-radius: 8px;
   background-color: $primary;
