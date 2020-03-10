@@ -18,9 +18,11 @@ const Landpage = () => {
             </Navigation>
             <Logo
               className='page landpage__logo'
+              width='80%'
+              viewBox='0 0 914 231'
               style={{
-                height: `${window.innerHeight}px`,
-                paddingTop: `${window.innerHeight / 4}px`,
+                height: '400px',
+                padding: '80px',
               }}
             />
         </div>
