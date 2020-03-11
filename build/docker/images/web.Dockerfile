@@ -8,7 +8,7 @@ RUN yarn global add serve
 RUN yarn global add react-scripts
 
 # Install modules
-COPY ./web .
+COPY web .
 RUN yarn
 
 # Define Env Vars
