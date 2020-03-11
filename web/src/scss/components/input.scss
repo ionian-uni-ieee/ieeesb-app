@@ -17,6 +17,7 @@
  $input_border_color_active: #0F6CA6;
  $input_border: 2px solid $input_border_color;
  $input_border_active: 2px solid $input_border_color_active;
+ $input_placeholder_transition: 200ms ease;
  
  .input {
    display: flex;
@@ -46,7 +47,7 @@
     color: #424242;
     text-align: center;
    
-    transition: 100ms ease;
+    transition: 200ms ease;
    
     &:focus,
     &:hover,
@@ -58,7 +59,7 @@
   &__placeholder {
     position: absolute;
     width: 100%;
-    margin-top: 13px;
+    margin-top: 16px;
     margin-left: 4px;
     z-index: 1;
 
@@ -69,7 +70,7 @@
 
     color: $input_placeholder_color;
 
-    transition: 350ms ease-in;
+    transition: $input_placeholder_transition;
   }
 
   &_active &__placeholder,
@@ -80,7 +81,7 @@
     font-size: 11px;
     font-weight: 300;
 
-    transition: 350ms ease-in;
+    transition: $input_placeholder_transition;
   }
 
   &_active.input_secondary &__placeholder,
