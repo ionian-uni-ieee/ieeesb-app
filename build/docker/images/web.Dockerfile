@@ -17,6 +17,5 @@ ENV PORT $PORT
 
 # Run app
 EXPOSE ${PORT}
-# RUN yarn build
-# CMD [ "serve", "-s", "build", "-l", "3000" ]
-CMD [ "yarn", "start" ]
+RUN yarn build
+CMD [ "serve", "-s", "build", "-l", "3000" ]
