@@ -6,6 +6,7 @@ services:
       context: ../..
       dockerfile: ./build/docker/images/web.Dockerfile
     restart: always
+    command: yarn start
     volumes:
       - ../../web:/react-app
       - /react-app/node_modules
