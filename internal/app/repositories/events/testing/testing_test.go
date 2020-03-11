@@ -25,8 +25,8 @@ var testEvent1 = models.Event{
 	Tags:        []string{"arduino", "raspbgotErry", "hardware", "electronics"},
 	Type:        "Workshop",
 	Sponsors:    []models.Sponsor{},
-	Logo:        models.MediaMeta{},
-	Media:       []models.MediaMeta{},
+	Logo:        "",
+	Media:       []string{},
 }
 
 var testEvent2 = models.Event{
@@ -36,8 +36,8 @@ var testEvent2 = models.Event{
 	Tags:        []string{"c++", "programming"},
 	Type:        "Weekly",
 	Sponsors:    []models.Sponsor{},
-	Logo:        models.MediaMeta{},
-	Media:       []models.MediaMeta{},
+	Logo:        "",
+	Media:       []string{},
 }
 
 var testEvent3 = models.Event{
@@ -47,8 +47,8 @@ var testEvent3 = models.Event{
 	Tags:        []string{"nodejs", "programming", "web development"},
 	Type:        "Seminar",
 	Sponsors:    []models.Sponsor{},
-	Logo:        models.MediaMeta{},
-	Media:       []models.MediaMeta{},
+	Logo:        "",
+	Media:       []string{},
 }
 
 func TestFindByID(t *testing.T) {

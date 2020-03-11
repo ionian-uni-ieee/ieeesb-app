@@ -1,0 +1,58 @@
+$button_height: 48px;
+$button_width: 320px;
+
+.button {
+  height: $button_height;
+  width: $button_width;
+  margin: 8px;
+
+  border-radius: 8px;
+  background-color: $primary;
+  filter: drop-shadow(0 0 4px rgba($black, 0.2));
+  cursor: pointer;
+
+  transition: 300ms ease;
+
+  &:focus,
+  &:hover,
+  &:active {
+    // background-color: darken($color: $primary, $amount: 12);
+    background-color: $primary-active;
+
+    transition: 300ms ease;
+  }
+
+  &_fluid {
+    width: 100%;
+  }
+
+  &__element {
+    height: 100%;
+    width: 100%;
+    background: transparent;
+    outline: none;
+    border: none;
+
+    font-family: $font-secondary;
+    font-size: 13px;
+    font-weight: 500;
+    line-height: 15px;
+    letter-spacing: 0.2em;
+    color: $white;
+  }
+
+  &_secondary {
+    background-color: $secondary;
+    border: 1px solid #898989;
+
+    & .button__element {
+      color: $white;
+    }
+    &:focus,
+    &:hover,
+    &:active {
+      // background-color: darken($color: $secondary, $amount: 10);
+      background-color: $secondary-active;
+    }
+  }
+}

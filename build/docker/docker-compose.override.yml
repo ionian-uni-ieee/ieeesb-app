@@ -3,16 +3,28 @@ version: "3.3"
 services:
   web:
     build:
-      dockerfile: ./build/docker/web.Dockerfile
+      context: ../..
+      dockerfile: ./build/docker/images/web.Dockerfile
+    restart: always
+    volumes:
+      - ../../web:/react-app
+      - /react-app/node_modules
+    ports:
+      - 3000:3000
+    networks:
+      - frontend
 
   app:
     build:
-      dockerfile: ./build/docker/app.Dockerfile
+      context: ../..
+      dockerfile: ./build/docker/images/app.Dockerfile
     ports:
       - 5000:5000
+    networks:
+      - backend
     environment:
-      API_DATABASE_USERNAME: root
-      API_DATABASE_PASSWORD: pass
+      DATABASE_HOST: mongodb://mongo:27017
+      DATABASE_NAME: local
 
   mongo:
     # secrets:
@@ -21,4 +33,17 @@ services:
     #   MONGO_INITDB_ROOT_USERNAME_FILE: /run/secrets/mongo-user
     #   MONGO_INITDB_ROOT_PASSWORD_FILE: /run/secrets/mongo-pass
     # TODO: To remove when db auth update is provided
-    command: [--noauth]
+    ports:
+      - 27017:27017
+    networks:
+      - backend
+    restart: always
+    volumes:
+      - db-data:/data/db
+
+networks:
+  backend: {}
+  frontend: {}
+
+volumes:
+  db-data: {}

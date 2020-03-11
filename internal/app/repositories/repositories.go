@@ -23,12 +23,12 @@ import (
 // with which you can request data exchanges or modifications
 // for a specific model
 type Repositories struct {
-	database           database.Driver
-	UsersRepository    users.Repository
-	TicketsRepository  tickets.Repository
-	EventsRepository   events.Repository
-	SponsorsRepository sponsors.Repository
-	SessionsRepository sessions.Repository
+	database database.Driver
+	Users    users.Repository
+	Tickets  tickets.Repository
+	Events   events.Repository
+	Sponsors sponsors.Repository
+	Sessions sessions.Repository
 }
 
 // MakeRepositories is a factory of Repositories
@@ -37,17 +37,17 @@ func MakeRepositories(database database.Driver) (repositories *Repositories) {
 	repositories = &Repositories{}
 	repositories.database = database
 	if database.GetDatabaseType() == "mongo" {
-		repositories.UsersRepository = usersMongo.MakeRepository(database)
-		repositories.EventsRepository = eventsMongo.MakeRepository(database)
-		repositories.SponsorsRepository = sponsorsMongo.MakeRepository(database)
-		repositories.TicketsRepository = ticketsMongo.MakeRepository(database)
-		repositories.SessionsRepository = sessionsMongo.MakeRepository(database)
+		repositories.Users = usersMongo.MakeRepository(database)
+		repositories.Events = eventsMongo.MakeRepository(database)
+		repositories.Sponsors = sponsorsMongo.MakeRepository(database)
+		repositories.Tickets = ticketsMongo.MakeRepository(database)
+		repositories.Sessions = sessionsMongo.MakeRepository(database)
 	} else if database.GetDatabaseType() == "testing" {
-		repositories.UsersRepository = usersTesting.MakeRepository(database)
-		repositories.EventsRepository = eventsTesting.MakeRepository(database)
-		repositories.SponsorsRepository = sponsorsTesting.MakeRepository(database)
-		repositories.TicketsRepository = ticketsTesting.MakeRepository(database)
-		repositories.SessionsRepository = sessionsTesting.MakeRepository(database)
+		repositories.Users = usersTesting.MakeRepository(database)
+		repositories.Events = eventsTesting.MakeRepository(database)
+		repositories.Sponsors = sponsorsTesting.MakeRepository(database)
+		repositories.Tickets = ticketsTesting.MakeRepository(database)
+		repositories.Sessions = sessionsTesting.MakeRepository(database)
 	} else {
 		panic("The database type '" + database.GetDatabaseType() + "' is not supported")
 	}
