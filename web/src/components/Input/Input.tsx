@@ -15,6 +15,8 @@ const Input: React.FC<IProps> = (props) => {
     primary,
     secret,
     number,
+    className,
+    id,
   } = props
 
   const [ isActive, setIsActive ] = useState<boolean>(false)
@@ -89,7 +91,9 @@ const Input: React.FC<IProps> = (props) => {
       className={`
         input
         ${isActive ? 'input_active' : ''}
+        ${className}
       `}
+      id={id}
     >
       <input
         className={`

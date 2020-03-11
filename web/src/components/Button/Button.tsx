@@ -5,6 +5,8 @@ interface IProps {
   secondary?: boolean
   fluid?: boolean
   onClick?: (e: SyntheticEvent) => void
+  className?: string
+  id?: string
 }
 
 const Button: React.FC<IProps> = (props) => {
@@ -14,6 +16,8 @@ const Button: React.FC<IProps> = (props) => {
     fluid,
     children,
     onClick,
+    className,
+    id,
   } = props
 
   return (
@@ -22,7 +26,9 @@ const Button: React.FC<IProps> = (props) => {
         button
         ${secondary && !primary ? 'button_secondary' : ''}
         ${fluid ? 'button_fluid' : ''}
+        ${className}
       `}
+      id={id}
     >
       <button
         className='button__element'
