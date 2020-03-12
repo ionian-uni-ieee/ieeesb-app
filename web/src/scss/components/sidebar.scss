@@ -42,6 +42,8 @@
     line-height: 16px;
     letter-spacing: 1px;
 
+    cursor: pointer;
+
     transition: 200ms ease;
 
     &:hover {
@@ -56,6 +58,7 @@
     &_active {
       background: rgba(0, 0, 0, 0.25);
       border-left: 4px solid #055BA6;
+      cursor: default;
 
       font-weight: 600;
       transition: 200ms ease;
