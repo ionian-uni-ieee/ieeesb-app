@@ -3,43 +3,26 @@ import React from 'react'
 import { useLocation } from 'react-router-dom'
 
 const ControlPanel = () => {
-  const location = useLocation()
-  const { pathname } = location
-  const cpPage = pathname.substr(pathname.lastIndexOf('/')+1)
-  console.log(cpPage)
-
   return (
     <div className='page control-panel'>
       <Sidebar>
         <div>
-          <Sidebar.Button
-            active={cpPage === 'dashboard'}
-          >
+          <Sidebar.Button to='dashboard'>
             Dashboard
           </Sidebar.Button>
-          <Sidebar.Button
-            active={cpPage === 'events'}
-          >
+          <Sidebar.Button to='events'>
             Events
           </Sidebar.Button>
-          <Sidebar.Button
-            active={cpPage === 'users'}
-          >
+          <Sidebar.Button to='users'>
             Users
           </Sidebar.Button>
-          <Sidebar.Button
-            active={cpPage === 'sponsors'}
-          >
+          <Sidebar.Button to='sponsors'>
             Sponsors
           </Sidebar.Button>
-          <Sidebar.Button
-            active={cpPage === 'finance'}
-          >
+          <Sidebar.Button to='finance'>
             Finance
           </Sidebar.Button>
-          <Sidebar.Button
-            active={cpPage === 'settings'}
-          >
+          <Sidebar.Button to='settings'>
             Settings
           </Sidebar.Button>
         </div>
