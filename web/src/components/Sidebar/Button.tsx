@@ -17,10 +17,11 @@ const Button: React.FC<IProps> = (props) => {
   const location = useLocation()
   const { pathname } = location
   const cpPage = pathname.substr(pathname.lastIndexOf('/')+1)
+  const isPathActive = cpPage === to
 
   const history = useHistory()
   const handleClick = () => {
-    if (to) {
+    if (to && !isPathActive) {
       history.push(to)
     }
   }
@@ -28,7 +29,7 @@ const Button: React.FC<IProps> = (props) => {
   return (
     <button className={`
       sidebar__button
-      ${cpPage === to ? 'sidebar__button_active' : ''}
+      ${isPathActive ? 'sidebar__button_active' : ''}
       ${className}
     `}
     onClick={handleClick}
