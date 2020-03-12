@@ -1,6 +1,6 @@
-import { ReactComponent as Logo } from 'assets/svg/logo.svg'
 import { Button } from 'components/Button'
 import { Input } from 'components/Input'
+import { Logo } from 'components/Logo'
 import React from 'react'
 
 const ControlPanelLogin = () => {
@@ -8,12 +8,8 @@ const ControlPanelLogin = () => {
     <div className='page control-panel-login'>
       <div className='page control-panel-login__form'>
         <Logo
-          width='fit-content'
-          viewBox='0 0 914 231'
-          style={{
-            height: '80px',
-            paddingBottom: '40px',
-          }}
+          noRectangle
+          height='80px'
         />
         <Input
           placeholder='USERNAME'
@@ -26,7 +22,7 @@ const ControlPanelLogin = () => {
           LOGIN
         </Button>
         <Button secondary>
-          REGISTER 
+          REGISTER
         </Button>
       </div>
     </div>

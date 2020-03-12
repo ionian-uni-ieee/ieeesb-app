@@ -1,7 +1,7 @@
 import React from 'react'
 import { BrowserRouter as Router, Redirect, Route, Switch } from 'react-router-dom'
 
-import { ControlPanelLogin, Landpage } from './pages'
+import { ControlPanel, ControlPanelLogin, Landpage } from './pages'
 
 const App: React.FC = () => {
   return (
@@ -17,6 +17,11 @@ const App: React.FC = () => {
             path='/admin'
             exact
             component={ControlPanelLogin}
+          />
+          <Route
+            path='/admin/dashboard'
+            exact
+            component={ControlPanel}
           />
           <Redirect
             from='/'
