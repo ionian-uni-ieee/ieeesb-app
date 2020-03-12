@@ -12,9 +12,9 @@ interface INavigation extends React.FC<IProps> {
 
 const Navigation: INavigation = (props) => {
   return (
-    <button className='ui navigation'>
+    <div className='ui navigation'>
       {props.children}
-    </button>
+    </div>
   )
 }
 
