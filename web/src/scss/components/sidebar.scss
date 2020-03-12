@@ -1,0 +1,66 @@
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  width: 232px;
+  height: 100%;
+
+  background: linear-gradient(180deg, #222222 0%, #111111 100%);
+  box-shadow: 2px 0px 4px rgb(34, 34, 34);
+
+  .logo {
+    padding: 20px;
+    svg {
+      color: white;
+    }
+  }
+
+  &__divider {
+    width: 100%;
+    size: 1px;
+    padding: 0;
+    margin: 0;
+
+    border: 1px solid #444;
+  }
+
+  &__button {
+    display: inline-block;
+    width: 100%;
+    height: 48px;
+
+    outline: none;
+    border: none;
+    padding-left: 20px;
+
+    background-color: transparent;
+    text-align: left;
+    color: white;
+    font-family: $font_primary;
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 16px;
+    letter-spacing: 1px;
+
+    transition: 200ms ease;
+
+    &:hover {
+      background: rgba(0, 0, 0, 0.15);
+      transition: 200ms ease;
+    }
+    &:active, &:focus {
+      background: rgba(0, 0, 0, 0.25);
+      border-left: 4px solid #055BA6;
+
+      font-weight: 600;
+      transition: 200ms ease;
+    }
+    &_active {
+      background: rgba(0, 0, 0, 0.25);
+      border-left: 4px solid #055BA6;
+
+      font-weight: 600;
+      transition: 200ms ease;
+    }
+  }
+}
