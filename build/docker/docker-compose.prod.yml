@@ -3,6 +3,8 @@ version: "3.3"
 services:
   web:
     command: serve -s build -l 3000
+    deploy:
+      replicas: 2
     ports:
       - 3000:3000
     networks:
