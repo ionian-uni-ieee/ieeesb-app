@@ -63,4 +63,25 @@
       transition: 200ms ease;
     }
   }
+
+  &__footer {
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    bottom: 0;
+    width: inherit;
+    height: 94px;
+
+    white-space: pre-wrap;
+    color: $white;
+    font-weight: normal;
+    font-size: 9px;
+    line-height: 12px;
+    letter-spacing: 0.2em;
+    color: #BBBBBB;
+
+    &__text {
+      margin: auto;
+    }
+  }
 }
