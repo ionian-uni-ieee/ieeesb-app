@@ -11,6 +11,13 @@ const ControlPanel = () => {
         <Sidebar.Button>Sponsors</Sidebar.Button>
         <Sidebar.Button>Finance</Sidebar.Button>
         <Sidebar.Button>Settings</Sidebar.Button>
+        <Sidebar.Footer
+          text={`
+            COPYRIGHTS © IONIO IEEE SB
+            2020-2021
+            v1.0
+          `}
+        />
       </Sidebar>
     </div>
   )

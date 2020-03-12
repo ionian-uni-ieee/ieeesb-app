@@ -3,6 +3,7 @@ import React from 'react'
 
 import Button from './Button'
 import Divider from './Divider'
+import Footer from './Footer'
 
 interface IProps {
   className?: string
@@ -12,6 +13,7 @@ interface IProps {
 interface ISidebar extends React.FC<IProps> {
   Button: typeof Button
   Divider: typeof Divider
+  Footer: typeof Footer
 }
 
 const Sidebar: ISidebar = (props) => {
@@ -36,6 +38,7 @@ const Sidebar: ISidebar = (props) => {
 }
 
 Sidebar.Button = Button
-Sidebar.Divider = Divider 
+Sidebar.Divider = Divider
+Sidebar.Footer = Footer
 
 export default Sidebar
