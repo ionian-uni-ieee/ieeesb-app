@@ -9,7 +9,6 @@ $button_width: 320px;
   border-radius: 8px;
   background-color: $primary;
   filter: drop-shadow(0 0 4px rgba($black, 0.2));
-  cursor: pointer;
 
   transition: 300ms ease;
 
@@ -32,6 +31,7 @@ $button_width: 320px;
     background: transparent;
     outline: none;
     border: none;
+    cursor: pointer;
 
     font-family: $font-secondary;
     font-size: 13px;
