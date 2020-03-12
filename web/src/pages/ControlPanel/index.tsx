@@ -1,6 +1,6 @@
 import { Sidebar } from 'components/Sidebar'
 import React from 'react'
-import { useLocation } from 'react-router-dom'
+import appVersion from 'utils/appVersion'
 
 const ControlPanel = () => {
   return (
@@ -28,6 +28,7 @@ const ControlPanel = () => {
         </div>
         <Sidebar.Button
           id='sidebar-logout-button'
+          onClick={() => null}
         >
           Logout
         </Sidebar.Button>
@@ -35,7 +36,7 @@ const ControlPanel = () => {
           text={`
             COPYRIGHTS © IONIO IEEE SB
             2020-2021
-            v1.0
+            ${appVersion}
           `}
         />
       </Sidebar>
