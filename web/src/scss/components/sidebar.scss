@@ -48,11 +48,9 @@
       background: rgba(0, 0, 0, 0.15);
       transition: 200ms ease;
     }
-    &:active, &:focus {
+    &:active {
       background: rgba(0, 0, 0, 0.25);
-      border-left: 4px solid #055BA6;
 
-      font-weight: 600;
       transition: 200ms ease;
     }
     &_active {
@@ -67,8 +65,6 @@
   &__footer {
     display: flex;
     flex-direction: column;
-    position: fixed;
-    bottom: 0;
     width: inherit;
     height: 94px;
 

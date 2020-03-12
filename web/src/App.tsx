@@ -19,8 +19,7 @@ const App: React.FC = () => {
             component={ControlPanelLogin}
           />
           <Route
-            path='/admin/dashboard'
-            exact
+            path='/admin/'
             component={ControlPanel}
           />
           <Redirect
