@@ -1,0 +1,9 @@
+.logo {
+  padding: 4px;
+}
+
+.logo_no-rectangle {
+  .logo__svg__rect {
+    display: none;
+  }
+}
