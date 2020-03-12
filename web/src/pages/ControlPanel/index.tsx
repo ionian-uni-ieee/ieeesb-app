@@ -1,36 +1,16 @@
 import { Sidebar } from 'components/Sidebar'
 import React from 'react'
-import { useLocation } from 'react-router-dom'
 
 const ControlPanel = () => {
   return (
     <div className='page control-panel'>
       <Sidebar>
-        <div>
-          <Sidebar.Button to='dashboard'>
-            Dashboard
-          </Sidebar.Button>
-          <Sidebar.Button to='events'>
-            Events
-          </Sidebar.Button>
-          <Sidebar.Button to='users'>
-            Users
-          </Sidebar.Button>
-          <Sidebar.Button to='sponsors'>
-            Sponsors
-          </Sidebar.Button>
-          <Sidebar.Button to='finance'>
-            Finance
-          </Sidebar.Button>
-          <Sidebar.Button to='settings'>
-            Settings
-          </Sidebar.Button>
-        </div>
-        <Sidebar.Button
-          id='sidebar-logout-button'
-        >
-          Logout
-        </Sidebar.Button>
+        <Sidebar.Button>Dashboard</Sidebar.Button>
+        <Sidebar.Button>Events</Sidebar.Button>
+        <Sidebar.Button>Users</Sidebar.Button>
+        <Sidebar.Button>Sponsors</Sidebar.Button>
+        <Sidebar.Button>Finance</Sidebar.Button>
+        <Sidebar.Button>Settings</Sidebar.Button>
         <Sidebar.Footer
           text={`
             COPYRIGHTS © IONIO IEEE SB
