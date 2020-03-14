@@ -58,7 +58,7 @@ func TestValidate(t *testing.T) {
 			Username:    "test",
 		}
 		_, err := service.Add(validUser)
-		if err != nil {
+		if err.HasError() {
 			t.Error("Got error when adding user", err)
 		}
 		invalidUser := models.User{
