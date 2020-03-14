@@ -1,4 +1,5 @@
-[![Build Status](https://travis-ci.org/ionian-uni-ieee/ieeesb-app.svg?branch=dev)](https://travis-ci.org/ionian-uni-ieee/ieeesb-app)
+[![Build Status](https://img.shields.io/travis/ionian-uni-ieee/ieeesb-app/master?label=Master%20Build)](https://travis-ci.org/ionian-uni-ieee/ieeesb-app)
+[![Build Status](https://img.shields.io/travis/ionian-uni-ieee/ieeesb-app?label=Dev%20Build)](https://travis-ci.org/ionian-uni-ieee/ieeesb-app)
 
 - [IEEE Web application](#ieee-web-application)
   - [Why](#why)
