@@ -43,6 +43,7 @@ module.exports = {
     ],
     semi: ["error", "never"],
     quotes: ["error", "single"],
+    "react/jsx-uses-vars": "warn",
     "@typescript-eslint/no-empty-function": "error",
     "@typescript-eslint/no-explicit-any": "off",
     "@typescript-eslint/no-parameter-properties": "off",
