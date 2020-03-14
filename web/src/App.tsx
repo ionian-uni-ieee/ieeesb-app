@@ -3,8 +3,7 @@ import { BrowserRouter as Router, Redirect, Route, Switch } from 'react-router-d
 
 import { ControlPanel, ControlPanelLogin, Landpage } from './pages'
 
-const App: React.FC = () => {
-  return (
+const App: React.FC = () => (
     <div className='App'>
       <Router basename='/ieee'>
         <Switch>
@@ -30,6 +29,5 @@ const App: React.FC = () => {
       </Router>
     </div>
   )
-}
 
 export default App

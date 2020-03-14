@@ -1,3 +1,4 @@
 {
-    "go.gopath": "~/go"
+    "go.gopath": "~/go",
+    "eslint.enable": true
 }
