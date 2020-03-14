@@ -1,3 +1,12 @@
+# github.com/dgrijalva/jwt-go v3.2.0+incompatible
+github.com/dgrijalva/jwt-go
+# github.com/globalsign/mgo v0.0.0-20181015135952-eeefdecb41b8
+github.com/globalsign/mgo
+github.com/globalsign/mgo/bson
+github.com/globalsign/mgo/internal/json
+github.com/globalsign/mgo/internal/sasl
+github.com/globalsign/mgo/internal/scram
+github.com/globalsign/mgo/txn
 # github.com/go-stack/stack v1.8.0
 github.com/go-stack/stack
 # github.com/golang/snappy v0.0.1
@@ -10,49 +19,73 @@ github.com/gorilla/mux
 github.com/gorilla/securecookie
 # github.com/joho/godotenv v1.3.0
 github.com/joho/godotenv
-# github.com/rs/cors v1.6.0
-github.com/rs/cors
+# github.com/tidwall/btree v0.0.0-20170113224114-9876f1454cf0
+github.com/tidwall/btree
+# github.com/tidwall/buntdb v1.1.0
+github.com/tidwall/buntdb
+# github.com/tidwall/gjson v1.3.2
+github.com/tidwall/gjson
+# github.com/tidwall/grect v0.0.0-20161006141115-ba9a043346eb
+github.com/tidwall/grect
+# github.com/tidwall/match v1.0.1
+github.com/tidwall/match
+# github.com/tidwall/pretty v1.0.0
+github.com/tidwall/pretty
+# github.com/tidwall/rtree v0.0.0-20180113144539-6cd427091e0e
+github.com/tidwall/rtree
+github.com/tidwall/rtree/base
+# github.com/tidwall/tinyqueue v0.0.0-20180302190814-1e39f5511563
+github.com/tidwall/tinyqueue
 # github.com/xdg/scram v0.0.0-20180814205039-7eeb5667e42c
 github.com/xdg/scram
 # github.com/xdg/stringprep v1.0.0
 github.com/xdg/stringprep
-# go.mongodb.org/mongo-driver v1.0.4
+# go.mongodb.org/mongo-driver v1.1.1
 go.mongodb.org/mongo-driver/bson
-go.mongodb.org/mongo-driver/bson/primitive
-go.mongodb.org/mongo-driver/mongo
-go.mongodb.org/mongo-driver/mongo/options
-go.mongodb.org/mongo-driver/mongo/readpref
 go.mongodb.org/mongo-driver/bson/bsoncodec
 go.mongodb.org/mongo-driver/bson/bsonrw
 go.mongodb.org/mongo-driver/bson/bsontype
-go.mongodb.org/mongo-driver/x/bsonx/bsoncore
+go.mongodb.org/mongo-driver/bson/primitive
 go.mongodb.org/mongo-driver/event
+go.mongodb.org/mongo-driver/internal
+go.mongodb.org/mongo-driver/mongo
+go.mongodb.org/mongo-driver/mongo/options
 go.mongodb.org/mongo-driver/mongo/readconcern
+go.mongodb.org/mongo-driver/mongo/readpref
 go.mongodb.org/mongo-driver/mongo/writeconcern
+go.mongodb.org/mongo-driver/tag
+go.mongodb.org/mongo-driver/version
 go.mongodb.org/mongo-driver/x/bsonx
+go.mongodb.org/mongo-driver/x/bsonx/bsoncore
 go.mongodb.org/mongo-driver/x/mongo/driver
+go.mongodb.org/mongo-driver/x/mongo/driver/address
 go.mongodb.org/mongo-driver/x/mongo/driver/auth
+go.mongodb.org/mongo-driver/x/mongo/driver/auth/internal/gssapi
+go.mongodb.org/mongo-driver/x/mongo/driver/connstring
+go.mongodb.org/mongo-driver/x/mongo/driver/description
+go.mongodb.org/mongo-driver/x/mongo/driver/dns
+go.mongodb.org/mongo-driver/x/mongo/driver/operation
 go.mongodb.org/mongo-driver/x/mongo/driver/session
 go.mongodb.org/mongo-driver/x/mongo/driver/topology
 go.mongodb.org/mongo-driver/x/mongo/driver/uuid
-go.mongodb.org/mongo-driver/x/network/command
-go.mongodb.org/mongo-driver/x/network/connection
-go.mongodb.org/mongo-driver/x/network/connstring
-go.mongodb.org/mongo-driver/x/network/description
-go.mongodb.org/mongo-driver/x/network/result
-go.mongodb.org/mongo-driver/tag
-go.mongodb.org/mongo-driver/x/network/wiremessage
-go.mongodb.org/mongo-driver/x/mongo/driver/auth/internal/gssapi
-go.mongodb.org/mongo-driver/x/network/address
-go.mongodb.org/mongo-driver/version
-go.mongodb.org/mongo-driver/x/network/compressor
-go.mongodb.org/mongo-driver/internal
-# golang.org/x/crypto v0.0.0-20190701094942-4def268fd1a4
+go.mongodb.org/mongo-driver/x/mongo/driver/wiremessage
+# golang.org/x/crypto v0.0.0-20190907121410-71b5226ff739
 golang.org/x/crypto/bcrypt
 golang.org/x/crypto/blowfish
 golang.org/x/crypto/pbkdf2
 # golang.org/x/sync v0.0.0-20190423024810-112230192c58
 golang.org/x/sync/semaphore
-# golang.org/x/text v0.3.2
-golang.org/x/text/unicode/norm
+# golang.org/x/text v0.3.0
 golang.org/x/text/transform
+golang.org/x/text/unicode/norm
+# gopkg.in/go-oauth2/mongo.v3 v3.1.1
+gopkg.in/go-oauth2/mongo.v3
+# gopkg.in/oauth2.v3 v3.12.0
+gopkg.in/oauth2.v3
+gopkg.in/oauth2.v3/errors
+gopkg.in/oauth2.v3/generates
+gopkg.in/oauth2.v3/manage
+gopkg.in/oauth2.v3/models
+gopkg.in/oauth2.v3/server
+gopkg.in/oauth2.v3/store
+gopkg.in/oauth2.v3/utils/uuid

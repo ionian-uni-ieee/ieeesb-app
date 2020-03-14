@@ -1,3 +1,6 @@
+[![Build Status](https://img.shields.io/travis/ionian-uni-ieee/ieeesb-app/master?label=Master%20Build)](https://travis-ci.org/ionian-uni-ieee/ieeesb-app)
+[![Build Status](https://img.shields.io/travis/ionian-uni-ieee/ieeesb-app?label=Dev%20Build)](https://travis-ci.org/ionian-uni-ieee/ieeesb-app)
+
 - [IEEE Web application](#ieee-web-application)
   - [Why](#why)
   - [How to start](#how-to-start)
@@ -11,6 +14,7 @@
 # IEEE Web application
 
 A IEEE Student Branch Dashboard & Management tool for student branches of the IEEE Organization.
+
 ## Why
 
 Members and the community of IEEE Student Branches will be able to advertise and interact with the community itself in an easier way. This application intends to tie the community in a much tighter form and shape a more robust social construct.
@@ -42,22 +46,22 @@ In this case, we don't provide further support for other platforms than Linux, a
 2. Install **nodejs**,**npm** & **yarn**
 3. Install **mongodb**
 4. Clone repository
-    ```bash
-    git clone https://github.com/ionian-uni-ieee/ieeesb-app
-    ```
-5. For **backend**-server run 
+   ```bash
+   git clone https://github.com/ionian-uni-ieee/ieeesb-app
+   ```
+5. For **backend**-server run
    ```bash
    sudo systemctl start mongod
    go run main.go
    ```
-6. For **frontend**-server run 
+6. For **frontend**-server run
    ```bash
    cd ./web && yarn && yarn start
    ```
 
 ## Environment Variables
 
-**Docker** sets all of them up for you. 
+**Docker** sets all of them up for you.
 
 But it's **necessary** to setup a `API_DATABASE_USERNAME` and a `API_DATABASE_PASSWORD`.
 
@@ -72,33 +76,40 @@ But it's **necessary** to setup a `API_DATABASE_USERNAME` and a `API_DATABASE_PA
 | **API_DATABASE_PASSWORD** | Database password credential   |
 
 ## Planned Features
+
 After they're all completed, we will pass to an **Pre-Alpha** phase.
 
 ### APP
+
 - [x] Manager Users
+
   - [x] Delete
   - [x] Edit
   - [x] Get Users
 
 - [x] Authorization
+
   - [x] Get Profile
   - [x] Login
   - [x] Logout
   - [x] Register
 
 - [ ] Contact Tickets
+
   - [x] Contact
   - [x] Close Ticket
   - [x] Get Tickets
   - [ ] Manager Respond
 
 - [x] Sponsors
+
   - [x] Add
   - [x] Delete
   - [x] Edit
   - [x] Get Sponsors
 
 - [ ] Events
+
   - [ ] Add
   - [ ] Delete
   - [ ] Edit
@@ -115,30 +126,32 @@ After they're all completed, we will pass to an **Pre-Alpha** phase.
 ### WEB
 
 - [ ] Calendar
+
   - [ ] Show events
 
 - [ ] Upcoming Events
+
   - [ ] Show upcoming events
 
 - [ ] Contact form
 
 - [ ] Control panel
-    - [ ] Events
-      - [ ] Create
-      - [ ] Delete
-      - [ ] Edit
-      - [ ] View
-    - [ ] Tickets
-      - [ ] Respond
-      - [ ] Close
-      - [ ] View
-    - [ ] Sponsors
-      - [ ] Add
-      - [ ] Delete
-      - [ ] Edit
-      - [ ] View
-    - [ ] Managers
-      - [ ] Add
-      - [ ] Delete
-      - [ ] Edit
-      - [ ] View
+  - [ ] Events
+    - [ ] Create
+    - [ ] Delete
+    - [ ] Edit
+    - [ ] View
+  - [ ] Tickets
+    - [ ] Respond
+    - [ ] Close
+    - [ ] View
+  - [ ] Sponsors
+    - [ ] Add
+    - [ ] Delete
+    - [ ] Edit
+    - [ ] View
+  - [ ] Managers
+    - [ ] Add
+    - [ ] Delete
+    - [ ] Edit
+    - [ ] View

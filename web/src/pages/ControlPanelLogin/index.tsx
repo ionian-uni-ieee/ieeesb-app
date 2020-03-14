@@ -3,8 +3,7 @@ import { Input } from 'components/Input'
 import { Logo } from 'components/Logo'
 import React from 'react'
 
-const ControlPanelLogin = () => {
-  return (
+const ControlPanelLogin: React.FC = () => (
     <div className='page control-panel-login'>
       <div className='page control-panel-login__form'>
         <Logo
@@ -27,6 +26,5 @@ const ControlPanelLogin = () => {
       </div>
     </div>
   )
-}
 
 export default ControlPanelLogin
