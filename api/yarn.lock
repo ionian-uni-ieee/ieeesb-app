@@ -2790,10 +2790,10 @@ swagger-client@^3.9.4:
     utf8-bytes "0.0.1"
     utfstring "^2.0.0"
 
-swagger-ui@^3.23.9:
-  version "3.23.9"
-  resolved "https://registry.yarnpkg.com/swagger-ui/-/swagger-ui-3.23.9.tgz#c6e29a8bc8c67a045cd2e601211847d977a5dddb"
-  integrity sha512-+qRpHhKmRyzuBhjFYfGxD68Ed4olnaEdpV5oRawioHzuZhM6TdSo7Dsvv/W4HipA9txAhuxHJjYhwtfhEIhirA==
+swagger-ui@^3.23.11:
+  version "3.23.11"
+  resolved "https://registry.yarnpkg.com/swagger-ui/-/swagger-ui-3.23.11.tgz#e1d0b68ec2d87ac3afdfe1fd4e1ae94e845fbb47"
+  integrity sha512-1XUpCKqM4eASWruW2/OmD0j6YXbCU4Q8VlltkzIv7tvINA2luXozEMa3s32s+dW72/c7YvCik8zkXuYC5EiiGA==
   dependencies:
     "@babel/runtime-corejs2" "^7.5.5"
     "@braintree/sanitize-url" "^2.0.2"
