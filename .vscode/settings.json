@@ -1,4 +1,42 @@
 {
-    "go.gopath": "~/go",
-    "eslint.enable": true
+  "editor.tabSize": 2,
+  "git.autofetch": true,
+  "go.gopath": "~/go",
+  "go.useLanguageServer": true,
+  "eslint.enable": true,
+  "eslint.workingDirectories": ["./web"],
+  "editor.formatOnSave": true,
+  "editor.formatOnType": true,
+  "eslint.alwaysShowStatus": true,
+  "eslint.format.enable": true,
+  "eslint.lintTask.enable": true,
+  "jest.rootPath": "/web/src",
+  "jest.pathToJest": "npm test --",
+  "autoimport.useSemiColon": false,
+  "[typescriptreact]": {
+    "editor.defaultFormatter": "dbaeumer.vscode-eslint"
+  },
+  "go.languageServerExperimentalFeatures": {
+    "format": true,
+    "autoComplete": true,
+    "rename": true,
+    "goToDefinition": true,
+    "hover": true,
+    "signatureHelp": true,
+    "goToTypeDefinition": true,
+    "goToImplementation": true,
+    "documentSymbols": true,
+    "workspaceSymbols": true,
+    "findReferences": true,
+    "diagnostics": true,
+    "documentLink": true
+  },
+  "go.lintOnSave": "package",
+  "go.liveErrors": {
+    "enabled": true,
+    "delay": 500
+  },
+  "go.vetOnSave": "package",
+  "go.autocompleteUnimportedPackages": true,
+  "go.docsTool": "guru"
 }
