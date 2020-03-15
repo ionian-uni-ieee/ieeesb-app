@@ -7,59 +7,52 @@ const Events: React.FC = () => (
       <div className="card">
         <Calendar.Eventcard>
           <Calendar.Eventcard.Date
-            day={12}
+            day={19}
             month='Jun'
-            weekday='Mon'
+            weekday='Tue'
           />
           <Calendar.Eventcard.Description
             id='1241241'
-            name='Arduino Workshop'
-            type='Workshop'
-            tags={['Programming', 'Beginner', 'Workshop', 'Denexwidea']}
-            time='12:00'
+            name='Arduino For Beginners'
+            type='Seminar'
+            tags={['Programming', 'Hardware', 'Arduino', 'Beginners']}
+            time='14:00'
           />
           <Calendar.Eventcard.Description
             id='asdgasdagsa'
-            name='Learn C++'
+            name='C++ MASTERY - LEARNING HOW TO CODE'
             type='Seminar'
-            tags={['WTFLanguage', 'NotBeginner', 'Seminar', 'WorstProgrammingLanguage']}
-            time='12:00'
+            tags={['programming', 'cpp']}
+            time='13:00'
           />
         </Calendar.Eventcard>
 
         <Calendar.Eventcard>
           <Calendar.Eventcard.Date
-            day={12}
+            day={24}
             month='Jun'
-            weekday='Mon'
+            weekday='Sat'
           />
           <Calendar.Eventcard.Description
             id='1241241'
-            name='Arduino Workshop'
-            type='Workshop'
-            tags={['Programming', 'Beginner', 'Workshop', 'Denexwidea']}
-            time='12:00'
+            name='Fullstack Web development - ReactJS + NodeJS'
+            type='Seminar'
+            tags={['Programming', 'Webdev', 'Beginners']}
+            time='19:00'
           />
         </Calendar.Eventcard>
         <Calendar.Eventcard>
           <Calendar.Eventcard.Date
-            day={12}
+            day={28}
             month='Jun'
-            weekday='Mon'
+            weekday='Wed'
           />
           <Calendar.Eventcard.Description
             id='1241241'
-            name='Arduino Workshop'
-            type='Workshop'
-            tags={['Programming', 'Beginner', 'Workshop', 'Denexwidea']}
-            time='12:00'
-          />
-          <Calendar.Eventcard.Description
-            id='asdgasdagsa'
-            name='Learn C++'
+            name='C++ MASTERY - BECOMING A PRO'
             type='Seminar'
-            tags={['WTFLanguage', 'NotBeginner', 'Seminar', 'WorstProgrammingLanguage']}
-            time='12:00'
+            tags={['Programming', 'Cpp']}
+            time='11:00'
           />
         </Calendar.Eventcard>
 
