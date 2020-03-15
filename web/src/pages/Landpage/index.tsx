@@ -3,6 +3,7 @@ import React, { useEffect } from 'react'
 
 import AboutUs from './AboutUs'
 import Welcome from './Welcome'
+import Events from './Events'
 
 const makeLogoWhiteOnMeetUs = (): void => {
   const {scrollY} = window
@@ -40,6 +41,7 @@ const Landpage: React.FC = () => {
       </Navigation>
       <div className='page landpage'>
         <Welcome />
+        <Events />
         <AboutUs />
       </div>
     </div>
