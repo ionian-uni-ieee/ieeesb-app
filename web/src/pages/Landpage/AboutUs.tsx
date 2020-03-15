@@ -2,15 +2,15 @@ import React from 'react'
 
 const AboutUs: React.FC = () => (
   <>
-    <div className='landpage__section landpage__section__who-are-we'>
+    <div className='landpage__section landpage__section__who-are-we' id='who-are-we'>
       <h2>ΠΟΙΟΙ ΕΙΜΑΣΤΕ</h2>
       <p>ΦΟΙΤΗΤΙΚΟ ΠΑΡΑΚΛΑΔΙ ΤΗΣ ΙΕΕΕ</p>
     </div>
-    <div className='landpage__section landpage__section__what-we-do'>
+    <div className='landpage__section landpage__section__what-we-do' id='what-we-do'>
       <h2>ΤΙ ΚΑΝΟΥΜΕ</h2>
       <p>ΚΑΛΑ ΕΙΜΑΣΤΕ :D</p>
     </div>
-    <div className='landpage__section landpage__section__meet-us'>
+    <div className='landpage__section landpage__section__meet-us' id='meet-us'>
       <h2>ΓΝΩΡΙΣΤΕ ΜΑΣ</h2>
       <p>ΜΕΣΩ ΤΩΝ EVENT ΜΑΣ</p>
     </div>
