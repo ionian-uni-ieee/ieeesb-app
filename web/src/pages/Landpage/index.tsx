@@ -1,9 +1,11 @@
-import { ReactComponent as Logo } from 'assets/svg/logo.svg'
 import Navigation from 'components/Navigation'
 import React from 'react'
 
+import AboutUs from './AboutUs'
+import Welcome from './Welcome'
+
 const Landpage: React.FC = () => (
-  <div className='page landpage'>
+  <div>
     <Navigation>
       <Navigation.Button
         label='Events'
@@ -14,15 +16,10 @@ const Landpage: React.FC = () => (
         href='https://www.facebook.com/pg/ieeeIonianUni/about/?ref=page_internal'
       />
     </Navigation>
-    <Logo
-      className='page landpage__logo'
-      width='80%'
-      viewBox='0 0 914 231'
-      style={{
-        height: '14vw',
-        padding: '14vh 0',
-      }}
-    />
+    <div className='page landpage'>
+      <Welcome />
+      <AboutUs />
+    </div>
   </div>
 )
 

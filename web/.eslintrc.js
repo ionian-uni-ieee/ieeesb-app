@@ -24,6 +24,8 @@ module.exports = {
     "eslint-plugin-prefer-arrow"
   ],
   rules: {
+    "@typescript-eslint/interface-name-prefix": "off",
+    "react/jsx-indent": [2, 2],
     "react/jsx-indent-props": [2, 2],
     "@typescript-eslint/no-unused-vars": "warn",
     "@typescript-eslint/await-thenable": "error",
