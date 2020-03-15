@@ -44,6 +44,7 @@
       box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.12);
 
       &__type {
+        text-transform: lowercase;
         font-weight: 200;
         font-size: 10px;
         letter-spacing: 0.32em;
@@ -59,6 +60,14 @@
         align-items: center;
         text-align: center;
         letter-spacing: 0.08em;
+        background: linear-gradient(
+          to right,
+          #f25c78 0%,
+          #875df7 63.53%,
+          #055ba6 100%
+        );
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
       }
       &__time {
         font-family: Roboto;
@@ -74,6 +83,7 @@
         font-weight: normal;
         font-size: 10px;
         color: #424242;
+        text-transform: lowercase;
       }
     }
   }
