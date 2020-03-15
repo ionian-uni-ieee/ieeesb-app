@@ -26,9 +26,9 @@ const Date: React.FC<IDateProps> = props => {
         </span>
       </div>
 
-      <h3 className='calendar__eventcard__date__day'>
+      <span className='calendar__eventcard__date__day'>
         {day}
-      </h3>
+      </span>
 
     </div>
   )
