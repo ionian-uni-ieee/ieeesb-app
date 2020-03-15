@@ -18,7 +18,11 @@
         width: 100%;
         z-index: 999;
 
-        transition: 150ms ease-in;
+        transition: 150ms ease-out;
+
+        .logo__svg__rect {
+          transition: 150ms;
+        }
       }
       .logo_white {
         top: 8px;
@@ -28,7 +32,12 @@
         z-index: 1000;
         padding: 0 !important;
 
-        transition: 150ms ease-out;
+        transition: 150ms ease-in;
+
+        .logo__svg__rect {
+          opacity: 0;
+          transition: 150ms;
+        }
         // filter: grayscale(1) brightness(9);
         // .logo__svg__rect {
         //   display: none;
