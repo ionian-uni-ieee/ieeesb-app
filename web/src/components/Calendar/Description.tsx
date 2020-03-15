@@ -44,9 +44,9 @@ const Description: React.FC<IPropsDescription> = props => {
         {time}
       </p>
       <Divider />
-      <p className='calendar__eventcard__description__tags'>
-        {tags}
-      </p>
+      <span className='calendar__eventcard__description__tags'>
+        {tags.map((item: string, index: number)=><p className='tag' key={index}>{item}</p>)}
+      </span>
     </div>
   )
 }
