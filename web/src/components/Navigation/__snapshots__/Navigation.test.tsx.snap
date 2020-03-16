@@ -1,0 +1,16 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Navigation should render 1`] = `
+<div>
+  <div
+    class="ui navigation"
+  >
+    <a
+      class="ui navigation__button"
+      href="#"
+    >
+      hi
+    </a>
+  </div>
+</div>
+`;

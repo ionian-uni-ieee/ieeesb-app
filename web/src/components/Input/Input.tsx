@@ -6,7 +6,7 @@ interface IProps extends InputHTMLAttributes<HTMLInputElement> {
   secret?: boolean
   number?: boolean
 }
-const Input: React.FC<IProps> = (props) => {
+const Input: React.FC<IProps> = props => {
   const {
     onChange,
     onKeyPress,
