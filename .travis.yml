@@ -17,6 +17,7 @@ matrix:
       before_install:
         - npm install -g yarn
         - cd ./web
+        - yarn
       script:
         - yarn run build
         - yarn test
