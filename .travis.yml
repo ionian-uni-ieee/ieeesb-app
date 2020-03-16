@@ -2,16 +2,21 @@ language: go
 
 matrix:
   include:
-    - go: "1.10.x"
-      script: go test -v ./...
-    - go: "1.11.x"
+    - language: go
+      go: "1.14.x"
+      cache:
+        directories:
+          - vendor
       script: go test -v -mod=vendor ./...
-    - go: "1.12.x"
-      script: go test -v -mod=vendor ./...
-    - go: "1.13.x"
-      script: go test -v -mod=vendor ./...
-    - go: "1.14.x"
-      script: go test -v -mod=vendor ./...
+    - language: node_js
+      cache:
+        directories:
+          - ./web/node_modules
+      node_js:
+        - "13"
+      script:
+        - yarn run build
+        - yarn test
 
 env:
   - GO111MODULE=on
