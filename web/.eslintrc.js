@@ -11,6 +11,7 @@ module.exports = {
   parserOptions: {
     project: "tsconfig.json",
     sourceType: "module",
+    createDefaultProgram: true,
     ecmaFeatures: {
       jsx: true
     }
