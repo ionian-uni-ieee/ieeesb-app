@@ -1,18 +1,9 @@
-import React, { ReactElement } from 'react'
+import React from 'react'
 import Divider from './Divider'
 
 type type = 'Seminar' | 'Workshop'
 
 interface IProps {
-  children: ReactElement | Array<ReactElement>
-}
-
-interface IEventcard extends React.FC<IProps> {
-  Date: typeof Date
-  Description: typeof Description
-  Divider: typeof Divider
-}
-interface IPropsDescription {
   id: string
   name: string
   tags: string[]
@@ -20,7 +11,7 @@ interface IPropsDescription {
   type: type
 }
 
-const Description: React.FC<IPropsDescription> = props => {
+const Description: React.FC<IProps> = props => {
   const {
     id,
     name,
