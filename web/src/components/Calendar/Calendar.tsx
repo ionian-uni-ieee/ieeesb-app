@@ -1,6 +1,5 @@
 import React, { ReactElement } from 'react'
 
-import Header from './Header'
 import Eventcard from './Eventcard'
 
 interface IProps {
@@ -8,7 +7,6 @@ interface IProps {
 }
 
 interface ICalendar extends React.FC<IProps> {
-  Header: typeof Header
   Eventcard: typeof Eventcard
 }
 
@@ -16,12 +14,13 @@ const Calendar: ICalendar = props => (
   <div
     className='calendar'
   >
-    <Header name='Calendar' />
+    <h1 className="calendar__header">
+      Calendar
+    </h1>
     {props.children}
   </div>
 )
 
-Calendar.Header = Header
 Calendar.Eventcard = Eventcard
 
 export default Calendar
