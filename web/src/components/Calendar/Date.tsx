@@ -1,11 +1,12 @@
 import React from 'react'
 
 type weekday = 'Mon' | 'Tue' | 'Wed' | 'Thu' | 'Fri' | 'Sat' | 'Sun'
+type month = 'Jan' | 'Feb' | 'Mar' | 'Apr' | 'May' | 'Jun' | 'Jul' | 'Aug' | 'Sep' | 'Oct' | 'Nov' | 'Dec'
 
 interface IDateProps {
   day: number
   weekday: weekday
-  month: string
+  month: month
 }
 
 const Date: React.FC<IDateProps> = props => {
