@@ -1,0 +1,18 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Button should render 1`] = `
+<div>
+  <div
+    class="
+        button
+        
+        
+        undefined
+      "
+  >
+    <button
+      class="button__element"
+    />
+  </div>
+</div>
+`;

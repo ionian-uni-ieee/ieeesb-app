@@ -2,17 +2,15 @@ import React, { InputHTMLAttributes, useEffect, useRef, useState } from 'react'
 
 interface IProps extends InputHTMLAttributes<HTMLInputElement> {
   required?: boolean
-  primary?: boolean
   secret?: boolean
   number?: boolean
 }
-const Input: React.FC<IProps> = (props) => {
+const Input: React.FC<IProps> = props => {
   const {
     onChange,
     onKeyPress,
     placeholder,
     required,
-    primary,
     secret,
     number,
     className,
