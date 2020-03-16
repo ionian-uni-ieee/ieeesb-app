@@ -21,7 +21,6 @@
   &__eventcard {
     background: rgba(255, 255, 255, 0.5);
     border-radius: 4px;
-
     &__date {
       background: #ffffff;
       box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
@@ -93,6 +92,9 @@
           font-size: 10px;
           color: #424242;
           text-transform: lowercase;
+          margin-right: 8px;
+          margin-left: 8px;
+          padding: 5px;
         }
       }
     }
