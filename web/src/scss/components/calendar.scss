@@ -11,13 +11,13 @@
     text-transform: uppercase;
   }
 
-  .card {
+  .card-item {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr 1fr;
     grid-gap: 50px;
   }
 
-  &__eventcard {
+  &__card {
     background: rgba(255, 255, 255, 0.5);
     border-radius: 4px;
     &__date {
@@ -42,7 +42,7 @@
       }
     }
 
-    &__description {
+    &__event {
       box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.12);
       background: #ffffff;
       // border-left: solid 2px #f25c78;

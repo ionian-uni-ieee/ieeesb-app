@@ -1,13 +1,13 @@
 import React, { ReactElement } from 'react'
 
-import Eventcard from './Eventcard'
+import Card from './Card'
 
 interface IProps {
   children: ReactElement | Array<ReactElement>
 }
 
 interface ICalendar extends React.FC<IProps> {
-  Eventcard: typeof Eventcard
+  Card: typeof Card
 }
 
 const Calendar: ICalendar = props => (
@@ -21,6 +21,6 @@ const Calendar: ICalendar = props => (
   </div>
 )
 
-Calendar.Eventcard = Eventcard
+Calendar.Card = Card
 
 export default Calendar

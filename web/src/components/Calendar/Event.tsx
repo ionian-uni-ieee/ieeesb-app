@@ -11,7 +11,7 @@ interface IProps {
   type: type
 }
 
-const Description: React.FC<IProps> = props => {
+const event: React.FC<IProps> = props => {
   const {
     id,
     name,
@@ -22,23 +22,23 @@ const Description: React.FC<IProps> = props => {
 
   return (
     <div
-      className='calendar__eventcard__description'
+      className='calendar__card__event'
       id={id}
     >
-      <p className='calendar__eventcard__description__type'>
+      <p className='calendar__card__event__type'>
         {type}
       </p>
-      <p className='calendar__eventcard__description__name'>
+      <p className='calendar__card__event__name'>
         {name}
       </p>
-      <p className='calendar__eventcard__description__time'>
+      <p className='calendar__card__event__time'>
         {time}
       </p>
       <Divider />
-      <span className='calendar__eventcard__description__tags'>
+      <span className='calendar__card__event__tags'>
         {tags.map((item: string, index: number)=><p className='tag' key={index}>{item}</p>)}
       </span>
     </div>
   )
 }
-export default Description
+export default event

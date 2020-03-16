@@ -17,17 +17,17 @@ const Date: React.FC<IDateProps> = props => {
   } = props
 
   return (
-    <div className='calendar__eventcard__date'>
+    <div className='calendar__card__date'>
       <div className="month-weekday">
-        <span className='calendar__eventcard__date__month'>
+        <span className='calendar__card__date__month'>
           {month}
         </span>
-        <span className='calendar__eventcard__date__weekday'>
+        <span className='calendar__card__date__weekday'>
           {weekday}
         </span>
       </div>
 
-      <span className='calendar__eventcard__date__day'>
+      <span className='calendar__card__date__day'>
         {day}
       </span>
 
