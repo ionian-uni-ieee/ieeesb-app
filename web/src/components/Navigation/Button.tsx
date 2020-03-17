@@ -1,5 +1,6 @@
 import React from 'react'
-import { useHistory } from 'react-router'
+import { Link } from 'react-router-dom'
+import { scrollToID } from 'utils/browserHelpers'
 
 interface IButtonProps {
   label: string
@@ -8,7 +9,6 @@ interface IButtonProps {
 }
 
 const Button: React.FC<IButtonProps> = props => {
-  const history = useHistory()
   const {
     label,
     href,
@@ -22,34 +22,18 @@ const Button: React.FC<IButtonProps> = props => {
     if (!href) {
       return
     }
-    history.push(href)
     e.preventDefault()
-    const regexIsID = /^\/?#[a-zA-Z\d-]+/
-    const isLinkID = regexIsID.test(href)
-    if (!isLinkID) {
-      return
-    }
-    const id = href.startsWith('/') ? href.substr(2) : href.substr(1)
-    const idElement = document.getElementById(id)
-    if (!idElement) {
-      return
-    }
-    const { offsetTop } = idElement
-    window.scroll({
-      top: offsetTop,
-      left: 0,
-      behavior: 'smooth'
-    })
+    scrollToID(href)
   }
 
   return (
-    <a
-      href={href}
+    <Link
+      to={href || 'ieee'}
       className='ui navigation__button'
       onClick={handleClick}
     >
       {label}
-    </a>
+    </Link>
   )
 }
 
