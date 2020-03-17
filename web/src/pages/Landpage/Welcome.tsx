@@ -1,10 +1,8 @@
 import { ReactComponent as Logo } from 'assets/svg/logo.svg'
 import React from 'react'
-import { useHistory } from 'react-router'
 import { scrollToID } from 'utils/browserHelpers'
 
 const Welcome: React.FC = () => {
-  const history = useHistory()
   const scrollToWelcome = (e: React.MouseEvent): void => {
     e.preventDefault()
     scrollToID('#welcome')
