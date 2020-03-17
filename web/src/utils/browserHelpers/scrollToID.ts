@@ -10,6 +10,7 @@ export default (id: string): void => {
   if (!idElement) {
     return
   }
+  window.history.pushState(null, '', '#' + id)
   const { offsetTop } = idElement
   window.scroll({
     top: offsetTop,

@@ -7,7 +7,6 @@ const Welcome: React.FC = () => {
   const history = useHistory()
   const scrollToWelcome = (e: React.MouseEvent): void => {
     e.preventDefault()
-    history.push('#welcome')
     scrollToID('#welcome')
   }
 
