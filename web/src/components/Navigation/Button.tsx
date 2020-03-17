@@ -24,7 +24,7 @@ const Button: React.FC<IButtonProps> = props => {
     }
     history.push(href)
     e.preventDefault()
-    const regexIsID = /^\/?#[a-zA-Z\d\-]+/
+    const regexIsID = /^\/?#[a-zA-Z\d-]+/
     const isLinkID = regexIsID.test(href)
     if (!isLinkID) {
       return
