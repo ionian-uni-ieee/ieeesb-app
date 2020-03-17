@@ -11,6 +11,7 @@ module.exports = {
   parserOptions: {
     project: "tsconfig.json",
     sourceType: "module",
+    createDefaultProgram: true,
     ecmaFeatures: {
       jsx: true
     }
@@ -70,13 +71,13 @@ module.exports = {
       "error",
       "any",
       "Number",
-      "number",
+      // "number",
       "String",
-      "string",
+      // "string",
       "Boolean",
-      "boolean",
-      "Undefined",
-      "undefined"
+      // "boolean",
+      "Undefined"
+      // "undefined"
     ],
     "id-match": "error",
     "import/no-deprecated": "error",

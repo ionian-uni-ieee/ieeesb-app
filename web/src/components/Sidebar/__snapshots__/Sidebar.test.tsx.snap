@@ -1,0 +1,30 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Sidebar should render 1`] = `
+<div>
+  <div
+    class="
+        sidebar
+        undefined
+      "
+  >
+    <span
+      class="
+        logo
+        
+      "
+    >
+      <svg
+        style="height: 38px;"
+        viewBox="0 0 150 38"
+        width="fit-content"
+      >
+        logo_white.svg
+      </svg>
+    </span>
+    <hr
+      class="sidebar__divider"
+    />
+  </div>
+</div>
+`;

@@ -16,7 +16,7 @@
         position: fixed;
         left: 0;
         width: 100%;
-        z-index: 999;
+        z-index: 1;
 
         transition: 150ms ease-out;
 
@@ -30,6 +30,7 @@
         width: 10vw;
         height: 4vh !important;
         z-index: 1000;
+        z-index: 999;
         padding: 0 !important;
 
         transition: 150ms ease-in;
