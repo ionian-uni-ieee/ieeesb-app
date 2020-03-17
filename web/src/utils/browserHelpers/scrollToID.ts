@@ -5,6 +5,7 @@ export default (id: string): void => {
     return
   }
   id = id.startsWith('/') ? id.substr(2) : id.substr(1)
+  id = id.startsWith('#') ? id.substr(1) : id
   const idElement = document.getElementById(id)
   if (!idElement) {
     return
