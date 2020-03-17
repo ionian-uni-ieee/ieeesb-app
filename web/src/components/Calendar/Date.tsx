@@ -26,11 +26,9 @@ const Date: React.FC<IDateProps> = props => {
           {weekday}
         </span>
       </div>
-
       <span className='calendar__card__date__day'>
         {day}
       </span>
-
     </div>
   )
 }
