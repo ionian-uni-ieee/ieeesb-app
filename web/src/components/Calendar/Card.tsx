@@ -9,16 +9,14 @@ interface IProps {
 
 interface ICard extends React.FC<IProps> {
   Date: typeof Date
-  Event: typeof Event
+  Events: typeof Event[]
 }
 
-const Card: ICard = props => (
+const Card: React.FC<ICard> = props => (
   <div className='calendar__Card'>
     {props.children}
   </div>
 )
 
-Card.Date = Date
-Card.Event = Event
 
 export default Card
