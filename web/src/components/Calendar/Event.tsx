@@ -11,7 +11,7 @@ interface IProps {
   type: type
 }
 
-const event: React.FC<IProps> = props => {
+const Event: React.FC<IProps> = props => {
   const {
     id,
     name,
@@ -41,4 +41,4 @@ const event: React.FC<IProps> = props => {
     </div>
   )
 }
-export default event
+export default Event
