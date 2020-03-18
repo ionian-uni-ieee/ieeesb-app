@@ -1,22 +1,26 @@
-import React, { ReactElement } from 'react'
+import React from 'react'
 
-import Date from './Date'
-import Event from './Event'
+import IDateProps from './Date'
+import IEventProps from './Event'
 
-interface IProps {
-  children: ReactElement | Array<ReactElement>
+interface ICard {
+  date: typeof IDateProps
+  events: typeof IEventProps[]
 }
 
-interface ICard extends React.FC<IProps> {
-  Date: typeof Date
-  Events: typeof Event[]
-}
+const Card: React.FC<ICard> = props => {
+  const {
+    date,
+    events
+  } = props
+  return (
+    <div className='calendar__Card'>
+      {date}
+      {events}
+    </div>
+    )
 
-const Card: React.FC<ICard> = props => (
-  <div className='calendar__Card'>
-    {props.children}
-  </div>
-)
+}
 
 
 export default Card
