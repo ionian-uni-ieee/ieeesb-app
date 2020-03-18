@@ -1,9 +1,8 @@
 import React from 'react'
-import Divider from './Divider'
 
 type type = 'Seminar' | 'Workshop'
 
-interface IProps {
+interface IEventProps {
   id: string
   name: string
   tags: string[]
@@ -11,7 +10,7 @@ interface IProps {
   type: type
 }
 
-const Event: React.FC<IProps> = props => {
+const Event: React.FC<IEventProps> = props => {
   const {
     id,
     name,
@@ -34,7 +33,7 @@ const Event: React.FC<IProps> = props => {
       <p className='calendar__card__event__time'>
         {time}
       </p>
-      <Divider />
+      <hr className='calendar__card__event__divider'/>
       <span className='calendar__card__event__tags'>
         {tags.map((item: string, index: number)=><p className='tag' key={index}>{item}</p>)}
       </span>
