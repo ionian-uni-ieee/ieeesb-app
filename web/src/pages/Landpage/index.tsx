@@ -31,13 +31,17 @@ const Landpage: React.FC = () => {
     <div>
       <Navigation>
         <Navigation.Button
-          label='Events'
-          href='https://www.facebook.com/ieeeIonianUni/events/'
-      />
+          label='ΠΟΙΟΙ ΕΙΜΑΣΤΕ'
+          href='#who-are-we'
+        />
         <Navigation.Button
-          label='About us'
-          href='https://www.facebook.com/pg/ieeeIonianUni/about/?ref=page_internal'
-      />
+          label='TI KANOYME'
+          href='#what-we-do'
+        />
+        <Navigation.Button
+          label='ΓΝΩΡΙΣΤΕ ΜΑΣ'
+          href='#meet-us'
+        />
       </Navigation>
       <div className='page landpage'>
         <Welcome />
