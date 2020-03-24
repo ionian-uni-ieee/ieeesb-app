@@ -13,3 +13,20 @@ func MakeService(repositories *repositories.Repositories) *Service {
 		repositories: repositories,
 	}
 }
+
+type SortBy int
+
+const (
+	// None for no sorting
+	None SortBy = iota
+	// Name sorting
+	Name
+	// Emails sorting
+	Emails
+	// Phones sorting
+	Phones
+	// Logo sorting
+	Logo
+
+
+)
