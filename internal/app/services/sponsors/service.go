@@ -28,5 +28,4 @@ const (
 	// Logo sorting
 	Logo
 
-
 )
