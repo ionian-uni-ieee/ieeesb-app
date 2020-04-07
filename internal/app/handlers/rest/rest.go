@@ -35,7 +35,7 @@ func MakeHandler(router *mux.Router, rep *repositories.Repositories) *Handler {
 		router,
 		apiResources{
 			Event: resource{
-				Path:     "/event",
+				Path:     "/events/{event_id}",
 				Handlers: resourceHandlers{},
 			},
 			Events: resource{
@@ -43,11 +43,19 @@ func MakeHandler(router *mux.Router, rep *repositories.Repositories) *Handler {
 				Handlers: resourceHandlers{},
 			},
 			User: resource{
-				Path:     "/user",
+				Path:     "/users/{user_id}",
 				Handlers: resourceHandlers{},
 			},
 			Users: resource{
 				Path:     "/users",
+				Handlers: resourceHandlers{},
+			},
+			Sponsor: resource{
+				Path:     "/sponsors/{sponsor_id}",
+				Handlers: resourceHandlers{},
+			},
+			Sponsors: resource{
+				Path:     "/sponsors",
 				Handlers: resourceHandlers{},
 			},
 		},
