@@ -1,6 +1,6 @@
 import React from 'react'
 
-interface IContactUsButton {
+interface IContactUsButton{
   label: string
   href: string
 
@@ -8,17 +8,15 @@ interface IContactUsButton {
 
 const ContactUsButton: React.FC<IContactUsButton> = props => {
   const {
-    label,
     href,
-  } = props
+  }=props
 
   return (
-    <a 
+    <a
       className = 'contact_us_button'
-      href = {href}
+      href={href}
     >
-      {label}
-      
+      Contact Us
     </a>
   )
 }
