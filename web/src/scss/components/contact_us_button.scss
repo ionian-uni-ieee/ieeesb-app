@@ -1,0 +1,21 @@
+$button_height: 42px;
+$button_width: 151px;
+
+.contact_us_button{
+  text-align: right;
+  background-image: url(../../assets/svg/contact_us_button.svg);
+  padding: 10px 15px;
+  border-radius: 32px 32px 32px 2px;
+  background-repeat: no-repeat;
+  a{
+    text-decoration: none;
+    color: white;
+    fill: solid;
+    text-align: center;
+    font-style: normal;
+    font-size: 14px;
+    line-height: 16px;
+    line-height: 100%;
+    letter-spacing: 5%;
+  } 
+}
