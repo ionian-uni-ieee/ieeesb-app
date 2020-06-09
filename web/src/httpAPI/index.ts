@@ -1,7 +1,6 @@
 export interface IhttpAPI {
   auth: IhttpAPIAuth
   events: IhttpAPIEvents
-  media: IhttpAPIMedia
   sponsors: IhttpAPISponsors
   tickets: IhttpAPITickets
   users: IhttpAPIUsers
@@ -26,8 +25,6 @@ interface IhttpAPIEvents {
   getBulk(limit: number, page: number): Promise<IResponse<IEventInstance[]>>
   remove(eventID: string): Promise<IResponse>
 }
-
-interface IhttpAPIMedia {}
 
 interface IhttpAPISponsors {
   add(newSponsor: ISponsor): Promise<IResponse>
