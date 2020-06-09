@@ -33,20 +33,20 @@ const Input: React.FC<IProps> = props => {
     [ isActive ],
   )
 
-  const onPlaceholderClick = () => {
+  const onPlaceholderClick = (): void => {
     if (!isActive) {
       setIsActive(true)
     }
   }
 
-  const onPlaceholderBlur = () => {
+  const onPlaceholderBlur = (): void => {
     const isTextEmpty = text === ''
     if (isActive && isTextEmpty) {
       setIsActive(false)
     }
   }
 
-  const onInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const onInputChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
     const eventText = e.currentTarget.value
     setText(eventText)
     const isTextEmpty = eventText === ''
@@ -61,13 +61,13 @@ const Input: React.FC<IProps> = props => {
     }
   }
 
-  const onInputFocus = () => {
+  const onInputFocus = (): void => {
     if (!isActive) {
       setIsActive(true)
     }
   }
 
-  const onInputBlur = (e: React.FocusEvent<HTMLInputElement>) => {
+  const onInputBlur = (e: React.FocusEvent<HTMLInputElement>): void => {
     const eventText = e.currentTarget.value
     setText(eventText)
     const isTextEmpty = eventText === ''

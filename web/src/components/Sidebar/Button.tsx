@@ -8,13 +8,13 @@ interface IProps {
   onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void
 }
 
-const Button: React.FC<IProps> = (props) => {
+const Button: React.FC<IProps> = props => {
   const {
     children,
     className,
     id,
     to,
-    onClick = () => null,
+    onClick,
   } = props
   const location = useLocation()
   const { pathname } = location
@@ -22,9 +22,12 @@ const Button: React.FC<IProps> = (props) => {
   const isPathActive = cpPage === to
 
   const history = useHistory()
-  const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+  const handleClick = (e: React.MouseEvent<HTMLButtonElement>): void => {
     if (to && !isPathActive) {
       history.push(to)
+    }
+    if (!onClick) {
+      return
     }
     onClick(e)
   }
